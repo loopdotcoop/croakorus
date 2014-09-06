@@ -1,0 +1,56 @@
+//// Under oe-flow, ‘about/about.config.js’ describes the project as a whole, not the ‘about’ feature itself. 
+//// The project can run with only the ‘about’ feature present, but it will not run without it.
+//// The global `Config` object is defined here. Other features add to it, eg `Config.foobar = { ... }`. 
+
+Config = {
+    about: {
+        name:         'Desoot'
+      , slug:         'desoot' // equivalent to the `'name'` field in ‘package.json’ 
+      , initials:     'dst'
+      , description:  'A Looptopian desert, surrounded by impassable mountains.' // no more than 255 characters
+      , keywords:     'Brighton, art, music, immersive, app, game, cooperative, party, festival'
+      , scripts: {
+            test:     'echo \'Error: no test specified\' && exit 1'
+        }
+      , organization: 'Loop.Coop'
+      , author:       'Rich Plastow <info@loop.coop>'
+      , webmaster:    'info@loop.coop'
+      , year:         '2014'
+      , license:      'GPL v2'
+      , type:         'website' // http://ogp.me/#types
+      , url:          'http://looptopia.loop.coop/desoot'
+      , contributors: [
+            'Beth Walker <info@loop.coop>'
+        ]
+
+      , widgets: {} // can be filled with widget areas, eg 'footer-left'
+
+      , changelog: [
+            '+                        Initial commit'
+          , '+ desoot@0.0.1-1         paste ‘Workflow’ and ‘Changelog’ from looptopia@0.2.16 to ‘README.md’;  \n' +
+            '                         paste ‘.gitignore’ from looptopia@0.2.16;  \n' +
+            '                         `$ git flow init -d` to install git flow with default branch names;  \n' +
+            '                         `$ mrt create tmp/desoot` to install Meteor;  \n' +
+            '                         `$ mv tmp/desoot/.[!.]* tmp/desoot/* ./` to move Meteor files to top level;  \n' +
+            '                         `$ rm -rf tmp; rm desoot.*` to remove unnecessary files;  \n' +
+            '                         change ‘.meteor/release’ from `METEOR@0.9.0.1` to `0.8.3`;  \n' +
+            '                         `$ mrt add iron-router`;  \n' +
+            '                         `$ mrt add handlebars-helpers` to allow Templates to use `{{$...}}`;  \n' +
+            '                         `$ mrt add less`;  \n' +
+            '                         paste ‘about.config.js’ from looptopia@0.2.16 and edit data;  \n' +
+            '                         paste ‘about.helper.js’ from looptopia@0.2.16 and cut most code;  \n' +
+            '                         paste ‘about.less’ from looptopia@0.2.16;  \n' +
+            '                         paste ‘about.not-found.html’ from looptopia@0.2.16; '
+        ]
+      , version:     '0.0.1-1'
+    }
+}
+
+//// 'development' on localhost, 'production' on modulus.
+if ('object' === typeof process) { Config.about.env = process.env.NODE_ENV; } // @todo is this ever used?
+
+
+Router.configure({
+    notFoundTemplate: 'about.not-found' // catchall 404 https://github.com/EventedMind/iron-router#route-options
+});
+
