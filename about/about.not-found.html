@@ -9,12 +9,14 @@
   <div class="row">
     <div class="large-12 columns">
       <h1>404 Not Found</h1>
+      {{#if $eq $.Config.about.env 'development'}}
       <h4>About This Project:</h4>
       <dl>
         {{#each key_value $.Config.about}}
           <dt>{{key}}</dt><dd>{{value}}</dd>
         {{/each}}
       </dl>
+      {{/if}}
     </div>
   </div>
 
