@@ -3,7 +3,8 @@
   "dependencies": {
     "basePackages": {
       "handlebar-helpers": {},
-      "iron-router": {}
+      "iron-router": {},
+      "x3dom": {}
     },
     "packages": {
       "handlebar-helpers": {
@@ -15,6 +16,11 @@
         "git": "https://github.com/EventedMind/iron-router.git",
         "tag": "v0.8.2",
         "commit": "05415a8891ea87a00fb1e2388585f2ca5a38e0da"
+      },
+      "x3dom": {
+        "git": "https://github.com/stubailo/meteor-x3dom.git",
+        "tag": "v0.0.1",
+        "commit": "2c8eaec9d6c0a1f6c8f80eac5141ed0adb24b349"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",

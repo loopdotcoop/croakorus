@@ -44,7 +44,8 @@ Config = {
           , '+ desoot@0.0.1-2   ‘about.not-found.html’ only lists project meta in the development environment; '
           , '+ desoot@0.0.1-3   `$ git push --set-upstream origin develop` to set up pushing the ‘develop’ branch; '
           , '+ desoot@0.1.0     initial holding site; '
-        ] , version: '0.1.0'
+          , '+ desoot@0.1.1-1   `$ mrt add x3dom`; '
+        ] , version: '0.1.1-1'
     }
 }
 

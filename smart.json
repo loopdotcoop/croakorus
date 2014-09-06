@@ -1,6 +1,7 @@
 {
   "packages": {
     "handlebar-helpers": {},
-    "iron-router": {}
+    "iron-router": {},
+    "x3dom": {}
   }
 }

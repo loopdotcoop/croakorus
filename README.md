@@ -75,6 +75,11 @@ __handlebar-helpers:__ [Handlebar helpers](https://github.com/raix/Meteor-handle
 _No dependencies._
 
 
+### `$ mrt add x3dom`  
+
+[x3dom:](https://github.com/stubailo/meteor-x3dom) Provides X3DOM library modified for use with Meteor.  
+_No dependencies._
+
 
 
 
