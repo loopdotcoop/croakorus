@@ -5,7 +5,8 @@
       "handlebar-helpers": {},
       "iron-router": {},
       "x3dom": {},
-      "autoform": {}
+      "autoform": {},
+      "jquery-datatables": {}
     },
     "packages": {
       "handlebar-helpers": {
@@ -28,6 +29,11 @@
         "tag": "v1.0.0",
         "commit": "5a5977dd9b66d8109d766b41fb5dc1a0ac3e83be"
       },
+      "jquery-datatables": {
+        "git": "https://github.com/lumapictures/meteor-jquery-datatables",
+        "tag": "v1.0.5",
+        "commit": "fe4fb3178386f88eeac9139b7680646b320e321d"
+      },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
         "tag": "v0.2.0",
@@ -47,6 +53,11 @@
         "git": "https://github.com/acreeger/meteor-moment.git",
         "tag": "v2.8.1",
         "commit": "722ea63783d594341023836b7d418ab2567dab8c"
+      },
+      "luma-component": {
+        "git": "https://github.com/LumaPictures/meteor-luma-component",
+        "tag": "v1.0.5",
+        "commit": "9d567068048e9ca82699b096e78c3f7ec76c0fa4"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

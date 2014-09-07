@@ -3,6 +3,7 @@
     "handlebar-helpers": {},
     "iron-router": {},
     "x3dom": {},
-    "autoform": {}
+    "autoform": {},
+    "jquery-datatables": {}
   }
 }

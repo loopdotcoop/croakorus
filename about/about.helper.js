@@ -4,6 +4,12 @@ if (Meteor.isClient) {
     Helpers.addScope('Config', Config);
     // Helpers.addScope('Router', Router);
 
+
+    //// Check whether the current user has superadministrator privileges.
+    UI.registerHelper('isSuper', function () {
+        return true; // @todo implement this, linked to looptopia user database
+    });
+
 }
 
 //// http://stackoverflow.com/a/19131165

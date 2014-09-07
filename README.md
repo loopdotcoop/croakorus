@@ -81,6 +81,15 @@ _No dependencies._
 _No dependencies._
 
 
+### `$ mrt add jquery-datatables`  
+
+__jquery-datatables:__ Sort, page, and filter millions of records. Reactively.  
+`luma-component`
+
+__luma-component:__ Blaze component mixins and base class.  
+_No dependencies._
+
+
 ### `$ mrt add autoform`  
 
 [autoform:](https://github.com/aldeed/meteor-autoform/) Forms with automatic insert, update, and validation.  

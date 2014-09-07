@@ -35,9 +35,9 @@ if (Meteor.isServer) {
         return Tiles.find({});
     });
 
-    // TilesTable = new DataTableComponent({
-    //     subscription: 'tilesTable'
-    //   , collection: Tiles
-    // });
-    // TilesTable.publish();
+    TilesTable = new DataTableComponent({
+        subscription: 'tilesTable'
+      , collection: Tiles
+    });
+    TilesTable.publish();
 }
