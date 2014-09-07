@@ -27,7 +27,12 @@ Config.tiles = {
         '                  paste ‘tiles/tiles.*.*’ from looptopia@0.2.18 ‘topians/topians.*.*’ and edit code; '
       , '+ tiles@0.0.1-2   `$ mrt add autoform`; '
       , '+ tiles@0.0.1-3   `$ mrt add jquery-datatables`; '
-    ], version: '0.0.1-3'
+      , '+ tiles@0.0.1-4   `$ mrt add simple-schema` and `$ mrt add collection2`, though ‘autoform’ added them;  \n' +
+        '                  both (or just 2nd?) of these two `add`s prevent the “no method attachSchema” error;  \n' +
+        '                  `$ meteor remove autopublish` to prevent “set up some data subscriptions” message;  \n' +
+        '                  `$ mrt add less` and paste ‘lib/patches/datatable-patch.coffee’ from looptopia@0.2.18;  \n' +
+        '                  paste ‘tiles/tiles.list.js’ from looptopia@0.2.18 ‘topians/topians.list.js’ and edit code; '
+    ], version: '0.0.1-4'
 };
 
 
