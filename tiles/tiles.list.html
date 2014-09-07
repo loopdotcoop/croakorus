@@ -1,0 +1,21 @@
+<head>
+<!-- tiles.list.html -->
+</head>
+
+<template name="tiles.list">
+  <tt class="x">tiles.list.html
+     {{$.Config.tiles.version}}</tt>
+
+  <div class="row">
+    <div class="large-12 columns">
+      {{! #if isSuper}}
+        <h1>List Topians</h1>
+          {{! > DataTable tilesTable }}
+      {{! else}}
+        <h3>Oops!</h3>
+        <p>This is a restricted area.</p>
+      {{! /if}}
+    </div>
+  </div>
+
+</template>
