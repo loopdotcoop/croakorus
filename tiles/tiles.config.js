@@ -25,7 +25,8 @@ Config.tiles = {
   , changelog: [
         '+ tiles@0.0.1-1   create ‘tiles’ as a feature of ‘desoot@0.1.1-1’;  \n' +
         '                  paste ‘tiles/tiles.*.*’ from looptopia@0.2.18 ‘topians/topians.*.*’ and edit code; '
-    ], version: '0.0.1-1'
+      , '+ tiles@0.0.1-2   `$ mrt add autoform`; '
+    ], version: '0.0.1-2'
 };
 
 
