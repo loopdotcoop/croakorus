@@ -21,7 +21,8 @@ Config.viewpoint = {
         '                      add `Config.viewpoint.$ref` to ‘viewpoint.config.js’;  \n' +
         '                      add `Config.layout.x3dMain` to ‘layout.config.js’; '
       , '+ viewpoint@0.0.1-2   viewpoint rotates if click position is within 20% of window edge; '
-    ], version:     '0.0.1-2'
+      , '+ viewpoint@0.0.1-3   cannot click on high terrain; cursor suggests movement or look-around; '
+    ], version:     '0.0.1-3'
 };
 
 

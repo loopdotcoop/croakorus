@@ -23,8 +23,10 @@ Config.layout = {
 //// When the page is ready, get a DOM reference to the main <X3D> element.
 if (Meteor.isClient) {
     Config.layout.x3dMain = null;
+    Config.layout.$canvas = null;
     jQuery(function($) { // jQuery document ready
         Config.layout.x3dMain = document.getElementById('x3d-main');
+        Config.layout.$canvas = $('#x3dom-x3d-main-canvas');
     });
 }
 

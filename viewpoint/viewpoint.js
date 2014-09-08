@@ -38,7 +38,12 @@ if (Meteor.isClient) {
 
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
-                console.log('layerX ', evt.layerX, 'window.innerWidth', window.innerWidth);
+                // console.log( evt.target.getAttribute('data-is-high') );
+
+                //// Prevent viewpoint from getting too near the edge, or climbing the central mountain.
+                if ( evt.target.getAttribute('data-is-high') ) { return; } // @todo alert user this is not allowed
+
+                //// Update the Topian’s position. @todo draw topian
                 Session.set('looptopianPosition', [x,y,z]);
 
                 //// Change the user’s orientation if they have click on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
@@ -121,6 +126,21 @@ if (Meteor.isClient) {
             } else if (2 === evt.button || 4 === evt.button) {
                 console.log('Right Click ', x, y, z, evt.currentTarget.id);
             }
+        }
+    });
+
+
+    //// Cursor suggests left/right/forward move, and drag to look around.
+    $(window).on('mousemove', function (evt) {
+        // console.log(evt);
+        if (1 === evt.button) {
+            $('body').css('cursor', 'move');
+        } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
+            $('body').css('cursor', 'w-resize');
+        } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
+            $('body').css('cursor', 'e-resize');
+        } else {
+            $('body').css('cursor', 'n-resize');
         }
     });
 
