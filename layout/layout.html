@@ -76,7 +76,12 @@
         <tt class="x">layout.html
            {{$.Config.layout.version}}</tt>
 
-        {{> yield}}{{! `yield` is a special Iron Router template }}
+        <x3d id="x3d-main">
+          <scene>
+            {{> yield}}{{! `yield` is a special Iron Router template }}
+          </scene>
+        </x3d>
+
       </article><!--/#yeild -->
 
     </div><!--/#main -->

@@ -58,7 +58,8 @@ Config.tiles = {
         '                  paste ‘tiles/tiles.list.js’ from looptopia@0.2.18 ‘topians/topians.list.js’ and edit code; '
       , '+ tiles@0.0.1-5   paste ‘tiles/tiles.init.js’ from 20140720-desoot-v0.1.9 ‘servr/tiles.js’ and edit code;  \n' +
         '                  update tiles schema with `x, z, color, height, isHigh` fields; '
-    ], version: '0.0.1-5'
+      , '+ tiles@0.0.2     paste ‘tiles/tiles.html’ from 20140720-desoot-v0.1.9 ‘desoot.html’ and edit code; '
+    ], version: '0.0.2'
 };
 
 
