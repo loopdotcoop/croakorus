@@ -75,6 +75,37 @@ __handlebar-helpers:__ [Handlebar helpers](https://github.com/raix/Meteor-handle
 _No dependencies._
 
 
+### `$ mrt add x3dom`  
+
+[x3dom:](https://github.com/stubailo/meteor-x3dom) Provides X3DOM library modified for use with Meteor.  
+_No dependencies._
+
+
+### `$ mrt add jquery-datatables`  
+
+__jquery-datatables:__ Sort, page, and filter millions of records. Reactively.  
+`luma-component`
+
+__luma-component:__ Blaze component mixins and base class.  
+_No dependencies._
+
+
+### `$ mrt add autoform`  
+
+[autoform:](https://github.com/aldeed/meteor-autoform/) Forms with automatic insert, update, and validation.  
+`collection2`
+`simple-schema`
+`moment`
+ 
+[collection2:](https://github.com/aldeed/meteor-collection2) Attach SimpleSchema to a Meteor.Collection.  
+`simple-schema`
+
+[simple-schema:](https://github.com/aldeed/meteor-simple-schema) A simple schema validation object with reactivity.  
+_No dependencies._
+
+[moment:](https://github.com/acreeger/meteor-moment.git) For parsing, validating, manipulating, and formatting dates.
+_No dependencies._
+
 
 
 

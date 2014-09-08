@@ -1,0 +1,112 @@
+<head>
+  <!-- layout.html -->
+
+  <!-- Compatibility -->
+  <meta charset="utf-8">
+  <meta name="resource-type"                   content="document">
+  <meta http-equiv="content-type"              content="text/html; charset=utf-8">
+  <meta http-equiv="X-UA-Compatible"           content="IE=EmulateIE10,chrome=1"><!-- Force IE10 rendering engine, or Chrome Frame if available -->
+  <meta name="viewport"                        content="width=device-width, user-scalable=yes, initial-scale=1.0">
+  <meta name="format-detection"                content="telephone=no">
+
+  <!-- Seo -->
+  <title>LDC: Desoot</title>
+  <meta name="description"                     content="A Looptopian desert, surrounded by impassable mountains.">
+  <meta name="keywords"                        content="Brighton, art, music, immersive, app, game, cooperative, party, festival">
+  <meta name="author"                          content="Rich Plastow <infoATloop.coop>">
+  <meta name="copyright"                       content="Copyright 2014 Loop.Coop">
+
+  <!-- Facebook -->
+  <meta property="og:title"                    content="LDC: Desoot">
+  <meta property="og:type"                     content="website">
+  <meta property="og:url"                      content="http://looptopia.loop.coop/desoot/">
+  <meta property="og:site_name"                content="Desoot">
+  <meta property="og:image"                    content="/layout/icon/dst-310x310.png">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon"                       href="/layout/icon/dst-16x16.ico">
+
+  <!-- iOS 1-6 -->
+  <link rel="apple-touch-icon"                    href="/layout/icon/dst-114x114.png"><!-- iPhone, 57x57 -->
+  <link rel="apple-touch-icon" sizes="114x114"    href="/layout/icon/dst-114x114.png"><!-- iPhone retina -->
+  <link rel="apple-touch-icon" sizes="72x72"      href="/layout/icon/dst-144x144.png"><!-- iPad -->
+  <link rel="apple-touch-icon" sizes="144x144"    href="/layout/icon/dst-144x144.png"><!-- iPad retina -->
+
+  <!-- iOS 7+ -->
+  <link rel="apple-touch-icon" sizes="60x60"      href="/layout/icon/dst-120x120.png"><!-- iPhone -->
+  <link rel="apple-touch-icon" sizes="120x120"    href="/layout/icon/dst-120x120.png"><!-- iPhone retina -->
+  <link rel="apple-touch-icon" sizes="76x76"      href="/layout/icon/dst-152x152.png"><!-- iPad -->
+  <link rel="apple-touch-icon" sizes="152x152"    href="/layout/icon/dst-152x152.png"><!-- iPad retina -->
+
+  <!-- Win8 -->
+  <meta name="application-name"                content="Desoot">
+  <meta name="msapplication-TileColor"         content="#0b0d0c">
+  <meta name="msapplication-TileImage"         content="/layout/icon/dst-144x144.png">
+
+  <!-- IE11 -->
+  <meta name="msapplication-square70x70logo"   content="/layout/icon/dst-70x70.png">
+  <meta name="msapplication-square150x150logo" content="/layout/icon/dst-150x150.png">
+  <meta name="msapplication-wide310x150logo"   content="/layout/icon/dst-310x150.png">
+  <meta name="msapplication-square310x310logo" content="/layout/icon/dst-310x310.png">
+
+  <!-- Analytics -->
+  <script>/*
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-00000000-0']);
+    _gaq.push(['_trackPageview']);
+    (function() {
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();*/
+  </script>
+</head>
+
+<body>
+
+  <!--[if lt IE 7 ]><div id="page-top" class="no-js index ie ie6 lte7 lte8 lte9"><![endif]-->
+  <!--[if IE 7 ]><div    id="page-top" class="no-js index ie ie7 lte7 lte8 lte9"><![endif]-->
+  <!--[if IE 8 ]><div    id="page-top" class="no-js index ie ie8      lte8 lte9"><![endif]-->
+  <!--[if IE 9 ]><div    id="page-top" class="no-js index ie ie9           lte9"><![endif]-->
+  <!--[if (gt IE 9)|!(IE)]><!-->
+  <div id="wrap" class="no-js index"><!--<![endif]-->
+    <div id="main">
+
+      <x3d id="x3d-main">
+        <scene>
+
+          <!-- camera -->
+          <navigationinfo type="turntable" avatarSize="10" headlight="false" typeParams="0 0 0.2 1.4"></navigationinfo>
+          <transform id="vp0" translation="40 4 50"> 
+            <viewpoint centerOfRotation="40 2 40" position="0 0 0" orientation="1 0 0  -.2"></viewpoint>
+          </transform>
+
+          <!-- environment -->
+          <Fog color="#429" visibilityRange="50"></Fog>
+          <background groundColor="(.26666,.13333,.6)" skyColor="(.1,.1,.3)" isActive="true"></background>
+          <DirectionalLight ambientIntensity='0' color='1,1,1' direction='1 -1 -1' global='true' intensity='1' on='true' shadowCascades='1' shadowFilterSize='0' shadowIntensity='0' shadowMapSize='256' shadowOffset='0' shadowSplitFactor='1' shadowSplitOffset='0.1' zFar='-1' zNear='-1' ></DirectionalLight>
+
+          <!-- giant box -->
+<!--           <transform translation="0 0 0" rotation="0 1 0  1.5">
+            <shape>
+              <appearance>
+                <material diffuseColor='0.7 0.7 1' specularColor='0.1 0.3 0.3'></material>
+              </appearance>
+              <plane size="100 100"></plane>
+            </shape>
+          </transform>
+ -->
+
+          <!-- tiles -->
+          {{#each tiles}}
+            {{> tiles}}
+          {{/each}}
+
+        </scene>
+      </x3d>
+
+    </div><!--/#main -->
+  </div><!--/#wrap -->
+
+</body>
+

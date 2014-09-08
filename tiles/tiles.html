@@ -1,0 +1,16 @@
+<head>
+<!-- tiles.html -->
+</head>
+
+<template name="tiles">
+
+  <transform translation="{{x}} 0 {{z}}" scale="1 .02 1">
+    <shape id="{{_id}}">
+      <appearance>
+        <material diffuseColor="{{color}}"></material>
+      </appearance>
+      <ElevationGrid creaseAngle="1.57" solid="false" xDimension="{{$.Config.tiles.xTileExtentPlus1}}" zDimension="{{$.Config.tiles.zTileExtentPlus1}}" height="{{height}}" data-is-high="{{isHigh}}"></ElevationGrid>
+    </shape>
+  </transform>
+
+</template>
