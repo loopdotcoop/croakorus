@@ -20,7 +20,8 @@ Config.viewpoint = {
         '                      paste ‘viewpoint.js’ from 20140720-desoot-v0.1.9 ‘viewpoint.js’ and edit code;  \n' +
         '                      add `Config.viewpoint.$ref` to ‘viewpoint.config.js’;  \n' +
         '                      add `Config.layout.x3dMain` to ‘layout.config.js’; '
-    ], version:     '0.0.1-1'
+      , '+ viewpoint@0.0.1-2   viewpoint rotates if click position is within 20% of window edge; '
+    ], version:     '0.0.1-2'
 };
 
 
