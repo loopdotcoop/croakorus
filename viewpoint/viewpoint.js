@@ -135,8 +135,8 @@ if (Meteor.isClient) {
         // console.log(evt);
         if (1 === evt.button) {
             $('body').css('cursor', 'move');
-        } else if ( ! evt.target ) { // @todo this does nothing at the moment: add a background which 'mousemove' can get a target from
-            $('body').css('cursor', 'point');
+        } else if ( 'PLANE' === evt.target.tagName.toUpperCase() ) { // @todo this does nothing at the moment: add a background which 'mousemove' can get a target from
+            $('body').css('cursor', 'pointer');
         } else if ( evt.target.getAttribute('data-is-high') ) {
             $('body').css('cursor', 'not-allowed');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left

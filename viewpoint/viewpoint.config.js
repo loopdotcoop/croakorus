@@ -23,7 +23,8 @@ Config.viewpoint = {
       , '+ viewpoint@0.0.1-2   viewpoint rotates if click position is within 20% of window edge; '
       , '+ viewpoint@0.0.1-3   cannot click on high terrain; cursor suggests movement or look-around; '
       , '+ viewpoint@0.0.1-4   limit viewpoint angles, to prevent seeing underneath; better mountain colors; '
-    ], version:     '0.0.1-4'
+      , '+ viewpoint@0.0.2     better land colors; highest mountains have more varied height; underground-plane; '
+    ], version:     '0.0.2'
 };
 
 
