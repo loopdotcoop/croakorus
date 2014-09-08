@@ -19,3 +19,12 @@ Config.layout = {
     ], version:  '0.0.2'
 };
 
+
+//// When the page is ready, get a DOM reference to the main <X3D> element.
+if (Meteor.isClient) {
+    Config.layout.x3dMain = null;
+    jQuery(function($) { // jQuery document ready
+        Config.layout.x3dMain = document.getElementById('x3d-main');
+    });
+}
+
