@@ -16,7 +16,8 @@ Config.home = {
     ]
 
   , changelog: [
-        '+ home@0.0.1-1      create ‘home’ as a feature of ‘desoot@0.1.1-1’;  \n' +
-        '                    remove iron-router’s ‘yield’ system, as this interferes with x3dom; '
-    ], version:'0.0.1-1'
+        '+ home@0.0.1-1   create ‘home’ as a feature of ‘desoot@0.1.1-1’;  \n' +
+        '                 remove iron-router’s ‘yield’ system, as this interferes with x3dom; '
+      , '+ home@0.0.2     the ‘home’ route is blank, for now; '
+    ], version:'0.0.2'
 };
