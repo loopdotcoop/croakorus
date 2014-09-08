@@ -2,6 +2,8 @@
   "packages": {
     "handlebar-helpers": {},
     "iron-router": {},
-    "x3dom": {}
+    "x3dom": {},
+    "autoform": {},
+    "jquery-datatables": {}
   }
 }
