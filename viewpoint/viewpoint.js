@@ -1,7 +1,7 @@
 if (Meteor.isClient) {
 
-    Session.set('looptopianPosition', [40,2,40]); // @todo user db
-    Session.set('viewpointRotation', 'north'); // @todo user db
+    Session.set('looptopianPosition', [140,4,130]); // @todo user db
+    Session.set('viewpointRotation', 'south'); // @todo user db
 
     UI.body.helpers({
         looptopianPosition: function () {
