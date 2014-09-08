@@ -46,7 +46,8 @@ Config = {
           , '+ desoot@0.1.0     initial holding site; '
           , '+ desoot@0.1.1-1   `$ mrt add x3dom`; '
           , '+ desoot@0.1.2     similar to, but better than 20140720-desoot-v0.1.9; '
-        ] , version: '0.1.2'
+          , '+ desoot@0.1.4     bigger terrain; start facing south'
+        ] , version: '0.1.4'
     }
 }
 
