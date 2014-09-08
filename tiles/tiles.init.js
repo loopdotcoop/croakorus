@@ -21,8 +21,21 @@ if (Meteor.isServer) {
             //// The extreme edges of the terrain are impassable tall mountains.
             if (0 === x || 0 === z || xTerrainExtentMinus1 === x || zTerrainExtentMinus1 === z) {
                 return {
-                    height: function () { return Math.floor( Math.random() * 350 ) + 100; }
-                  , colors: [ 'red','orange','brown' ]
+                    height: (function () {
+                        var
+                            opts = [
+                                function () { return Math.floor( Math.random() *  60 ) +  70; }
+                              , function () { return Math.floor( Math.random() *  90 ) +  90; }
+                              , function () { return Math.floor( Math.random() * 150 ) + 100; }
+                              , function () { return Math.floor( Math.random() * 250 ) + 100; }
+                              , function () { return Math.floor( Math.random() * 400 ) + 150; }
+                            ]
+                          , rand = Math.floor( Math.random() * opts.length )
+                          // console.log(rand);
+                        ;
+                        return opts[rand];
+                    }())
+                  , colors: [ '#429','#329','#529','#419','#439','#428','#42a' ]
                   , isHigh: true
                 }
             }
@@ -30,15 +43,27 @@ if (Meteor.isServer) {
             //// Tiles next to the tall mountains are foothills.
             if (1 === x || 1 === z || xTerrainExtentMinus2 === x || zTerrainExtentMinus2 === z) {
                 return {
-                    height: function () { return Math.floor( Math.random() * 150 ) + 50; }
-                  , colors: [ 'orange','yellow','green' ]
+                    height: (function () {
+                        var
+                            opts = [
+                                function () { return Math.floor( Math.random() *  60 ) +  20; }
+                              , function () { return Math.floor( Math.random() *  90 ) +  30; }
+                              , function () { return Math.floor( Math.random() * 150 ) +  50; }
+                              , function () { return Math.floor( Math.random() * 250 ) + 100; }
+                            ]
+                          , rand = Math.floor( Math.random() * opts.length )
+                          // console.log(rand);
+                        ;
+                        return opts[rand];
+                    }())
+                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
                   , isHigh: true
                 }
             }
             if (2 === x || 2 === z || xTerrainExtentMinus2 - 1 === x || zTerrainExtentMinus2 - 1 === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ 'black' ]
+                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
                   , isHigh: true
                 }
             }
@@ -47,14 +72,14 @@ if (Meteor.isServer) {
             if (xTerrainExtentMid === x && zTerrainExtentMid === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 150 ) + 50; }
-                  , colors: [ 'orange','yellow','green' ]
+                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
                   , isHigh: true
                 }
             }
             if (xTerrainExtentMid + 1 >= x && xTerrainExtentMid - 1 <= x && zTerrainExtentMid + 1 >= z && zTerrainExtentMid - 1 <= z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ 'black' ]
+                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
                   , isHigh: true
                 }
             }
@@ -62,7 +87,7 @@ if (Meteor.isServer) {
             //// Anywhere else represents flatlands.
             return {
                 height: function () { return Math.floor( Math.random() * 10 ); }
-              , colors: [ 'green','cyan','pink' ]
+                  , colors: [ '#72c','#92c','#54c','#56c','#52d','#52f' ]
               , isHigh: false
             }
 
