@@ -22,7 +22,7 @@ if (Meteor.isServer) {
             if (0 === x || 0 === z || xTerrainExtentMinus1 === x || zTerrainExtentMinus1 === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 350 ) + 100; }
-                  , colors: [ 'red','orange','brown' ]
+                  , colors: [ '#429','#329','#529','#419','#439','#428','#42a' ]
                   , isHigh: true
                 }
             }
@@ -31,14 +31,14 @@ if (Meteor.isServer) {
             if (1 === x || 1 === z || xTerrainExtentMinus2 === x || zTerrainExtentMinus2 === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 150 ) + 50; }
-                  , colors: [ 'orange','yellow','green' ]
+                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
                   , isHigh: true
                 }
             }
             if (2 === x || 2 === z || xTerrainExtentMinus2 - 1 === x || zTerrainExtentMinus2 - 1 === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ 'black' ]
+                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
                   , isHigh: true
                 }
             }
@@ -47,14 +47,14 @@ if (Meteor.isServer) {
             if (xTerrainExtentMid === x && zTerrainExtentMid === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 150 ) + 50; }
-                  , colors: [ 'orange','yellow','green' ]
+                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
                   , isHigh: true
                 }
             }
             if (xTerrainExtentMid + 1 >= x && xTerrainExtentMid - 1 <= x && zTerrainExtentMid + 1 >= z && zTerrainExtentMid - 1 <= z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ 'black' ]
+                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
                   , isHigh: true
                 }
             }

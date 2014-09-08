@@ -131,10 +131,14 @@ if (Meteor.isClient) {
 
 
     //// Cursor suggests left/right/forward move, and drag to look around.
-    $(window).on('mousemove', function (evt) {
+    $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
         // console.log(evt);
         if (1 === evt.button) {
             $('body').css('cursor', 'move');
+        } else if ( ! evt.target ) { // @todo this does nothing at the moment: add a background which 'mousemove' can get a target from
+            $('body').css('cursor', 'point');
+        } else if ( evt.target.getAttribute('data-is-high') ) {
+            $('body').css('cursor', 'not-allowed');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'w-resize');
         } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
