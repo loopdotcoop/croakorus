@@ -15,10 +15,34 @@ Config.tiles = {
         'Beth Walker <info@loop.coop>'
     ]
 
+  //// Configs define the tiles and terrain. See also `config.xTileExtentPlus1` and `config.yTileExtentPlus1`, below.
+  , xTileExtent:    8  // number of grid-squares (meters) from the Westmost to the Eastmost edge of a terrain Tile
+  , zTileExtent:    8  // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
+  , xTerrainExtent: 16 // number of Tiles from the Westmost to the Eastmost edges of the terrain
+  , zTerrainExtent: 16 // number of Tiles from the Northmost to the Southmost edges of the terrain
+  , xTileFar:       30 // only subscribe to Tiles within 30 squares x-distance from your Looptopian
+  , zTileFar:       30 // as above, for y-distance
+
   , schema: new SimpleSchema({
-        rand: {
+        x: {
             type: Number,
-            label: "Random"
+            label: "X"
+        }
+      , z: {
+            type: Number,
+            label: "Z"
+        }
+      , color: {
+            type: String,
+            label: "Color"
+        }
+      , height: {
+            type: String,
+            label: "Height"
+        }
+      , isHigh: {
+            type: Boolean,
+            label: "Is High"
         }
     })
 
@@ -32,8 +56,15 @@ Config.tiles = {
         '                  `$ meteor remove autopublish` to prevent “set up some data subscriptions” message;  \n' +
         '                  `$ mrt add less` and paste ‘lib/patches/datatable-patch.coffee’ from looptopia@0.2.18;  \n' +
         '                  paste ‘tiles/tiles.list.js’ from looptopia@0.2.18 ‘topians/topians.list.js’ and edit code; '
-    ], version: '0.0.1-4'
+      , '+ tiles@0.0.1-5   paste ‘tiles/tiles.init.js’ from 20140720-desoot-v0.1.9 ‘servr/tiles.js’ and edit code;  \n' +
+        '                  update tiles schema with `x, z, color, height, isHigh` fields; '
+    ], version: '0.0.1-5'
 };
+
+
+//// Autogenerate some configs to simplify rendering the terrain.
+Config.tiles.xTileExtentPlus1 = Config.tiles.xTileExtent + 1;
+Config.tiles.zTileExtentPlus1 = Config.tiles.zTileExtent + 1;
 
 
 // Attach the ‘Collection2’ schema defined above.
