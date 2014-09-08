@@ -1,5 +1,5 @@
 if (Meteor.isServer) {
-    // Tiles.remove({});
+    Tiles.remove({});
 
     var
         //// Used to seamlessly join tiles.
