@@ -62,7 +62,7 @@
   </script>
 </head>
 
-<template name="layout">
+<body>
 
   <!--[if lt IE 7 ]><div id="page-top" class="no-js index ie ie6 lte7 lte8 lte9"><![endif]-->
   <!--[if IE 7 ]><div    id="page-top" class="no-js index ie ie7 lte7 lte8 lte9"><![endif]-->
@@ -72,20 +72,28 @@
   <div id="wrap" class="no-js index"><!--<![endif]-->
     <div id="main">
 
-      <article id="yeild">
-        <tt class="x">layout.html
-           {{$.Config.layout.version}}</tt>
+      <x3d id="x3d-main">
+        <scene>
 
-        <x3d id="x3d-main">
-          <scene>
-            {{> yield}}{{! `yield` is a special Iron Router template }}
-          </scene>
-        </x3d>
+          <!-- camera -->
+          <navigationinfo type="turntable" avatarSize="10" headlight="false"></navigationinfo>
+          <viewpoint id="vp0" centerOfRotation="40 2 40" position="40 4 50" orientation="1 0 0  -.2"></viewpoint>
 
-      </article><!--/#yeild -->
+          <!-- environment -->
+          <Fog color="#429" visibilityRange="50"></Fog>
+          <background groundColor="(.26666,.13333,.6)" skyColor="(.1,.1,.3)" isActive="true"></background>
+          <DirectionalLight ambientIntensity='0' color='1,1,1' direction='1 -1 -1' global='true' intensity='1' on='true' shadowCascades='1' shadowFilterSize='0' shadowIntensity='0' shadowMapSize='256' shadowOffset='0' shadowSplitFactor='1' shadowSplitOffset='0.1' zFar='-1' zNear='-1' ></DirectionalLight>
+
+          <!-- tiles -->
+          {{#each tiles}}
+            {{> tiles}}
+          {{/each}}
+
+        </scene>
+      </x3d>
 
     </div><!--/#main -->
   </div><!--/#wrap -->
 
-</template>
+</body>
 

@@ -1,6 +1,6 @@
-Config.layout = {
-    name:         'Layout'
-  , slug:         'layout'
+Config.home = {
+    name:         'Home'
+  , slug:         'home'
   , description:  'Xx.' // no more than 255 characters
   , keywords:     'Xx'
   , scripts: {
@@ -14,8 +14,10 @@ Config.layout = {
   , contributors: [
         'Beth Walker <info@loop.coop>'
     ]
-  , changelog: [
-        '+ layout@0.0.2      paste and ‘public/layout/icon/’ and ‘layout/’ from looptopia@0.2.16; amend code; '
-    ], version:  '0.0.2'
-};
 
+  , changelog: [
+        '+ home@0.0.1-1   create ‘home’ as a feature of ‘desoot@0.1.1-1’;  \n' +
+        '                 remove iron-router’s ‘yield’ system, as this interferes with x3dom; '
+      , '+ home@0.0.2     the ‘home’ route is blank, for now; '
+    ], version:'0.0.2'
+};
