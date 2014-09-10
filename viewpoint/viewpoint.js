@@ -38,10 +38,9 @@ if (Meteor.isClient) {
 
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
-                // console.log( evt.target.getAttribute('data-is-high') );
 
                 //// Prevent viewpoint from getting too near the edge, or climbing the central mountain.
-                if ( evt.target.getAttribute('data-is-high') ) { return; } // @todo alert user this is not allowed
+                if ( '5' !== evt.target.getAttribute('data-bulk') ) { return; } // @todo alert user this is not allowed? @todo better way of identifying lowland tiles?
 
                 //// Update the Topian’s position. @todo draw topian
                 Session.set('looptopianPosition', [x,y,z]);
@@ -124,7 +123,7 @@ if (Meteor.isClient) {
                 vpTally++;
 
             } else if (2 === evt.button || 4 === evt.button) {
-                console.log('Right Click ', x, y, z, evt.currentTarget.id);
+//                console.log('Right Click ', x, y, z, evt.currentTarget.id);
             }
         }
     });
@@ -137,7 +136,7 @@ if (Meteor.isClient) {
             $('body').css('cursor', 'move');
         } else if ( 'mouseover-plane' === evt.target.className ) {
             $('body').css('cursor', 'default');
-        } else if ( evt.target.getAttribute('data-is-high') ) {
+        } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
             $('body').css('cursor', 'default');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'w-resize');

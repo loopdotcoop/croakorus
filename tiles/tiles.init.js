@@ -31,12 +31,11 @@ if (Meteor.isServer) {
                               , function () { return Math.floor( Math.random() * 400 ) + 150; }
                             ]
                           , rand = Math.floor( Math.random() * opts.length )
-                          // console.log(rand);
                         ;
                         return opts[rand];
                     }())
                   , colors: [ '#429','#329','#529','#419','#439','#428','#42a' ]
-                  , isHigh: true
+                  , bulk: 1000 // a value of `1000` is always rendered, no matter how far away it is
                 }
             }
 
@@ -52,19 +51,18 @@ if (Meteor.isServer) {
                               , function () { return Math.floor( Math.random() * 250 ) + 100; }
                             ]
                           , rand = Math.floor( Math.random() * opts.length )
-                          // console.log(rand);
                         ;
                         return opts[rand];
                     }())
                   , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
-                  , isHigh: true
+                  , bulk: 100 // a value of `100` is usually rendered, unless it is very far away
                 }
             }
             if (2 === x || 2 === z || xTerrainExtentMinus2 - 1 === x || zTerrainExtentMinus2 - 1 === z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
                   , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
-                  , isHigh: true
+                  , bulk: 10 // a value of `10` is rendered if at a medium distance from the viewpoint
                 }
             }
 
@@ -73,22 +71,22 @@ if (Meteor.isServer) {
                 return {
                     height: function () { return Math.floor( Math.random() * 150 ) + 50; }
                   , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
-                  , isHigh: true
+                  , bulk: 100 // a value of `100` is usually rendered, unless it is very far away
                 }
             }
             if (xTerrainExtentMid + 1 >= x && xTerrainExtentMid - 1 <= x && zTerrainExtentMid + 1 >= z && zTerrainExtentMid - 1 <= z) {
                 return {
                     height: function () { return Math.floor( Math.random() * 60 ) + 20; }
                   , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
-                  , isHigh: true
+                  , bulk: 10 // a value of `10` is rendered if at a medium distance from the viewpoint
                 }
             }
 
             //// Anywhere else represents flatlands.
             return {
                 height: function () { return Math.floor( Math.random() * 10 ); }
-                  , colors: [ '#72c','#92c','#54c','#56c','#52d','#52f' ]
-              , isHigh: false
+              , colors: [ '#72c','#92c','#54c','#56c','#52d','#52f' ]
+              , bulk: 5 // a value of `5` is rendered if at a short distance from the viewpoint
             }
 
         }
@@ -98,11 +96,11 @@ if (Meteor.isServer) {
         ////     1. A random color
         ////     2. An array of heights along the tile's North edge
         ////     3. An array of heights along the tile's East edge
-        ////     4. A string of suitable for the `height` attribute of an <ElevationGrid> element:
+        ////     4. A string suitable for the `height` attribute of an <ElevationGrid> element:
         ////       - The first number is the elevation of the North-West corner, eg (-2, *, -2)
         ////       - The second number is for the adjacent point on the North edge, eg (-1, *, -2)
         ////       - After the North-East corner has been reached, eg (2, *, -2), the next number is one square to the South of the North-West corner, eg (-2, *, -1)
-        ////     5. A handy `isHigh` flag, which speeds up the selector in `client/tiles.js`
+        ////     5. A handy `bulk` integer, used by the selector in `tiles/tiles.helper.js`
       , randomTile = function (northEdge, westEdge, tileType) {
             var x, z, h
               , out = {
@@ -205,7 +203,7 @@ if (Meteor.isServer) {
                       , z:      z * Config.tiles.zTileSize
                       , color:  tile.color
                       , height: tile.height
-                      , isHigh: tileType.isHigh
+                      , bulk:   tileType.bulk
                     });
                 }
             }

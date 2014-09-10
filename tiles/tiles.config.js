@@ -40,9 +40,9 @@ Config.tiles = {
             type: String,
             label: "Height"
         }
-      , isHigh: {
-            type: Boolean,
-            label: "Is High"
+      , bulk: {
+            type: Number, // @todo check for integer?
+            label: "Bulk"
         }
     })
 

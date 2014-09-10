@@ -26,7 +26,8 @@ Config.viewpoint = {
       , '+ viewpoint@0.0.2     better land colors; highest mountains have more varied height; underground-plane; '
       , '+ viewpoint@0.0.3-1   underground-plane shows correct cursor when hovering over gap in terrain; '
       , '+ viewpoint@0.0.3-2   sky-planes show correct cursor when hovering over sky; '
-    ], version:     '0.0.3-2'
+      , '+ viewpoint@0.0.4     only show low hills which are nearby; replace `data-is-high` with `data-bulk`; '
+    ], version:     '0.0.4'
 };
 
 
