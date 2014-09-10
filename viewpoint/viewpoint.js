@@ -135,10 +135,10 @@ if (Meteor.isClient) {
         // console.log(evt);
         if (1 === evt.button) {
             $('body').css('cursor', 'move');
-        } else if ( 'underground-plane' === evt.target.id ) {
-            $('body').css('cursor', 'not-allowed');
+        } else if ( 'mouseover-plane' === evt.target.className ) {
+            $('body').css('cursor', 'default');
         } else if ( evt.target.getAttribute('data-is-high') ) {
-            $('body').css('cursor', 'not-allowed');
+            $('body').css('cursor', 'default');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'w-resize');
         } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right

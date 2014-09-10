@@ -92,7 +92,47 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane id="underground-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
+              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
+            </shape>
+          </transform>
+
+          <!-- sky-plane-north -->
+          <transform translation="{{ $.Config.tiles.zHalfTerrainSize }} 0 0" rotation="1 0 0  0">
+            <shape>
+              <appearance>
+                <material transparency='1'></material>
+              </appearance>
+              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+            </shape>
+          </transform>
+
+          <!-- sky-plane-east -->
+          <transform translation="{{ $.Config.tiles.xTerrainSize }} 0 {{ $.Config.tiles.xHalfTerrainSize }}" rotation="0 1 0  4.712389">
+            <shape>
+              <appearance>
+                <material transparency='1'></material>
+              </appearance>
+              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+            </shape>
+          </transform>
+
+          <!-- sky-plane-south -->
+          <transform translation="{{ $.Config.tiles.xHalfTerrainSize }} 0 {{ $.Config.tiles.zTerrainSize }}" rotation="1 0 0  3.141593">
+            <shape>
+              <appearance>
+                <material transparency='1'></material>
+              </appearance>
+              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+            </shape>
+          </transform>
+
+          <!-- sky-plane-west -->
+          <transform translation="0 0 {{ $.Config.tiles.xHalfTerrainSize }}" rotation="0 1 0  1.570796">
+            <shape>
+              <appearance>
+                <material transparency='1'></material>
+              </appearance>
+              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
             </shape>
           </transform>
 
