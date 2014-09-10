@@ -15,9 +15,9 @@ Config.tiles = {
         'Beth Walker <info@loop.coop>'
     ]
 
-  //// Configs define the tiles and terrain. See also `config.xTileExtentPlus1` and `config.yTileExtentPlus1`, below.
-  , xTileExtent:    8  // number of grid-squares (meters) from the Westmost to the Eastmost edge of a terrain Tile
-  , zTileExtent:    8  // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
+  //// Configs define the tiles and terrain. See also `config.xTileSizePlus1` and `config.yTileExtentPlus1`, below.
+  , xTileSize:       8 // number of grid-squares (meters) from the Westmost to the Eastmost edge of a terrain Tile
+  , zTileSize:       8 // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
   , xTerrainExtent: 32 // number of Tiles from the Westmost to the Eastmost edges of the terrain
   , zTerrainExtent: 32 // number of Tiles from the Northmost to the Southmost edges of the terrain
   , xTileFar:       30 // only subscribe to Tiles within 30 squares x-distance from your Looptopian
@@ -40,9 +40,9 @@ Config.tiles = {
             type: String,
             label: "Height"
         }
-      , isHigh: {
-            type: Boolean,
-            label: "Is High"
+      , bulk: {
+            type: Number, // @todo check for integer?
+            label: "Bulk"
         }
     })
 
@@ -64,8 +64,12 @@ Config.tiles = {
 
 
 //// Autogenerate some configs to simplify rendering the terrain.
-Config.tiles.xTileExtentPlus1 = Config.tiles.xTileExtent + 1;
-Config.tiles.zTileExtentPlus1 = Config.tiles.zTileExtent + 1;
+Config.tiles.xTileSizePlus1   = Config.tiles.xTileSize + 1;
+Config.tiles.zTileSizePlus1   = Config.tiles.zTileSize + 1;
+Config.tiles.xTerrainSize     = Config.tiles.xTileSize * Config.tiles.xTerrainExtent;
+Config.tiles.zTerrainSize     = Config.tiles.zTileSize * Config.tiles.zTerrainExtent;
+Config.tiles.xHalfTerrainSize = Config.tiles.xTerrainSize / 2;
+Config.tiles.zHalfTerrainSize = Config.tiles.zTerrainSize / 2;
 
 
 // Attach the ‘Collection2’ schema defined above.
