@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
 
-    Session.set('looptopianPosition', [140,4,130]); // @todo user db
+    Session.set('looptopianPosition', [140,4,137]); // @todo user db
     Session.set('viewpointRotation', 'south'); // @todo user db
 
     UI.body.helpers({
@@ -11,12 +11,16 @@ if (Meteor.isClient) {
             var lp = Session.get('looptopianPosition');
             return lp[0] + ' ' + (lp[1] + 6) + ' ' + (lp[2] + 10);
         }
+      , viewpointRotation: function () {
+            return Session.get('viewpointRotation');
+        }
     });
 
     var
         vpTally = 0
       , PI = Math.PI
       , halfPI = PI / 2
+      , dragged
     ;
 
     UI.body.events({
@@ -145,6 +149,13 @@ if (Meteor.isClient) {
         } else {
             $('body').css('cursor', 'n-resize');
         }
+    });
+
+
+    //// Prevent zooming using the mousewheel or trackpad gesture.
+    $(window).on('wheel', function (evt) { // replaces legacy 'mousewheel'
+        evt.preventDefault();
+        return false;
     });
 
 }

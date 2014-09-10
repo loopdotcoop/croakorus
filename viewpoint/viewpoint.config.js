@@ -29,6 +29,8 @@ Config.viewpoint = {
       , '+ viewpoint@0.0.4     only show low hills which are nearby; replace `data-is-high` with `data-bulk`; '
       , '+ viewpoint@0.0.5-1   paste ‘client.init.js’ from 20140720-desoot-v0.1.9 into ‘layout.config.js’;  \n' +
         '                      move `Config.viewpoint.$ref` from ‘viewpoint.config.js’ to ‘layout.config.js’; '
-    ], version:     '0.0.5-1'
+      , '+ viewpoint@0.0.5-2   prevent zooming using the mousewheel or trackpad gesture;  \n' +
+        '                      update the `viewpointRotation` session variable as the user looks around; '
+    ], version:     '0.0.5-2'
 };
 
