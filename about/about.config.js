@@ -47,7 +47,8 @@ Config = {
           , '+ desoot@0.1.1-1   `$ mrt add x3dom`; '
           , '+ desoot@0.1.2     similar to, but better than 20140720-desoot-v0.1.9; '
           , '+ desoot@0.1.4     bigger terrain; start facing south'
-        ] , version: '0.1.4'
+          , '+ desoot@0.1.6     viewpoint@0.0.4 amends: correct cursor when hovering over sky and distant ground; '
+        ] , version: '0.1.6'
     }
 }
 
