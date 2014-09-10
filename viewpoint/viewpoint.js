@@ -111,7 +111,7 @@ if (Meteor.isClient) {
                 ;
 
                 //// Create the transformed viewpoint after the current one, and give it a unique ID.
-                Config.viewpoint.$ref = $('#vp' + vpTally).after(newVp); // @todo do we actually need to record `Config.viewpoint.$ref`?
+                Config.layout.$viewpoint = $('#vp' + vpTally).after(newVp); // @todo do we actually need to record `Config.layout.$viewpoint`?
 
                 //// Tell X3DOM to animate smoothly to the new <VIEWPOINT>.
                 Config.layout.x3dMain.runtime.nextView();

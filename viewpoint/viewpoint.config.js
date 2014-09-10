@@ -27,14 +27,8 @@ Config.viewpoint = {
       , '+ viewpoint@0.0.3-1   underground-plane shows correct cursor when hovering over gap in terrain; '
       , '+ viewpoint@0.0.3-2   sky-planes show correct cursor when hovering over sky; '
       , '+ viewpoint@0.0.4     only show low hills which are nearby; replace `data-is-high` with `data-bulk`; '
-    ], version:     '0.0.4'
+      , '+ viewpoint@0.0.5-1   paste ‘client.init.js’ from 20140720-desoot-v0.1.9 into ‘layout.config.js’;  \n' +
+        '                      move `Config.viewpoint.$ref` from ‘viewpoint.config.js’ to ‘layout.config.js’; '
+    ], version:     '0.0.5-1'
 };
 
-
-//// When the page is ready, a reference to the main <VIEWPOINT>. @todo is this actually needed?
-if (Meteor.isClient) {
-    Config.viewpoint.$ref = null;
-    jQuery(function($) { // jQuery document ready
-        Config.viewpoint.$ref = $('#vp0'); // The main <VIEWPOINT> at startup, which will be updated by `viewpoint.js` as the player moves around the tarrain
-    });
-}
