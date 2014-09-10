@@ -1,5 +1,5 @@
 if (Meteor.isServer) {
-    Tiles.remove({});
+    // Tiles.remove({});
 
     var
         //// Used to seamlessly join tiles.
@@ -112,7 +112,7 @@ if (Meteor.isServer) {
                   , southEdge: []
                 }
               , westEdge = westEdge || (function () {
-                    for (var o=[], z=0; z<Config.tiles.zTileExtent; z++) {
+                    for (var o=[], z=0; z<Config.tiles.zTileSize; z++) {
                         if ( northEdge && 0 === z) {
                             o.push(northEdge[0]);
                         } else {
@@ -122,7 +122,7 @@ if (Meteor.isServer) {
                     return o;
                 }())
               , northEdge = northEdge || (function () { 
-                    for (var o=[], x=0; x<Config.tiles.xTileExtent; x++) {
+                    for (var o=[], x=0; x<Config.tiles.xTileSize; x++) {
                         o.push( tileType.height() );
                     };
                     return o;
@@ -130,8 +130,8 @@ if (Meteor.isServer) {
             ;
 
             //// Step through the Tile, starting in the North-West corner, proceeding along the North edge, and ending at the South-East corner.
-            for (z=0; z<Config.tiles.zTileExtentPlus1; z++) {
-                for (x=0; x<Config.tiles.xTileExtentPlus1; x++) {
+            for (z=0; z<Config.tiles.zTileSizePlus1; z++) {
+                for (x=0; x<Config.tiles.xTileSizePlus1; x++) {
 
                     //// If we are on the North or West edges, use the height passed in by the caller, so that this tile joins smoothly to the previous. Otherwise, generate a semi-random height.
                     if (0 === x) {
@@ -143,10 +143,10 @@ if (Meteor.isServer) {
                     }
 
                     //// If we are on the South or East edges, make a record of the height which can be passed to a later `randomTile()` call.
-                    if (Config.tiles.xTileExtent === x) {
+                    if (Config.tiles.xTileSize === x) {
                         out.eastEdge.push(h);
                     }
-                    if (Config.tiles.zTileExtent === z) {
+                    if (Config.tiles.zTileSize === z) {
                         out.southEdge.push(h);
                     }
 
@@ -201,8 +201,8 @@ if (Meteor.isServer) {
 
                     //// Record the Tile to the `Tiles` collection.
                     Tiles.insert({
-                        x:      x * Config.tiles.xTileExtent
-                      , z:      z * Config.tiles.zTileExtent
+                        x:      x * Config.tiles.xTileSize
+                      , z:      z * Config.tiles.zTileSize
                       , color:  tile.color
                       , height: tile.height
                       , isHigh: tileType.isHigh
