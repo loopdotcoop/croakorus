@@ -37,15 +37,12 @@ if (Meteor.isClient) {
     Config.layout.x3dDisableRightDrag   = false; // @todo fix
 
     //// Values for the X3Dom `runtime` object.
-    Config.layout.x3dProcessIndicator   = true; // @todo fix
+    Config.layout.x3dProcessIndicator   = false; // @todo fix
     Config.layout.x3dTogglePoints       = false;
 
     //// Belt and braces approach to waiting until the app is ready.
     Meteor.startup(function () {
         jQuery(function($) {
-
-            //// Get a DOM reference to the main <X3D> element.
-            Config.layout.x3dMain = document.getElementById('x3d-main');
 
             //// Get a jQuery reference to the main <CANVAS> element. @todo is this actually needed?
             Config.layout.$canvas = $('#x3dom-x3d-main-canvas');
@@ -53,16 +50,25 @@ if (Meteor.isClient) {
             //// Get a jQuery reference to the main <VIEWPOINT>. @todo is this actually needed?
             Config.layout.$viewpoint = $('#vp0'); // The main <VIEWPOINT> at startup, which will be updated by `viewpoint.js` as the player moves around the tarrain
 
-            //// Set up x3dom debugging tools. http://x3dom.org/docs-old/api.html
-            var init = function () {
-                // Config.layout.x3dMain.runtime.debug(            Config.layout.x3dShowLog        ); // @todo delete this line if <PARAM> does the job
-                // Config.layout.x3dMain.runtime.statistics(       Config.layout.x3dShowStat       ); // @todo delete this line if <PARAM> does the job
-                Config.layout.x3dMain.runtime.processIndicator( Config.layout.x3dProcessIndicator );
-                if (Config.layout.x3dTogglePoints) { Config.layout.x3dMain.runtime.togglePoints(); }
-            };
+            //// Get a DOM reference to the main <X3D> element.
+            Config.layout.x3dMain = document.getElementById('x3d-main');
 
-            //// `x3dMain.runtime` is not available yet, but it will be available at the first `requestAnimationFrame()` frame. @todo test on all devices
-            requestAnimationFrame(init);
+            //// Set up x3dom debugging tools. http://x3dom.org/docs-old/api.html @todo test on all devices
+            var
+                timeout = 5 // we poll for `x3dMain.runtime.isReady` at increasing intervals. @todo why does `Config.layout.x3dMain.ready()` never fire? http://x3dom.org/download/1.4/docs/html/api.html#ready
+              , init = function () {
+                    if ( 5000 < (timeout *= 2) ) { throw new Error('Tested `Config.layout.x3dMain.isReady` ten times!', Config.layout.x3dMain); }
+                    if ('undefined' === typeof Config.layout.x3dMain.runtime || ! Config.layout.x3dMain.runtime.isReady) {
+                        window.setTimeout(init, timeout);
+                    } else {
+                        // Config.layout.x3dMain.runtime.debug(            Config.layout.x3dShowLog        ); // @todo delete this line if <PARAM> does the job
+                        // Config.layout.x3dMain.runtime.statistics(       Config.layout.x3dShowStat       ); // @todo delete this line if <PARAM> does the job
+                        Config.layout.x3dMain.runtime.processIndicator( Config.layout.x3dProcessIndicator );
+                        if (Config.layout.x3dTogglePoints) { Config.layout.x3dMain.runtime.togglePoints(); }
+                    }
+                }
+            ;
+            window.setTimeout(init, timeout);
 
         });
     });

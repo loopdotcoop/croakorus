@@ -31,6 +31,7 @@ Config.viewpoint = {
         '                      move `Config.viewpoint.$ref` from ‘viewpoint.config.js’ to ‘layout.config.js’; '
       , '+ viewpoint@0.0.5-2   prevent zooming using the mousewheel or trackpad gesture;  \n' +
         '                      update the `viewpointRotation` session variable as the user looks around; '
-    ], version:     '0.0.5-2'
+      , '+ viewpoint@0.0.5-3   cursor PNGs (see ‘ARTWORK/20140911-cursor-icons/01-cursor-icons.tif’); '
+    ], version:     '0.0.5-3'
 };
 

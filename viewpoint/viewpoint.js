@@ -137,17 +137,17 @@ if (Meteor.isClient) {
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
         // console.log(evt);
         if (1 === evt.button) {
-            $('body').css('cursor', 'move');
+            $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
         } else if ( 'mouseover-plane' === evt.target.className ) {
-            $('body').css('cursor', 'default');
+            $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
         } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
-            $('body').css('cursor', 'default');
+            $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
-            $('body').css('cursor', 'w-resize');
+            $('body').css('cursor', 'url(/viewpoint/left.png) 3 20, w-resize');
         } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
-            $('body').css('cursor', 'e-resize');
+            $('body').css('cursor', 'url(/viewpoint/right.png) 45 20, e-resize');
         } else {
-            $('body').css('cursor', 'n-resize');
+            $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         }
     });
 
