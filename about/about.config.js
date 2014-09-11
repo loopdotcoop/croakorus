@@ -50,7 +50,7 @@ Config = {
           , '+ desoot@0.1.6     viewpoint@0.0.4 amends: correct cursor when hovering over sky and distant ground; '
           , '+ desoot@0.1.8     viewpoint@0.0.6 various UX improvements to movement; '
           , '+ desoot@0.1.10    only show `viewpointRotation` in ‘development’ environment; '
-          , '+ desoot@0.1.11-1  create ‘flora’ feature; '
+          , '+ desoot@0.1.11-1  initial ‘flora’ feature; '
         ] , version: '0.1.11-1'
     }
 }
