@@ -22,7 +22,7 @@ God.flora = {
             name:   'Cactus'
           , plural: 'Cacti'
           , slug:   'cactus'
-          , min: 0.005 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , min: 0.1 // minimum number of this type of flora, as a fraction of lowland Tiles
           , max: 0.05  // maximum, also as a fraction of lowland Tiles
           , generate: function () {
                 if (Meteor.isClient) { return; }
@@ -64,7 +64,7 @@ God.flora = {
                   , z:      z
                   , color:  'red'
                   , type:   this.slug
-                  , bulk:   6
+                  , bulk:   5
                 });
 
             }

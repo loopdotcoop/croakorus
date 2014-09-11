@@ -15,6 +15,9 @@ Config.flora = {
         'Beth Walker <info@loop.coop>'
     ]
 
+  , xFloraFar: 50
+  , zFloraFar: 50
+
   , schema: new SimpleSchema({
         x: {
             type: Number,
@@ -43,8 +46,9 @@ Config.flora = {
         '                  `$ touch` eight empty files, following the ‘tiles’ feature;  \n' +
         '                  paste and edit code of ‘flora.config.js’ and ‘flora.collection.js’; '
       , '+ flora@0.0.1-2   create ‘flora.god.js’ and ‘about.god.js’, and the global ‘God’ object; '
-      , '+ flora@0.0.1-3   adds ‘Stone Circles’ and ‘Cacti’ to the ‘Flora’ collection; '
-    ], version: '0.0.1-3'
+      , '+ flora@0.0.1-3   adds ‘Cacti’ to the ‘Flora’ collection; '
+      , '+ flora@0.0.1-4   renders cacti as simple cubes; cursor is `default` hovering over cacti; '
+    ], version: '0.0.1-4'
 };
 
 

@@ -1,0 +1,16 @@
+<head>
+<!-- flora.html -->
+</head>
+
+<template name="flora">
+
+  <transform translation="{{x}} 0 {{z}}">
+    <shape id="{{_id}}">
+      <appearance>
+        <material diffuseColor="{{color}}"></material>
+      </appearance>
+      <box size="1 1 1" class="{{type}}" data-bulk="{{bulk}}"></box>
+    </shape>
+  </transform>
+
+</template>

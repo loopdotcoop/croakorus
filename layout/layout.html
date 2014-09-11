@@ -90,8 +90,8 @@
           </transform>
 
           <!-- environment -->
-          <Fog color="#429" visibilityRange="50"></Fog>
-          <background groundColor="(.26666,.13333,.6)" skyColor="(.1,.1,.3)" isActive="true"></background>
+<!--           <Fog color="#429" visibilityRange="50"></Fog>
+ -->          <background groundColor="(.26666,.13333,.6)" skyColor="(.1,.1,.3)" isActive="true"></background>
           <DirectionalLight ambientIntensity='0' color='1,1,1' direction='1 -1 -1' global='true' intensity='1' on='true' shadowCascades='1' shadowFilterSize='0' shadowIntensity='0' shadowMapSize='256' shadowOffset='0' shadowSplitFactor='1' shadowSplitOffset='0.1' zFar='-1' zNear='-1' ></DirectionalLight>
 
           <!-- underground-plane -->
@@ -148,6 +148,12 @@
           <!-- tiles -->
           {{#each tiles}}
             {{> tiles}}
+          {{/each}}
+
+
+          <!-- flora -->
+          {{#each flora}}
+            {{> flora}}
           {{/each}}
 
         </scene>
