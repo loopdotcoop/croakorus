@@ -73,12 +73,20 @@
     <div id="main">
 
       <x3d id="x3d-main">
+
+        <!-- X3Dom params -->
+        <param name="showLog"            value="{{ $.Config.layout.x3dShowLog            }}"/>
+        <param name="showStat"           value="{{ $.Config.layout.x3dShowStat           }}"/>
+        <param name="showProgress"       value="{{ $.Config.layout.x3dShowProgress       }}"/>
+        <param name="disableDoubleClick" value="{{ $.Config.layout.x3dDisableDoubleClick }}"/>
+        <param name="disableRightDrag"   value="{{ $.Config.layout.x3dDisableRightDrag   }}"/>
+
         <scene>
 
           <!-- camera -->
           <navigationinfo type="turntable" avatarSize="10" headlight="false" typeParams="0 0 0.2 1.4"></navigationinfo>
-          <transform id="vp0" translation="140 4 130" rotation="0 1 0  3.1416"> 
-            <viewpoint centerOfRotation="140 2 140" position="0 0 0" orientation="1 0 0  -.2"></viewpoint>
+          <transform id="vp0" translation="140 4 137" rotation="0 1 0  3.1416"> 
+            <viewpoint centerOfRotation="140 2 147" position="0 0 0" orientation="1 0 0  -.2"></viewpoint>
           </transform>
 
           <!-- environment -->
@@ -144,6 +152,19 @@
 
         </scene>
       </x3d>
+
+      <p style="position:absolute; z-index:99; bottom:0; right:20px; color:rgba(255,255,255,.5)">{{ viewpointRotation }}</p>
+
+      <!-- preload cursor images -->
+      <div style="position:absolute; margin-left:-9999px;">
+        <img src="/viewpoint/backward.png"/>
+        <img src="/viewpoint/default.png"/>
+        <img src="/viewpoint/forward.png"/>
+        <img src="/viewpoint/left.png"/>
+        <img src="/viewpoint/look.png"/>
+        <img src="/viewpoint/pointer.png"/>
+        <img src="/viewpoint/right.png"/>
+      </div>
 
     </div><!--/#main -->
   </div><!--/#wrap -->
