@@ -43,7 +43,8 @@ Config.flora = {
         '                  `$ touch` eight empty files, following the ‘tiles’ feature;  \n' +
         '                  paste and edit code of ‘flora.config.js’ and ‘flora.collection.js’; '
       , '+ flora@0.0.1-2   create ‘flora.god.js’ and ‘about.god.js’, and the global ‘God’ object; '
-    ], version: '0.0.1-2'
+      , '+ flora@0.0.1-3   adds ‘Stone Circles’ and ‘Cacti’ to the ‘Flora’ collection; '
+    ], version: '0.0.1-3'
 };
 
 
