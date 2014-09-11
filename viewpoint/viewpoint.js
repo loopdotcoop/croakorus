@@ -34,7 +34,8 @@ if (Meteor.isClient) {
 
             if (dragged) { return; }
 
-            var newVp, vpRotation
+            var currPos, newVp
+              , vpRotation = Session.get('viewpointRotation')
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
@@ -43,31 +44,61 @@ if (Meteor.isClient) {
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
 
-                //// Prevent viewpoint from getting too near the edge, or climbing the central mountain.
-                if ( '5' !== evt.target.getAttribute('data-bulk') ) { return; } // @todo alert user this is not allowed? @todo better way of identifying lowland tiles?
+                //// Deal with a click on a lowland terrain tile.
+                if ( '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
+
+                    //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
+                    if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
+                        switch (vpRotation) {
+                            case 'north': vpRotation = 'west' ; break;
+                            case 'east' : vpRotation = 'north'; break;
+                            case 'south': vpRotation = 'east' ; break;
+                            case 'west' : vpRotation = 'south'; break;
+                        }
+                        Session.set('viewpointRotation', vpRotation);
+                    } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
+                        switch (vpRotation) {
+                            case 'north': vpRotation = 'east' ; break;
+                            case 'east' : vpRotation = 'south'; break;
+                            case 'south': vpRotation = 'west' ; break;
+                            case 'west' : vpRotation = 'north'; break;
+                        }
+                        Session.set('viewpointRotation', vpRotation);
+                    }
+
+                //// Otherwise, deal with a click on high-ground (near the edge, or the central mountain), or the underground-plane, or the sky.
+                } else {
+                    currPos = Session.get('looptopianPosition');
+                    x = currPos[0]; y = currPos[1]; z = currPos[2];
+
+                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges, or the middle.
+                    switch (vpRotation) {
+                        case 'north':
+                            z -= Config.tiles.zTileFar;
+                            z = Math.max(z, Config.tiles.zTileSize * 3);
+                            break;
+                        case 'east':
+                            x += Config.tiles.xTileFar;
+                            x = Math.min( x, Config.tiles.xTerrainSize - (Config.tiles.xTileSize * 3) );
+                            break;
+                        case 'south':
+                            z += Config.tiles.zTileFar;
+                            z = Math.min( z, Config.tiles.zTerrainSize - (Config.tiles.zTileSize * 3) );
+                            break;
+                        case 'west':
+                            x -= Config.tiles.xTileFar;
+                            x = Math.max(x, Config.tiles.xTileSize * 3);
+                            break;
+                    }
+
+                    //// Get the ground-height at the new position.
+                    y = 1; // @todo get this info from the `tiles` db
+// console.log(x,y,z);
+
+                }
 
                 //// Update the Topian’s position. @todo draw topian
                 Session.set('looptopianPosition', [x,y,z]);
-
-                //// Change the user’s orientation if they have click on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
-                vpRotation = Session.get('viewpointRotation');
-                if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
-                    switch (vpRotation) {
-                        case 'north': vpRotation = 'west' ; break;
-                        case 'east' : vpRotation = 'north'; break;
-                        case 'south': vpRotation = 'east' ; break;
-                        case 'west' : vpRotation = 'south'; break;
-                    }
-                    Session.set('viewpointRotation', vpRotation);
-                } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
-                    switch (vpRotation) {
-                        case 'north': vpRotation = 'east' ; break;
-                        case 'east' : vpRotation = 'south'; break;
-                        case 'south': vpRotation = 'west' ; break;
-                        case 'west' : vpRotation = 'north'; break;
-                    }
-                    Session.set('viewpointRotation', vpRotation);
-                }
 
                 //// Prepare a new transformed viewpoint.
                 newVp =
@@ -139,9 +170,11 @@ if (Meteor.isClient) {
         if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
         } else if ( 'mouseover-plane' === evt.target.className ) {
-            $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
+            // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
+            $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
-            $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
+            // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
+            $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'url(/viewpoint/left.png) 3 20, w-resize');
         } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right

@@ -31,7 +31,9 @@ Config.viewpoint = {
         '                      move `Config.viewpoint.$ref` from ‘viewpoint.config.js’ to ‘layout.config.js’; '
       , '+ viewpoint@0.0.5-2   prevent zooming using the mousewheel or trackpad gesture;  \n' +
         '                      update the `viewpointRotation` session variable as the user looks around; '
-      , '+ viewpoint@0.0.5-3   cursor PNGs (see ‘ARTWORK/20140911-cursor-icons/01-cursor-icons.tif’); '
-    ], version:     '0.0.5-3'
+      , '+ viewpoint@0.0.5-3   cursor PNGs from ‘ARTWORK/20140911-cursor-icons/01-cursor-icons.tif’;  \n' +
+        '                      poll for `x3dMain.runtime.isReady` at increasing intervals in ‘layout.config.js’; '
+      , '+ viewpoint@0.0.6     can click on mountains or sky to move forward a fixed amount; '
+    ], version:     '0.0.6'
 };
 
