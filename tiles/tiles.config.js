@@ -70,6 +70,7 @@ Config.tiles.xTerrainSize     = Config.tiles.xTileSize * Config.tiles.xTerrainEx
 Config.tiles.zTerrainSize     = Config.tiles.zTileSize * Config.tiles.zTerrainExtent;
 Config.tiles.xHalfTerrainSize = Config.tiles.xTerrainSize / 2;
 Config.tiles.zHalfTerrainSize = Config.tiles.zTerrainSize / 2;
+Config.tiles.lowlandTileCount = ( (Config.tiles.xTerrainExtent - 6) * (Config.tiles.zTerrainExtent - 6) ) - 9; // @todo check this is a positive number!
 
 
 // Attach the ‘Collection2’ schema defined above.

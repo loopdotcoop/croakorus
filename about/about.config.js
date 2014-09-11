@@ -53,7 +53,7 @@ Config = {
           , '+ desoot@0.1.11-1  initial ‘flora’ feature; '
         ] , version: '0.1.11-1'
     }
-}
+};
 
 //// 'development' on localhost, 'production' on modulus.
 if (Meteor.isServer && 'object' === typeof process && process.env) {

@@ -41,8 +41,9 @@ Config.flora = {
   , changelog: [
         '+ flora@0.0.1-1   create ‘flora’ as a feature of ‘desoot@0.1.11-1’;  \n' +
         '                  `$ touch` eight empty files, following the ‘tiles’ feature;  \n' +
-        '                  paste and edit code of ‘flora.config.js’ and ‘flora.collection.js; '
-    ], version: '0.0.1-1'
+        '                  paste and edit code of ‘flora.config.js’ and ‘flora.collection.js’; '
+      , '+ flora@0.0.1-2   create ‘flora.god.js’ and ‘about.god.js’, and the global ‘God’ object; '
+    ], version: '0.0.1-2'
 };
 
 
