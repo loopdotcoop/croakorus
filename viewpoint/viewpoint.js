@@ -169,6 +169,8 @@ if (Meteor.isClient) {
         // console.log(evt);
         if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
+        } else if ( 'BOX' === evt.target.tagName ) { // @todo better way of identifying clickable objects?
+            $('body').css('cursor', 'url(/viewpoint/default.png) 3 3, default');
         } else if ( 'mouseover-plane' === evt.target.className ) {
             // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
