@@ -48,7 +48,8 @@ Config.flora = {
       , '+ flora@0.0.1-2   create ‘flora.god.js’ and ‘about.god.js’, and the global ‘God’ object; '
       , '+ flora@0.0.1-3   adds ‘Cacti’ to the ‘Flora’ collection; '
       , '+ flora@0.0.1-4   renders cacti as simple cubes; cursor is `default` hovering over cacti; '
-    ], version: '0.0.1-4'
+      , '+ flora@0.0.2     pause ‘flora’ development until ‘audio’ feature has been set up; '
+    ], version: '0.0.2'
 };
 
 

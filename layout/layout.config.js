@@ -16,7 +16,7 @@ Config.layout = {
     ]
 
   , changelog: [
-        '+ layout@0.0.2      paste and ‘public/layout/icon/’ and ‘layout/’ from looptopia@0.2.16; amend code; '
+        '+ layout@0.0.2      paste ‘public/layout/icon/’ and ‘layout/’ from looptopia@0.2.16; amend code; '
     ], version:  '0.0.2'
 };
 
