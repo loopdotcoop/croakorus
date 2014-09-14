@@ -160,7 +160,12 @@
       </x3d>
 
       {{#if $eq $.Config.about.env 'development'}}
-      <p id="viewpointRotation" style="position:absolute; z-index:99; bottom:0; right:20px; color:rgba(255,255,255,.5)">{{ viewpointRotation }}</p>
+      <p id="viewpointRotation" class="auto" style="position:absolute; z-index:99; bottom:0; right:20px; color:rgba(255,255,255,.5)">{{ viewpointRotation }}</p>
+      <pre id="audioSources" class="auto" style="position:absolute; padding:6px; z-index:99; bottom:0; left:20px; background-color:rgba(0,0,0,.7); color: #0f6; "
+>  FAR  PATTERN                           X
+{{#each $.Session.get 'audioSources'}}
+{{ truncate far 5 }}  {{ pattern }}
+{{/each}}</pre>
       {{/if}}
 
       <!-- preload cursor images -->

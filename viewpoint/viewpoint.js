@@ -39,6 +39,7 @@ if (Meteor.isClient) {
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
+              , flora
             ;
 
             if (1 === evt.button) {
@@ -71,7 +72,7 @@ if (Meteor.isClient) {
                     currPos = Session.get('looptopianPosition');
                     x = currPos[0]; y = currPos[1]; z = currPos[2];
 
-                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges, or the middle.
+                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges. @todo don’t enter the mountains in the middle.
                     switch (vpRotation) {
                         case 'north':
                             z -= Config.tiles.zTileFar;
@@ -157,6 +158,9 @@ if (Meteor.isClient) {
                 //// Prepare the viewpoint-tally for the next time the <VIEWPOINT> changes.
                 vpTally++;
 
+                //// Update all audio sources.
+                God.flora.updateAudio();
+
             } else if (2 === evt.button || 4 === evt.button) {
 //                console.log('Right Click ', x, y, z, evt.currentTarget.id);
             }
@@ -166,8 +170,10 @@ if (Meteor.isClient) {
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
-        // console.log(evt);
-        if (1 === evt.button) {
+        var classes = (evt.target ? evt.target.getAttribute('class') : null);
+        if ('auto' === classes) {
+            $('body').css('cursor', 'auto');
+        } else if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
         } else if ( 'BOX' === evt.target.tagName ) { // @todo better way of identifying clickable objects?
             $('body').css('cursor', 'url(/viewpoint/default.png) 3 3, default');

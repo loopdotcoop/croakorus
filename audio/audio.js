@@ -1,5 +1,8 @@
 if (Meteor.isClient) {
 
+    //// Init the 'audioSources' session-variable.
+    Session.set('audioSources', []);
+
 
     //// Create a new audio context. This represents a set of AudioNode objects and their connections.
     var
@@ -58,7 +61,7 @@ if (Meteor.isClient) {
               , numberOfChannels = src.numberOfChannels
               , pitch = 1 // @todo user pref?
               , sampleRate = src.sampleRate * pitch
-              , grid = 5400 * numberOfChannels // @todo test whether this really should be ` * numberOfChannels`, or whether it’s really `* 2` whetever the channel-count
+              , grid = 5400 * 2 // @todo test whether this really should be ` * numberOfChannels`, or whether it’s really `* 2` whetever the channel-count
               , dest = ctx.createBuffer(numberOfChannels, pattern.length * grid, sampleRate) // http://stackoverflow.com/a/14148125
             ;
 
@@ -84,7 +87,7 @@ if (Meteor.isClient) {
             source.connect(ctx.destination);
             source.loop = true;
             // source.playbackRate.value = 1;
-            source.start();
+            // source.start();
         }
     ;
 

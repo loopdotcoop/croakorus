@@ -18,5 +18,6 @@ Config.audio = {
   , changelog: [
         '+ audio@0.0.1-1    paste ‘client/audio.js’ from ‘20140624-voxeldaytime-better-sound’; amend code; '
       , '+ audio@0.0.1-2    play ‘public/flora/stone-circle-d4168a4.mp3’ (see ‘20140913-creating-stone-circle-mp3’); '
-    ], version: '0.0.1-2'
+      , '+ audio@0.0.1-3    `#audioSources` info box; `rint()`; `God.flora.updateAudio()` generates patterns; '
+    ], version: '0.0.1-3'
 };
