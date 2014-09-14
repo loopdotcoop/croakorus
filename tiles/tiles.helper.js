@@ -16,8 +16,8 @@ if (Meteor.isClient) {
             //// Restrict to nearby lowland tiles, middle-distance hill tiles, and all high-mountain tiles.
           , selector = { $or: [ // http://docs.mongodb.org/manual/reference/operator/query/or/
                 {
-                    x: { $gte:x - xFar1, $lt:x + xFar1 }
-                  , z: { $gte:z - zFar1, $lt:z + zFar1 }
+                    x: { $gte:x - xFar1, $lte:x + xFar1 }
+                  , z: { $gte:z - zFar1, $lte:z + zFar1 }
 
                 //// @todo close gaps under high-mountain tiles, and uncomment this operator
                 // },{

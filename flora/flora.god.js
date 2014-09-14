@@ -22,8 +22,44 @@ God.flora = {
             name:   'Cactus'
           , plural: 'Cacti'
           , slug:   'cactus'
-          , min: 0.1 // minimum number of this type of flora, as a fraction of lowland Tiles
-          , max: 0.05  // maximum, also as a fraction of lowland Tiles
+          , min: 0.02 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , max: 0.06 // maximum number of this type of flora, as a fraction of lowland Tiles
+
+          , drawPoint: [
+                { lx:0, lz:0, turn:0   * Math.PI } // point 1
+              , { lx:0, lz:1, turn:0   * Math.PI }
+              , { lx:0, lz:2, turn:0   * Math.PI }
+              , { lx:0, lz:3, turn:0   * Math.PI }
+              , { lx:0, lz:4, turn:0   * Math.PI }
+              , { lx:0, lz:5, turn:0   * Math.PI }
+              , { lx:0, lz:6, turn:0   * Math.PI }
+              , { lx:0, lz:7, turn:0   * Math.PI }
+              , { lx:0, lz:8, turn:.5  * Math.PI } // point 8
+              , { lx:1, lz:8, turn:.5  * Math.PI }
+              , { lx:2, lz:8, turn:.5  * Math.PI }
+              , { lx:3, lz:8, turn:.5  * Math.PI }
+              , { lx:4, lz:8, turn:.5  * Math.PI }
+              , { lx:5, lz:8, turn:.5  * Math.PI }
+              , { lx:6, lz:8, turn:.5  * Math.PI }
+              , { lx:7, lz:8, turn:.5  * Math.PI }
+              , { lx:8, lz:8, turn:1   * Math.PI } // point 16
+              , { lx:8, lz:7, turn:1   * Math.PI }
+              , { lx:8, lz:6, turn:1   * Math.PI }
+              , { lx:8, lz:5, turn:1   * Math.PI }
+              , { lx:8, lz:4, turn:1   * Math.PI }
+              , { lx:8, lz:3, turn:1   * Math.PI }
+              , { lx:8, lz:2, turn:1   * Math.PI }
+              , { lx:8, lz:1, turn:1   * Math.PI }
+              , { lx:8, lz:0, turn:1.5 * Math.PI } // point 24
+              , { lx:7, lz:0, turn:1.5 * Math.PI }
+              , { lx:6, lz:0, turn:1.5 * Math.PI }
+              , { lx:5, lz:0, turn:1.5 * Math.PI }
+              , { lx:4, lz:0, turn:1.5 * Math.PI }
+              , { lx:3, lz:0, turn:1.5 * Math.PI }
+              , { lx:2, lz:0, turn:1.5 * Math.PI }
+              , { lx:1, lz:0, turn:1.5 * Math.PI }
+            ]
+
           , generate: function () {
                 if (Meteor.isClient) { return; }
                 var i, x, z, tile, pattern
@@ -33,8 +69,10 @@ God.flora = {
                 for (i=Config.tiles.lowlandTileCount; i>0; i--) {
 
                     //// Get a random `x` and `z` coordinate. If `xTerrainExtent` is `32` and `xTileSize` is `8`, `x` becomes an integer between `24` and `232` inclusive.
-                    x = (  Math.floor( Math.random() * (Config.tiles.xTerrainExtent - 6) ) + 3  ) * Config.tiles.xTileSize;
-                    z = (  Math.floor( Math.random() * (Config.tiles.zTerrainExtent - 6) ) + 3  ) * Config.tiles.zTileSize;
+                    // x = (  Math.floor( Math.random() * (Config.tiles.xTerrainExtent - 6) ) + 3  ) * Config.tiles.xTileSize;
+                    // z = (  Math.floor( Math.random() * (Config.tiles.zTerrainExtent - 6) ) + 3  ) * Config.tiles.zTileSize;
+                    x = rint(3, Config.tiles.xTerrainExtent - 3) * Config.tiles.xTileSize;
+                    z = rint(3, Config.tiles.zTerrainExtent - 3) * Config.tiles.zTileSize;
 
                     //// Make sure this is a lowland tile
                     tile = Tiles.findOne({ x:x, z:z });
@@ -43,10 +81,10 @@ God.flora = {
                         console.log('found a mountainous Tile at (' + x + ',0,' + z + ')');
                         continue;
                     }
-
-                    //// Make sure no other Flora exists at these coordinates. @todo test for race-condition
-                    if ( 0 !== Flora.find({ x:x, z:z }).count() ) {
-                        console.log('already Flora at (' + x + ',0,' + z + ')');
+ 
+                    //// Make sure no other Flora exists at these coordinates, or in the adjacent coordinates. @todo test for race-condition
+                    if ( 0 !== Flora.find({ x:{ $gte:x-Config.tiles.xTileSize, $lte:x+Config.tiles.xTileSize }, z:{ $gte:z-Config.tiles.zTileSize, $lte:z+Config.tiles.zTileSize } }).count() ) {
+                        console.log('already Flora at or adjacent to (' + x + ',0,' + z + ')');
                     } else {
                         // console.log('generate a ' + this.name + ' at (' + x + ',0,' + z + ')');
                         break;
