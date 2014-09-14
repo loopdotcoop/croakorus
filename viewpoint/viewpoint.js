@@ -166,9 +166,6 @@ if (Meteor.isClient) {
                 //// Prepare the viewpoint-tally for the next time the <VIEWPOINT> changes.
                 vpTally++;
 
-                //// Update all audio sources.
-                God.flora.updateAudio();
-
             } else if (2 === evt.button || 4 === evt.button) {
 //                console.log('Right Click ', x, y, z, evt.currentTarget.id);
             }

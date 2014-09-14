@@ -20,5 +20,6 @@ Config.audio = {
       , '+ audio@0.0.1-2    play ‘public/flora/stone-circle-d4168a4.mp3’ (see ‘20140913-creating-stone-circle-mp3’); '
       , '+ audio@0.0.1-3    `#audioSources` info box; `rint()`; `God.flora.updateAudio()` generates patterns; '
       , '+ audio@0.0.1-4    rough 3D representation of drum pattern; '
-    ], version: '0.0.1-4'
+      , '+ audio@0.0.1-5    `#audioSources` orders by distance; move `God.flora.updateAudio()` to ‘flora.helper.js’; '
+    ], version: '0.0.1-5'
 };

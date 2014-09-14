@@ -143,31 +143,6 @@ God.flora = {
         }
     ]
 
-  , updateAudio: function () {
-        if (Meteor.isServer) { return; }
-        var flora, i, l, dx, dz
-          , position = Session.get('looptopianPosition') // @todo user db
-          , x = position[0]
-          , z = position[2] // @todo vertical proximity?
-          , xFar1 = Config.flora.xFloraFar
-          , zFar1 = Config.flora.zFloraFar
-        ;
-
-        //// Xx.
-        flora = Flora.find({
-            x: { $gte:x - xFar1, $lt:x + xFar1 }
-          , z: { $gte:z - zFar1, $lt:z + zFar1 }
-        }).fetch();
-
-        //// Add some useful data to the raw `flora` array.
-        for (i=0, l=flora.length; i<l; i++) {
-            dx = flora[i].x - x;
-            dz = flora[i].z - z;
-            flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
-        }
-
-        Session.set('audioSources', flora);
-    }
 };
 
 
@@ -176,6 +151,13 @@ God.flora.typeLut = {};
 God.flora.types.forEach(function (value) {
     God.flora.typeLut[value.slug] = value;
 });
+
+
+//// Initialize a clientside array and lookup-table of audio sources, which will be synchronized with `Session.get('audioSources')`. @todo can these ever get out of sync with each other, or with `Session.get('audioSources')`?
+if (Meteor.isClient) {
+    God.flora.sources = [];
+    God.flora.sourceLut = {};
+}
 
 
 //// Useful utility for generating random integers. @todo create an atmosphere package? 
