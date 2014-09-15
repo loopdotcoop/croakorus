@@ -21,8 +21,9 @@ Config.audio = {
       , '+ audio@0.0.1-3    `#audioSources` info box; `rint()`; `God.flora.updateAudio()` generates patterns; '
       , '+ audio@0.0.1-4    rough 3D representation of drum pattern; '
       , '+ audio@0.0.1-5    `#audioSources` orders by distance; move `God.flora.updateAudio()` to ‘flora.helper.js’; '
-      , '+ audio@0.0.1-6    ; '
-    ], version: '0.0.1-6'
+      , '+ audio@0.0.1-6    stone-circles play their patterns; move ‘audio.js’ functionality to ‘flora.helper.js’; '
+      , '+ audio@0.0.1-7    closer stone-circles are louder; '
+    ], version: '0.0.1-7'
 };
 
 

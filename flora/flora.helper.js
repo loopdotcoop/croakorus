@@ -47,10 +47,11 @@ if (Meteor.isClient) {
 
 
 
-        var flora, i, l, dx, dz, id, source
+        var flora, i, l, dx, dz, far, id, source, gainNode
           , ids = {}
           , sources = []
           , sourceLut = {}
+          , lowerFloraFar = Math.min(Config.flora.xFloraFar, Config.flora.zFloraFar)
         ;
 
 try { // @todo remove
@@ -67,21 +68,23 @@ try { // @todo remove
             //// `far` is the distance between the viewpoint and the center of the Tile which the Flora is on.
             dx = flora[i].x - x + (Config.tiles.xTileSize / 2);
             dz = flora[i].z - z + (Config.tiles.zTileSize / 2);
-            flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
+            far = flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
 
-            //// Xx.
+            //// Get a reference to the Flora’s `AudioBufferSourceNode` object.
             source = God.flora.sourceLut[id];
-            if (source) {
 
-                //// The source already existed in local scope. Update its gain and pan.
-                // @todo change gain and pan
-
-            } else {
-
-                //// The source has newly arrived in local scope. Instantiate its `AudioBufferSourceNode` object and fade it in.
+            //// If the Flora has newly arrived in local scope. Instantiate `AudioBufferSourceNode` and `GainNode` objects for it.
+            if (! source) {
                 source = Config.audio.ctx.createBufferSource();
                 source.id = id; // @todo ok?
                 source.pattern = flora[i].pattern; // @todo ok?
+                source.loop = true;
+
+                //// Create a `GainNode`, and connect it between the `AudioBufferSourceNode` and the speakers.
+                gainNode = Config.audio.ctx.createGain();
+                gainNode.connect(Config.audio.ctx.destination);
+                source.connect(gainNode);
+                source.gain = gainNode.gain; // allows us to write `source.gain.value = 0.5`
 
                 //// 
                 getDecodedAudio(
@@ -92,8 +95,6 @@ try { // @todo remove
                         if (source) {
 // console.log('connecting loop to ctx for ', id, source.pattern);
                             source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9 });
-                            source.connect(Config.audio.ctx.destination);
-                            source.loop = true;
                             source.start(0);
                         } else {
                             console.log('no source for ' + id, God.flora.sourceLut);
@@ -104,6 +105,15 @@ try { // @todo remove
 // console.log('added ' + id);
                 // @todo fade in
             }
+
+            //// Closer stone-circles are louder. @todo gradual change in gain. @todo pan or spacialize.
+            if (far > lowerFloraFar) {
+                source.gain.value = 0;
+            } else {
+                source.gain.value = (lowerFloraFar - far) / lowerFloraFar; // eg `(50 - 49) / 50` = `0.02`, and `(50 - 1) / 50` = `0.98`
+            }
+            
+
 
             //// Record the source to temporary objects.
             sources.push(source);
