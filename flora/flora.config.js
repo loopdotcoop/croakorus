@@ -18,26 +18,32 @@ Config.flora = {
   , xFloraFar: 50
   , zFloraFar: 50
 
+  , decodedAudio: {}
+
   , schema: new SimpleSchema({
         x: {
-            type: Number,
-            label: "X"
+            type: Number
+          , label: "X"
         }
       , z: {
-            type: Number,
-            label: "Z"
+            type: Number
+          , label: "Z"
         }
       , color: {
-            type: String,
-            label: "Color"
+            type: String
+          , label: "Color"
         }
       , type: {
-            type: String,
-            label: "Type"
+            type: String
+          , label: "Type"
         }
       , bulk: {
-            type: Number, // @todo check for integer?
-            label: "Bulk"
+            type: Number // @todo check for integer?
+          , label: "Bulk"
+        }
+      , pattern: {
+            type: String
+          , label: "Pattern"
         }
     })
 

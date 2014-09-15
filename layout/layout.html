@@ -150,6 +150,8 @@
             {{> tiles}}
           {{/each}}
 
+          <!-- flora defs -->
+          {{> floradef}}
 
           <!-- flora -->
           {{#each flora}}
@@ -160,7 +162,13 @@
       </x3d>
 
       {{#if $eq $.Config.about.env 'development'}}
-      <p style="position:absolute; z-index:99; bottom:0; right:20px; color:rgba(255,255,255,.5)">{{ viewpointRotation }}</p>
+      <p id="viewpointRotation" class="auto" style="position:absolute; z-index:99; bottom:0; right:20px; color:rgba(255,255,255,.5)">{{ viewpointRotation }}</p>
+      <pre id="audioSources" class="auto" style="position:absolute; padding:6px; z-index:99; bottom:0; left:20px; background-color:rgba(0,0,0,.7); color: #0f6; "
+>FAR    PATTERN                           ID
+       {{ $.Session.get 'playhead'}}
+{{#each $.Session.get 'audioSources'}}
+{{ truncate far 5 }}  {{ pattern }}  {{ _id }}
+{{/each}}</pre>
       {{/if}}
 
       <!-- preload cursor images -->
