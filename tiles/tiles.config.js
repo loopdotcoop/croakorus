@@ -20,8 +20,8 @@ Config.tiles = {
   , zTileSize:       8 // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
   , xTerrainExtent: 32 // number of Tiles from the Westmost to the Eastmost edges of the terrain
   , zTerrainExtent: 32 // number of Tiles from the Northmost to the Southmost edges of the terrain
-  , xTileFar:       30 // only subscribe to Tiles within 30 squares x-distance from your Looptopian
-  , zTileFar:       30 // as above, for y-distance
+  , xTileFar:       40 // only subscribe to Tiles within 40 squares x-distance from your Looptopian
+  , zTileFar:       40 // as above, for z-distance
 
   , schema: new SimpleSchema({
         x: {
