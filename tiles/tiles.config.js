@@ -20,8 +20,8 @@ Config.tiles = {
   , zTileSize:       8 // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
   , xTerrainExtent: 32 // number of Tiles from the Westmost to the Eastmost edges of the terrain
   , zTerrainExtent: 32 // number of Tiles from the Northmost to the Southmost edges of the terrain
-  , xTileFar:       30 // only subscribe to Tiles within 30 squares x-distance from your Looptopian
-  , zTileFar:       30 // as above, for y-distance
+  , xTileFar:       40 // only subscribe to Tiles within 40 squares x-distance from your Looptopian
+  , zTileFar:       40 // as above, for z-distance
 
   , schema: new SimpleSchema({
         x: {
@@ -70,6 +70,7 @@ Config.tiles.xTerrainSize     = Config.tiles.xTileSize * Config.tiles.xTerrainEx
 Config.tiles.zTerrainSize     = Config.tiles.zTileSize * Config.tiles.zTerrainExtent;
 Config.tiles.xHalfTerrainSize = Config.tiles.xTerrainSize / 2;
 Config.tiles.zHalfTerrainSize = Config.tiles.zTerrainSize / 2;
+Config.tiles.lowlandTileCount = ( (Config.tiles.xTerrainExtent - 6) * (Config.tiles.zTerrainExtent - 6) ) - 9; // @todo check this is a positive number!
 
 
 // Attach the ‘Collection2’ schema defined above.

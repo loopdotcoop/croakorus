@@ -1,0 +1,22 @@
+<head>
+<!-- flora.html -->
+</head>
+
+<template name="flora">
+  <transform translation="{{x}} .1 {{z}}">
+    {{#each patternArray}}
+    <transform translation="{{lx}} 0 {{lz}}" rotation="0 1 0  {{turn}}">
+      <transform use="{{use}}"></transform>
+    </transform>
+    {{/each}}
+    <transform translation="4 0 4">
+      <shape>
+        <appearance>
+          <material diffuseColor="white" transparency=".99"></material>
+        </appearance>
+        <box id="{{_id}}" class="{{type}}" size="10 2 10" data-center="{{x}} .1 {{z}}"></box>
+      </shape>
+    </transform>
+  </transform>
+</template>
+

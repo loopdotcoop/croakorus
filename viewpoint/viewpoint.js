@@ -34,18 +34,19 @@ if (Meteor.isClient) {
 
             if (dragged) { return; }
 
-            var currPos, newVp
+            var currPos, newVp, xyz
               , vpRotation = Session.get('viewpointRotation')
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
+              , flora
             ;
 
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
 
-                //// Deal with a click on a lowland terrain tile.
-                if ( '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
+                //// Deal with a click on a lowland terrain tile or a hit-box.
+                if ( 'BOX' === evt.target.tagName || '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
 
                     //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
                     if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
@@ -71,7 +72,7 @@ if (Meteor.isClient) {
                     currPos = Session.get('looptopianPosition');
                     x = currPos[0]; y = currPos[1]; z = currPos[2];
 
-                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges, or the middle.
+                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges. @todo don’t enter the mountains in the middle.
                     switch (vpRotation) {
                         case 'north':
                             z -= Config.tiles.zTileFar;
@@ -97,7 +98,15 @@ if (Meteor.isClient) {
 
                 }
 
-                //// Update the Topian’s position. @todo draw topian
+                //// For a click on a hit-box, center the viewpoint.
+                if ( 'BOX' === evt.target.tagName && evt.target.getAttribute('data-center') ) {
+                    xyz = evt.target.getAttribute('data-center').split(' ');
+                    x = +xyz[0] + (Config.tiles.xTileSize / 2); // nb, the intial `+` converts from string to number
+                    y = +xyz[1]
+                    z = +xyz[2] + (Config.tiles.zTileSize / 2);
+                }
+
+                //// Update the Topian’s position. @todo draw topian.
                 Session.set('looptopianPosition', [x,y,z]);
 
                 //// Prepare a new transformed viewpoint.
@@ -166,9 +175,13 @@ if (Meteor.isClient) {
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
-        // console.log(evt);
-        if (1 === evt.button) {
+        var classes = (evt.target.getAttribute ? evt.target.getAttribute('class') : null);
+        if ('auto' === classes) {
+            $('body').css('cursor', 'auto');
+        } else if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
+        } else if ( 'BOX' === evt.target.tagName ) { // @todo better way of identifying clickable objects?
+            $('body').css('cursor', 'url(/viewpoint/default.png) 3 3, default');
         } else if ( 'mouseover-plane' === evt.target.className ) {
             // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');

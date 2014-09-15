@@ -10,6 +10,18 @@ if (Meteor.isClient) {
         return true; // @todo implement this, linked to looptopia user database
     });
 
+
+    //// Handy for formatting values in <PRE> tables.
+    UI.registerHelper('truncate', function (value, length) {
+        return (value + '          ').slice(0, length);
+    });
+
+
+    //// Handy for formatting values in <PRE> tables.
+    UI.registerHelper('pad', function (value, length) {
+        return ('          ' + value).slice(-length);
+    });
+
 }
 
 //// http://stackoverflow.com/a/19131165
