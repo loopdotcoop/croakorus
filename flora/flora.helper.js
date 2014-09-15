@@ -91,11 +91,25 @@ try { // @todo remove
                     '/flora/stone-circle-d4168a4.mp3'
                   , id
                   , function (decoded, id) {
-                        var source = God.flora.sourceLut[id]; // regain a reference to the proper source
+                        var nowTime, nowFraction, prevZero, nextTime, nowBeat, nextBeat
+                          , source = God.flora.sourceLut[id] // regain a reference to the proper source
+                        ;
                         if (source) {
 // console.log('connecting loop to ctx for ', id, source.pattern);
                             source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9 });
-                            source.start(0);
+
+                            //// Xx.
+                            nowTime = Config.audio.ctx.currentTime;
+                            nowFraction = nowTime % 3.6;
+                            prevZero = nowTime - nowFraction;   // timestamp of the previous beat-zero
+                            nowBeat = ~~(nowFraction / 0.1125); // `nowBeat` is an integer between `0` and `31` inclusive http://jsperf.com/math-floor-vs-math-round-vs-parseint/33
+
+                            //// Get the beat-number of the next beat, and calculate its timestamp.
+                            nextBeat = (31 <= nowBeat ? 0 : nowBeat+1);
+                            nextTime = prevZero + (0.1125 * nextBeat);
+// console.log('now:', nowTime, 'next beat #:', nextBeat, 'next beat time:', nextTime);
+
+                            source.start(nextTime, nextBeat * 0.1125); // @todo improve timing, sometimes sources sync quite well, sometimes not!
                         } else {
                             console.log('no source for ' + id, God.flora.sourceLut);
                         }
