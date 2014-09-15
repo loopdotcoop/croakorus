@@ -18,6 +18,8 @@ Config.flora = {
   , xFloraFar: 50
   , zFloraFar: 50
 
+  , decodedAudio: {}
+
   , schema: new SimpleSchema({
         x: {
             type: Number

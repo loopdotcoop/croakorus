@@ -21,5 +21,17 @@ Config.audio = {
       , '+ audio@0.0.1-3    `#audioSources` info box; `rint()`; `God.flora.updateAudio()` generates patterns; '
       , '+ audio@0.0.1-4    rough 3D representation of drum pattern; '
       , '+ audio@0.0.1-5    `#audioSources` orders by distance; move `God.flora.updateAudio()` to ‘flora.helper.js’; '
-    ], version: '0.0.1-5'
+      , '+ audio@0.0.1-6    ; '
+    ], version: '0.0.1-6'
 };
+
+
+if (Meteor.isClient) {
+
+    //// Initialize the audio context.
+    Config.audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData
+
+    //// Initialize the 'audioSources' session-variable.
+    Session.set('audioSources', []);
+
+}

@@ -53,10 +53,7 @@ if (Meteor.isClient) {
           , sourceLut = {}
         ;
 
-        //// Xx.
-        // return Flora.find(selector);
-
-try {
+try { // @todo remove
 
         //// Xx.
         flora = Flora.find(selector).fetch();
@@ -72,26 +69,54 @@ try {
             dz = flora[i].z - z + (Config.tiles.zTileSize / 2);
             flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
 
-            //// Some sources may have newly arrived in local scope. Instantiate their `AudioBufferSourceNode` object and fade them in.
+            //// Xx.
             source = God.flora.sourceLut[id];
             if (source) {
-                // @todo change gain
+
+                //// The source already existed in local scope. Update its gain and pan.
+                // @todo change gain and pan
+
             } else {
-                source = { z:123, id:id };
-                console.log('added ' + id);
+
+                //// The source has newly arrived in local scope. Instantiate its `AudioBufferSourceNode` object and fade it in.
+                source = Config.audio.ctx.createBufferSource();
+                source.id = id; // @todo ok?
+                source.pattern = flora[i].pattern; // @todo ok?
+
+                //// 
+                getDecodedAudio(
+                    '/flora/stone-circle-d4168a4.mp3'
+                  , id
+                  , function (decoded, id) {
+                        var source = God.flora.sourceLut[id]; // regain a reference to the proper source
+                        if (source) {
+// console.log('connecting loop to ctx for ', id, source.pattern);
+                            source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9 });
+                            source.connect(Config.audio.ctx.destination);
+                            source.loop = true;
+                            source.start(0);
+                        } else {
+                            console.log('no source for ' + id, God.flora.sourceLut);
+                        }
+                    }
+                );
+
+// console.log('added ' + id);
                 // @todo fade in
             }
 
             //// Record the source to temporary objects.
             sources.push(source);
             sourceLut[id] = source;
+// console.log('recorded ' + id + ' to sourceLut[id]');
         }
 
         //// Some sources may have left local scope. Fade them out and schedule them for removal.
         for (i=0, l=God.flora.sources.length; i<l; i++) {
             source = God.flora.sources[i];
             if (! sourceLut[source.id]) { // @todo why is `source` sometimes `undefined`?
-                console.log('scheduled for deletion: ' + source.id);
+// console.log('scheduled for deletion: ' + source.id);
+                source.disconnect(); // @todo schedule
                 // @todo fade out and schedule for removal
             }
         }
@@ -100,7 +125,7 @@ try {
         God.flora.sources = sources;
         God.flora.sourceLut = sourceLut;
 
-        console.log('now ' + God.flora.sources.length, God.flora.sources, God.flora.sourceLut);
+// console.log('now ' + God.flora.sources.length, God.flora.sources, God.flora.sourceLut);
 
 
         //// Place the nearest Flora at the top.
@@ -108,7 +133,7 @@ try {
 
         Session.set('audioSources', flora);
 
-} catch(e) { console.log(e); }
+} catch(e) { console.log(e); } // @todo remove
 
 
 
@@ -116,5 +141,99 @@ try {
         return flora;
 
     });
+
+    var
+        loadAndDecode = function (url, decodeSuccessCallback, decodeErrorCallback) {
+
+            //// Use XHR to load audio from a URL.
+            var request = new XMLHttpRequest();
+            request.open('GET', url, true);
+            request.responseType = 'arraybuffer';
+            request.onerror = function () {
+                console.log('flora.helper.js:loadAndDecode() load error');
+            }
+            request.onload = function (event) {
+// console.log('have decoded ' + url);
+                //// Use `decodeAudioData()` to decode the MP3 into a buffer. // @todo update to promise-based syntax, when browsers support it
+                Config.audio.ctx.decodeAudioData(
+                    request.response      // ArrayBuffer
+                  , decodeSuccessCallback // will be passed a single argument, which we are calling `decoded` (MDN calls it `buffer`, but there are several kinds of buffers in use)
+                  , decodeErrorCallback   // will be passed a single argument, `error`
+                );
+            };
+            request.send();
+        }
+
+      , getDecodedAudio = function (url, id, cb) { // `pattern` is a string, eg 'Bb..Aa..b.a.Aa..', `url` is an `AudioBuffer` object @todo map and cb descriptions
+
+            //// Load and decode the audio, if not yet done.
+
+            //// `Config.flora.decodedAudio` is a lookup-table where each key is a URL, and each value is either an queue of callbacks, or some decoded audio.
+            var queueOrAudio = Config.flora.decodedAudio[url];
+
+            //// The first time a URL is encountered, prepare a temporary queue for `getDecodedAudio()` calls while we wait for the audio, and begin the load-and-decode process.
+            if (! queueOrAudio) {
+                queueOrAudio = Config.flora.decodedAudio[url] = []; // this prevents a URL from being loaded twice, even if the subsequent call to `getDecodedAudio()` comes a microsecond later
+                loadAndDecode(
+                    url
+                  , function (decoded) {
+                        var i, l;
+                        for (i=0, l=Config.flora.decodedAudio[url].length; i<l; i++) {
+// console.log('call queued function ' + i);
+                            Config.flora.decodedAudio[url][i].cb(decoded, Config.flora.decodedAudio[url][i].id);
+                        }
+                        Config.flora.decodedAudio[url] = decoded; // the queue of functions is no longer needed
+                    }
+                  , function (error) {
+                        console.log('flora.helper.js:getDecodedAudio() decode error' + error.err);
+                    }
+                );
+            }
+
+            //// `Config.flora.decodedAudio[url]` is an array, so queue the callback.
+            if ( _.isArray(queueOrAudio) ) {
+                queueOrAudio.push({ cb:cb, id:id });
+                return;
+            }
+
+            //// Assume `Config.flora.decodedAudio[url]` is the decoded audio, so run the callback on next tick.
+            window.setTimeout(function () {
+                cb(queueOrAudio, id);
+            },1);
+
+        }
+
+      , makeLoop = function (decoded, pattern, map) {
+            // pattern = '....' + pattern; // @todo fix rough start
+// console.log(pattern);
+// console.log('sampleRate;', decoded.sampleRate, 'length;', decoded.length, 'duration;', decoded.duration, 'numberOfChannels;', decoded.numberOfChannels);
+            var i, j, srcChannel, destChannel, code, offset, source
+              , l = pattern.length
+              , numberOfChannels = decoded.numberOfChannels
+              , pitch = 1 // @todo user pref?
+              , sampleRate = decoded.sampleRate * pitch
+              , grid = 5400 * 2 // @todo test whether this really should be ` * numberOfChannels`, or whether it’s really `* 2` whetever the channel-count
+              , dest = Config.audio.ctx.createBuffer(numberOfChannels, pattern.length * grid, sampleRate) // http://stackoverflow.com/a/14148125
+            ;
+
+            //// 
+            for (i=0; i<numberOfChannels; i++) {
+                srcChannel  = decoded.getChannelData(i);  // returns a Float32Array
+                destChannel = dest.getChannelData(i); // returns a Float32Array
+                for (j=0; j<l; j++) {
+                    code = pattern.charAt(j);
+                    if ('.' === code) { continue; } // silence
+                    offset = map[code] * grid;
+// console.log(i, j, j * grid, code, offset, offset + grid);
+                    destChannel.set(
+                        srcChannel.subarray(offset, offset + grid)
+                      , j * grid
+                    );
+                }
+            }
+// console.log('dest.length ' + dest.length);
+            return dest;
+        }
+    ;
 
 }
