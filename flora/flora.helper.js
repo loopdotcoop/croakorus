@@ -80,15 +80,15 @@ try { // @todo remove
                 source.pattern = flora[i].pattern; // @todo ok?
                 source.loop = true;
 
-                //// Create a `GainNode`, and connect it between the `AudioBufferSourceNode` and the speakers.
+                //// Create a `GainNode`, and connect it between the `AudioBufferSourceNode` and the master `GainNode`.
                 gainNode = Config.audio.ctx.createGain();
-                gainNode.connect(Config.audio.ctx.destination);
+                gainNode.connect(Config.audio.gain);
                 source.connect(gainNode);
                 source.gain = gainNode.gain; // allows us to write `source.gain.value = 0.5`
 
                 //// 
                 getDecodedAudio(
-                    '/flora/stone-circle-d4168a4.mp3'
+                    '/flora/stone-circle-' + (44100 === Config.audio.ctx.sampleRate ? '44100-3b2d3f5' : '48000-0118563') + '.mp3'
                   , id
                   , function (decoded, id) {
                         var nowTime, nowFraction, prevZero, nextTime, nowBeat, nextBeat
@@ -120,7 +120,7 @@ try { // @todo remove
                 // @todo fade in
             }
 
-            //// Closer stone-circles are louder. @todo gradual change in gain. @todo pan or spacialize.
+            //// Closer stone-circles are louder. @todo gradual transition of gain. @todo gradual transition of pan or spacialize.
             if (far > lowerFloraFar) {
                 source.gain.value = 0;
             } else {
@@ -177,7 +177,8 @@ try { // @todo remove
                 console.log('flora.helper.js:loadAndDecode() load error');
             }
             request.onload = function (event) {
-// console.log('have decoded ' + url);
+console.log('decoded ' + url);
+
                 //// Use `decodeAudioData()` to decode the MP3 into a buffer. // @todo update to promise-based syntax, when browsers support it
                 Config.audio.ctx.decodeAudioData(
                     request.response      // ArrayBuffer
@@ -230,14 +231,16 @@ try { // @todo remove
       , makeLoop = function (decoded, pattern, map) {
             // pattern = '....' + pattern; // @todo fix rough start
 // console.log(pattern);
-// console.log('sampleRate;', decoded.sampleRate, 'length;', decoded.length, 'duration;', decoded.duration, 'numberOfChannels;', decoded.numberOfChannels);
+// if ('........Aa..............Bb......' === pattern) {
+//     console.log('sampleRate;', decoded.sampleRate, 'length;', decoded.length, 'duration;', decoded.duration, 'numberOfChannels;', decoded.numberOfChannels);
+// }
             var i, j, srcChannel, destChannel, code, offset, source
               , l = pattern.length
               , numberOfChannels = decoded.numberOfChannels
-              , pitch = 1 // @todo user pref?
-              , sampleRate = decoded.sampleRate * pitch
-              , grid = 5400 * 2 // @todo test whether this really should be ` * numberOfChannels`, or whether it’s really `* 2` whetever the channel-count
-              , dest = Config.audio.ctx.createBuffer(numberOfChannels, pattern.length * grid, sampleRate) // http://stackoverflow.com/a/14148125
+              , sampleRate = decoded.sampleRate
+              , pitch = (44100 === sampleRate ? 1.08843537414966 : 1) // `1.08843537414966` is `48000 / 44100` @todo what if it’s not 44100 or 48000? @todo user pref?
+              , grid = 5400
+              , dest = Config.audio.ctx.createBuffer(numberOfChannels, l * grid, sampleRate * pitch) // http://stackoverflow.com/a/14148125
             ;
 
             //// 
@@ -248,7 +251,9 @@ try { // @todo remove
                     code = pattern.charAt(j);
                     if ('.' === code) { continue; } // silence
                     offset = map[code] * grid;
-// console.log(i, j, j * grid, code, offset, offset + grid);
+// if ('........Aa..............Bb......' === pattern) {
+//     console.log(i, j, j * grid, code, map[code], offset, offset + grid);
+// }
                     destChannel.set(
                         srcChannel.subarray(offset, offset + grid)
                       , j * grid

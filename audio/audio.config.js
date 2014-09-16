@@ -65,13 +65,6 @@ Config.audio = {
 
 if (Meteor.isClient) {
 
-    //// Initialize the audio context.
-    Config.audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData
-
-    //// Initialize the 'audioSources' and 'playhead' session-variables.
-    Session.set('audioSources', []);
-    Session.set('playhead', 0);
-
     //// Schedule the playhead to step forward every 5400 samples. http://www.html5rocks.com/en/tutorials/audio/scheduling/
     var nowTime, nowBeat
       , prevBeat = 0
@@ -86,7 +79,6 @@ if (Meteor.isClient) {
                 nowBeat = ~~( (nowTime % 3.6) / 0.1125 ); // `nowBeat` is an integer between `0` and `31` inclusive http://jsperf.com/math-floor-vs-math-round-vs-parseint/33
                 if ( nowBeat !== prevBeat ) {
                     Session.set('playhead', Config.audio.playheadLut[nowBeat]);
-                    // Session.set('playhead', prevZero);
                     prevBeat = nowBeat;
                 }
                 prevTime = nowTime;
@@ -94,6 +86,18 @@ if (Meteor.isClient) {
             window.requestAnimationFrame(step);
         }
     ;
-    window.requestAnimationFrame(step);
 
+    //// Initialize the audio context.
+    Config.audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData
+
+    //// Create a master `GainNode`, and connect it to the `AudioContext`.
+    Config.audio.gain = Config.audio.ctx.createGain(); // allows us to write `mySource.connect(Config.audio.gain);`
+    Config.audio.gain.connect(Config.audio.ctx.destination);
+
+    //// Initialize the 'audioSources' and 'playhead' session-variables.
+    Session.set('audioSources', []);
+    Session.set('playhead', 0);
+
+    //// Start the `step()` counter, which will continue running for the whole session.
+    window.requestAnimationFrame(step);
 }
