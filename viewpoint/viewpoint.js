@@ -178,6 +178,8 @@ if (Meteor.isClient) {
         var classes = (evt.target.getAttribute ? evt.target.getAttribute('class') : null);
         if ('auto' === classes) {
             $('body').css('cursor', 'auto');
+        } else if ('ldc-toggle-mute' === classes) {
+            $('body').css('cursor', 'pointer');
         } else if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
         } else if ( 'BOX' === evt.target.tagName ) { // @todo better way of identifying clickable objects?

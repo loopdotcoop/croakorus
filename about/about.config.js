@@ -52,7 +52,9 @@ Config = {
           , '+ desoot@0.1.10    only show `viewpointRotation` in ‘development’ environment; '
           , '+ desoot@0.1.11-1  initial ‘flora’ feature; '
           , '+ desoot@0.1.12    stone-circle patterns are visual and audio; '
-        ] , version: '0.1.12'
+          , '+ desoot@0.1.14    choose either 44.1kHz or 48kHz to match users sound-card (fixes audio glitch);  \n' +
+            '                   `Config.audio.gain` and `.ldc-toggle-mute`; '
+        ] , version: '0.1.14'
     }
 };
 
