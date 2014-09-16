@@ -73,12 +73,12 @@ God.flora = {
                     z = rint(3, Config.tiles.zTerrainExtent - 3) * Config.tiles.zTileSize;
 
                     //// Make sure this Tile is out of earshot of the spawn position. @todo remove this restriction after synch fix.
-                    if (
-                        (x < Config.viewpoint.spawnX + Config.flora.xFloraFar)
-                     && (x > Config.viewpoint.spawnX - Config.flora.xFloraFar)
-                     && (z < Config.viewpoint.spawnZ + Config.flora.zFloraFar)
-                     && (z > Config.viewpoint.spawnZ - Config.flora.zFloraFar)
-                    ) { continue; }
+                    // if (
+                    //     (x < Config.viewpoint.spawnX + Config.flora.xFloraFar)
+                    //  && (x > Config.viewpoint.spawnX - Config.flora.xFloraFar)
+                    //  && (z < Config.viewpoint.spawnZ + Config.flora.zFloraFar)
+                    //  && (z > Config.viewpoint.spawnZ - Config.flora.zFloraFar)
+                    // ) { continue; }
 
                     //// Make sure this is a lowland Tile
                     tile = Tiles.findOne({ x:x, z:z });
@@ -150,14 +150,14 @@ God.flora = {
                                 break;
                             case 2: // ride cymbal sub-pattern
                                 if ( rint() ) {
-                                    pattern.splice( rint(7) * 4, 2, 'C', 'c'); // add a full ride hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
+                                    pattern.splice( rint(7)  * 4, 2, 'C', 'c'); // add a full ride hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
                                 } else {
                                     pattern.splice( rint(14) * 2, 1, 'c'); // add a soft ride hit at one of the even points
                                 }
                                 break;
                             case 3: // splash cymbal sub-pattern
                                 if ( rint() ) {
-                                    pattern.splice( rint(7) * 4, 2, 'D', 'd'); // add a full splash hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
+                                    pattern.splice( rint(7)  * 4, 2, 'D', 'd'); // add a full splash hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
                                 } else {
                                     pattern.splice( rint(14) * 2, 1, 'd'); // add a soft splash hit at one of the even points
                                 }

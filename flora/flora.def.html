@@ -4,6 +4,10 @@
 
 <template name="floradef">
 
+  <!-- primatives -->
+  <extrusion def="cactus-tetrahedron" crossSection="1 1  0 -1  -1 1  1 1" scale="1 1  0 0"   spine="0 0 0  .2 1 0"></extrusion>
+  <extrusion def="cactus-sugarloaf"   crossSection="1 1  0 -1  -1 1  1 1" scale="2 2  1 1"   spine="0 0 0   0 1 0"></extrusion>
+
   <!-- snare -->
   <transform def="cactus-A" scale=".5 .5 1">
     <shape>
@@ -24,7 +28,7 @@
   </transform>
 
   <!-- deep kick -->
-  <transform def="cactus-B" scale=".9 .5 1.5">
+  <transform def="cactus-B" scale=".4 2.2 1.1">
     <shape>
       <appearance>
         <material diffuseColor="#111c19"></material>
@@ -33,7 +37,7 @@
     </shape>
   </transform>
 
-  <transform def="cactus-b" scale=".9 .5 1.5">
+  <transform def="cactus-b" scale=".4 1.7 1.5">
     <shape>
       <appearance>
         <material diffuseColor="#111c19"></material>
@@ -42,8 +46,46 @@
     </shape>
   </transform>
 
+  <!-- ride cymbal -->
+  <transform def="cactus-C" scale=".2 .7 .3">
+    <shape>
+      <appearance>
+        <material diffuseColor="#88a"></material>
+      </appearance>
+      <extrusion use="cactus-tetrahedron"></extrusion>
+    </shape>
+  </transform>
+
+  <transform def="cactus-c" scale=".2 .5 .3">
+    <shape>
+      <appearance>
+        <material diffuseColor="#88a"></material>
+      </appearance>
+      <extrusion use="cactus-tetrahedron"></extrusion>
+    </shape>
+  </transform>
+
+  <!-- crash cymbal -->
+  <transform def="cactus-D" scale=".3 .7 .4">
+    <shape>
+      <appearance>
+        <material diffuseColor="#8a9"></material>
+      </appearance>
+      <extrusion use="cactus-tetrahedron"></extrusion>
+    </shape>
+  </transform>
+
+  <transform def="cactus-d" scale=".3 .5 .4">
+    <shape>
+      <appearance>
+        <material diffuseColor="#8a9"></material>
+      </appearance>
+      <extrusion use="cactus-tetrahedron"></extrusion>
+    </shape>
+  </transform>
+
   <!-- big kick -->
-  <transform def="cactus-E" scale=".8 .5 1.5">
+  <transform def="cactus-E" scale=".5 2.8 .7">
     <shape>
       <appearance>
         <material diffuseColor="#696c66"></material>
@@ -52,13 +94,159 @@
     </shape>
   </transform>
 
-  <transform def="cactus-e" scale=".8 .5 1.5">
+  <transform def="cactus-e" scale=".4 2.4 .9">
     <shape>
       <appearance>
         <material diffuseColor="#696c66"></material>
       </appearance>
       <sphere radius=".7"></sphere>
     </shape>
+  </transform>
+
+
+  <!-- short hits -->
+  <transform def="cactus-F" scale=".1 .5 .13">
+    <shape def="cactus-shape-F">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-f" scale=".1 .4 .13">
+    <shape use="cactus-shape-F"></shape>
+  </transform>
+  <transform def="cactus-G" scale=".1 .3 .13">
+    <shape use="cactus-shape-F"></shape>
+  </transform>
+  <transform def="cactus-g" scale=".1 .2 .13">
+    <shape use="cactus-shape-F"></shape>
+  </transform>
+
+  <transform def="cactus-H" scale=".1 .5 .13">
+    <shape def="cactus-shape-H">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-h" scale=".1 .4 .13">
+    <shape use="cactus-shape-H"></shape>
+  </transform>
+  <transform def="cactus-I" scale=".1 .3 .13">
+    <shape use="cactus-shape-H"></shape>
+  </transform>
+  <transform def="cactus-i" scale=".1 .2 .13">
+    <shape use="cactus-shape-H"></shape>
+  </transform>
+
+  <transform def="cactus-J" scale=".1 .5 .13">
+    <shape def="cactus-shape-J">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-j" scale=".1 .4 .13">
+    <shape use="cactus-shape-J"></shape>
+  </transform>
+  <transform def="cactus-K" scale=".1 .3 .13">
+    <shape use="cactus-shape-J"></shape>
+  </transform>
+  <transform def="cactus-k" scale=".1 .2 .13">
+    <shape use="cactus-shape-J"></shape>
+  </transform>
+
+  <transform def="cactus-L" scale=".1 .5 .13">
+    <shape def="cactus-shape-L">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-l" scale=".1 .4 .13">
+    <shape use="cactus-shape-L"></shape>
+  </transform>
+  <transform def="cactus-M" scale=".1 .3 .13">
+    <shape use="cactus-shape-L"></shape>
+  </transform>
+  <transform def="cactus-m" scale=".1 .2 .13">
+    <shape use="cactus-shape-L"></shape>
+  </transform>
+
+  <transform def="cactus-N" scale=".1 .5 .13">
+    <shape def="cactus-shape-N">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-n" scale=".1 .4 .13">
+    <shape use="cactus-shape-N"></shape>
+  </transform>
+  <transform def="cactus-O" scale=".1 .3 .13">
+    <shape use="cactus-shape-N"></shape>
+  </transform>
+  <transform def="cactus-o" scale=".1 .2 .13">
+    <shape use="cactus-shape-N"></shape>
+  </transform>
+
+  <transform def="cactus-P" scale=".1 .5 .13">
+    <shape def="cactus-shape-P">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-p" scale=".1 .4 .13">
+    <shape use="cactus-shape-P"></shape>
+  </transform>
+  <transform def="cactus-Q" scale=".1 .3 .13">
+    <shape use="cactus-shape-P"></shape>
+  </transform>
+  <transform def="cactus-q" scale=".1 .2 .13">
+    <shape use="cactus-shape-P"></shape>
+  </transform>
+
+  <transform def="cactus-R" scale=".1 .5 .13">
+    <shape def="cactus-shape-R">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-r" scale=".1 .4 .13">
+    <shape use="cactus-shape-R"></shape>
+  </transform>
+  <transform def="cactus-S" scale=".1 .3 .13">
+    <shape use="cactus-shape-R"></shape>
+  </transform>
+  <transform def="cactus-s" scale=".1 .2 .13">
+    <shape use="cactus-shape-R"></shape>
+  </transform>
+
+  <transform def="cactus-T" scale=".1 .5 .13">
+    <shape def="cactus-shape-T">
+      <appearance>
+        <material diffuseColor="#696c66"></material>
+      </appearance>
+      <extrusion use="cactus-sugarloaf"></extrusion>
+    </shape>
+  </transform>
+  <transform def="cactus-t" scale=".1 .4 .13">
+    <shape use="cactus-shape-T"></shape>
+  </transform>
+  <transform def="cactus-U" scale=".1 .3 .13">
+    <shape use="cactus-shape-T"></shape>
+  </transform>
+  <transform def="cactus-u" scale=".1 .2 .13">
+    <shape use="cactus-shape-T"></shape>
   </transform>
 
 </template>

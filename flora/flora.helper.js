@@ -136,6 +136,7 @@ try { // @todo remove
                 source.gain.value = (lowerFloraFar - far) / lowerFloraFar; // eg `(50 - 49) / 50` = `0.02`, and `(50 - 1) / 50` = `0.98`
                 source.gain.value = source.gain.value * source.gain.value; // sharper dropoff, so `0.02` becomes `0.0004`, and `0.98` becomes `0.9604`
             }
+source.gain.value = 0; // !!
 
 
 
