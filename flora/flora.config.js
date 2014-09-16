@@ -56,7 +56,8 @@ Config.flora = {
       , '+ flora@0.0.1-4   renders cacti as simple cubes; cursor is `default` hovering over cacti; '
       , '+ flora@0.0.2     pause ‘flora’ development until ‘audio’ feature has been set up; '
       , '+ flora@0.0.3-1   add remaining beats from the `stone-circle-xxx00-XXXXXXX.mp3` files; '
-    ], version: '0.0.3-1'
+      , '+ flora@0.0.3-2   solo a Flora when its distance is `0` (the user has clicked on it); '
+    ], version: '0.0.3-2'
 };
 
 

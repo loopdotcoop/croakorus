@@ -8,11 +8,11 @@ God.flora = {
           , max: 0.1  // maximum, also as a fraction of lowland Tiles
           , generate: function () {
                 if (Meteor.isClient) { return; }
-                console.log('generate a ' + this.name);
+                // console.log('generate a ' + this.name);
             }
           , init: function () {
                 if (Meteor.isClient) { return; }
-                console.log('`God.flora.typeLut["' + this.slug + '"]()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
+                // console.log('`God.flora.typeLut["' + this.slug + '"]()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
                 for (var i = Math.ceil(this.min * Config.tiles.lowlandTileCount); i>0; i--) {
                     this.generate();
                 }
@@ -180,7 +180,7 @@ God.flora = {
             }
           , init: function () {
                 if (Meteor.isClient) { return; }
-                console.log('`God.flora.typeLut["' + this.slug + '"].init()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
+                // console.log('`God.flora.typeLut["' + this.slug + '"].init()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
                 for (var i = Math.ceil(this.min * Config.tiles.lowlandTileCount); i>0; i--) {
                     try { this.generate() } catch (error) { console.log(error.error); break; } // @todo does this appear on Modulus logs?
                 }
