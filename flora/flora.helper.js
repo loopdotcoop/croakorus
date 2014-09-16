@@ -96,7 +96,7 @@ try { // @todo remove
                         ;
                         if (source) {
 // console.log('connecting loop to ctx for ', id, source.pattern);
-                            source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9 });
+                            source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9, F:10, f:11, G:12, g:13, H:14, h:15, I:16, i:17, J:18, j:19, K:20, k:21, L:22, l:23, M:24, m:25, N:26, n:27, O:28, o:29, P:30, p:31, Q:32, q:33, R:34, r:35, S:36, s:37, T:38, t:39, U:40, u:41 });
 
                             //// Xx.
                             nowTime = Config.audio.ctx.currentTime;

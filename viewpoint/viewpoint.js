@@ -1,6 +1,6 @@
 if (Meteor.isClient) {
 
-    Session.set('looptopianPosition', [140,4,137]); // @todo user db
+    Session.set('looptopianPosition', [Config.viewpoint.spawnX, 4, Config.viewpoint.spawnZ]); // @todo user db
     Session.set('viewpointRotation', 'south'); // @todo user db
 
     UI.body.helpers({

@@ -22,8 +22,8 @@ God.flora = {
             name:   'Cactus'
           , plural: 'Cacti'
           , slug:   'cactus'
-          , min: 0.02 // minimum number of this type of flora, as a fraction of lowland Tiles
-          , max: 0.06 // maximum number of this type of flora, as a fraction of lowland Tiles
+          , min: 0.08 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , max: 0.32 // maximum number of this type of flora, as a fraction of lowland Tiles
 
           , drawPoint: [
                 { lx:0, lz:0, turn:0   * Math.PI } // point 1
@@ -62,32 +62,38 @@ God.flora = {
 
           , generate: function () {
                 if (Meteor.isClient) { return; }
-                var i, x, z, tile, pattern
+                var i, x, z, tile, pattern, special, sub
                 ;
 
                 //// Find an empty Tile.
-                for (i=Config.tiles.lowlandTileCount; i>0; i--) {
+                for (i=Config.tiles.lowlandTileCount * 4; i>0; i--) { // try to find an emty tile for four times the number of lowland tiles
 
                     //// Get a random `x` and `z` coordinate. If `xTerrainExtent` is `32` and `xTileSize` is `8`, `x` becomes an integer between `24` and `232` inclusive.
-                    // x = (  Math.floor( Math.random() * (Config.tiles.xTerrainExtent - 6) ) + 3  ) * Config.tiles.xTileSize;
-                    // z = (  Math.floor( Math.random() * (Config.tiles.zTerrainExtent - 6) ) + 3  ) * Config.tiles.zTileSize;
                     x = rint(3, Config.tiles.xTerrainExtent - 3) * Config.tiles.xTileSize;
                     z = rint(3, Config.tiles.zTerrainExtent - 3) * Config.tiles.zTileSize;
 
-                    //// Make sure this is a lowland tile
+                    //// Make sure this Tile is out of earshot of the spawn position. @todo remove this restriction after synch fix.
+                    if (
+                        (x < Config.viewpoint.spawnX + Config.flora.xFloraFar)
+                     && (x > Config.viewpoint.spawnX - Config.flora.xFloraFar)
+                     && (z < Config.viewpoint.spawnZ + Config.flora.zFloraFar)
+                     && (z > Config.viewpoint.spawnZ - Config.flora.zFloraFar)
+                    ) { continue; }
+
+                    //// Make sure this is a lowland Tile
                     tile = Tiles.findOne({ x:x, z:z });
                     if (! tile) { throw new Meteor.Error('`God.flora.typeLut["' + this.slug + '"].generate()` cannot find a Tile at (' + x + ',0,' + z + ')', 500); }
                     if (5 !== tile.bulk) {
-                        console.log('found a mountainous Tile at (' + x + ',0,' + z + ')');
+                        // console.log('found a mountainous Tile at (' + x + ',0,' + z + ')');
                         continue;
                     }
  
                     //// Make sure no other Flora exists at these coordinates, or in the adjacent coordinates. @todo test for race-condition
-                    if ( 0 !== Flora.find({ x:{ $gte:x-Config.tiles.xTileSize, $lte:x+Config.tiles.xTileSize }, z:{ $gte:z-Config.tiles.zTileSize, $lte:z+Config.tiles.zTileSize } }).count() ) {
-                        console.log('already Flora at or adjacent to (' + x + ',0,' + z + ')');
-                    } else {
+                    if ( 0 === Flora.find({ x:{ $gte:x-Config.tiles.xTileSize, $lte:x+Config.tiles.xTileSize }, z:{ $gte:z-Config.tiles.zTileSize, $lte:z+Config.tiles.zTileSize } }).count() ) {
                         // console.log('generate a ' + this.name + ' at (' + x + ',0,' + z + ')');
                         break;
+                    } else {
+                        // console.log('already Flora at or adjacent to (' + x + ',0,' + z + ')');
                     }
 
                 }
@@ -97,28 +103,67 @@ God.flora = {
                     throw new Meteor.Error('`God.flora.typeLut["' + this.slug + '"].generate()` gave up finding an empty space after ' + Config.tiles.lowlandTileCount + ' attempts.', 500);
                 }
 
-                //// Generate a pattern for this cactus, eg 'Ee..AaDd....AaDdEe..Aa..Bb..Cc..'.
+                //// Begin with 32 points of silence.
                 pattern = '................................'.split('');
-                for (i=0, l=rint(3, 12, 'mid', 2); i<l; i++) {
-                    switch ( rint(3, 'high') ) {
-                        case 0: // kick drum
-                            if ( rint() ) {
-                                pattern.splice( rint() * 16    , 2, 'E', 'e'); // add a full kick hit at point `0` or `16`
-                            } else {
-                                pattern.splice( rint() * 16 + 8, 2, 'B', 'b'); // add a soft kick hit at point `8` or `24`
-                            }
-                            break;
-                        case 1: // snare drum
-                            if ( rint() ) {
-                                pattern.splice( rint() * 16 + 8, 2, 'A', 'a'); // add a full snare hit at point `8` or `24`
-                            } else {
-                                pattern.splice( rint(3) * 8 + 4, 1, 'a');      // add a soft snare hit at point `4`, `12`, `20`, or `28`
-                            }
-                            break;
-                        case 2:
-                            break;
-                        case 3:
-                            break;
+
+                //// Usually, begin with a pattern of short hits, each of which has four ‘velocity’ levels.
+                if ( 0 !== rint(3) ) {
+
+                    special = (['FfGg','HhIi','JjKk','LlMm','NnOo','PpQq','RrSs','TtUu'])[rint(0, 7)];
+                    for (i=0, l=rint(4, 16, 'mid', 2); i<l; i++) { // on average, ten quieter hits
+                        pattern.splice(  rint(14) * 2, 1, special.charAt( rint(3, 'high', 2) )  ); // one of the even points
+                    }
+                    if ( 0 === rint(3) ) { // occasionally, the quieter hit is a different instrument
+                        special = (['FfGg','HhIi','JjKk','LlMm','NnOo','PpQq','RrSs','TtUu'])[rint(0, 7)];
+                    }
+                    for (i=0, l=rint(2, 8, 'mid', 2); i<l; i++) { // on average, five louder hits, overlaying the quieter hits
+                        pattern.splice(  rint(7)  * 4, 1, special.charAt( rint(3, 'low', 2) )  ); // point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
+                    }
+
+                    //// Often, the short hit pattern repeats itself. http://stackoverflow.com/a/14715570
+                    if ( rint() ) {
+                        Array.prototype.splice.apply(  pattern, [0,16].concat( pattern.slice(-16) )  ); // http://stackoverflow.com/a/14715570
+                    }
+                    if ( rint() ) {
+                        Array.prototype.splice.apply(  pattern, [8, 8].concat( pattern.slice(0,8) )  ); // 
+                    }
+
+                }
+
+                //// Usually, overlay the pattern of short hits with standard drumkit hits.
+                if ( 0 !== rint(3) || '................................' === pattern.join('') ) { // always add drumkit hits to an empty pattern
+                    for (i=0, l=rint(3, 12, 'mid', 2); i<l; i++) {
+                        switch ( rint(3, 'low') ) {
+                            case 0: // kick drum
+                                if ( rint() ) {
+                                    pattern.splice( rint() * 16    , 2, 'E', 'e'); // add a full kick hit at point `0` or `16`
+                                } else {
+                                    pattern.splice( rint() * 16 + 8, 2, 'B', 'b'); // add a soft kick hit at point `8` or `24`
+                                }
+                                break;
+                            case 1: // snare drum
+                                if ( rint() ) {
+                                    pattern.splice( rint() * 16 + 8, 2, 'A', 'a'); // add a full snare hit at point `8` or `24`
+                                } else {
+                                    pattern.splice( rint(3) * 8 + 4, 1, 'a');      // add a soft snare hit at point `4`, `12`, `20`, or `28`
+                                }
+                                break;
+                            case 2: // ride cymbal sub-pattern
+                                if ( rint() ) {
+                                    pattern.splice( rint(7) * 4, 2, 'C', 'c'); // add a full ride hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
+                                } else {
+                                    pattern.splice( rint(14) * 2, 1, 'c'); // add a soft ride hit at one of the even points
+                                }
+                                break;
+                            case 3: // splash cymbal sub-pattern
+                                if ( rint() ) {
+                                    pattern.splice( rint(7) * 4, 2, 'D', 'd'); // add a full splash hit at point `0`, `4`, `8`, `12`, `16`, `20`, `24`, or `28`
+                                } else {
+                                    pattern.splice( rint(14) * 2, 1, 'd'); // add a soft splash hit at one of the even points
+                                }
+                                break;
+                            // @todo Cc Dd combo pattern
+                        }
                     }
                 }
 
