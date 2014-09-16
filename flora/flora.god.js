@@ -26,38 +26,38 @@ God.flora = {
           , max: 0.32 // maximum number of this type of flora, as a fraction of lowland Tiles
 
           , drawPoint: [
-                { lx:0, lz:0, turn:0   * Math.PI } // point 1
-              , { lx:0, lz:1, turn:0   * Math.PI }
-              , { lx:0, lz:2, turn:0   * Math.PI }
-              , { lx:0, lz:3, turn:0   * Math.PI }
-              , { lx:0, lz:4, turn:0   * Math.PI }
-              , { lx:0, lz:5, turn:0   * Math.PI }
-              , { lx:0, lz:6, turn:0   * Math.PI }
-              , { lx:0, lz:7, turn:0   * Math.PI }
-              , { lx:0, lz:8, turn:.5  * Math.PI } // point 8
-              , { lx:1, lz:8, turn:.5  * Math.PI }
-              , { lx:2, lz:8, turn:.5  * Math.PI }
-              , { lx:3, lz:8, turn:.5  * Math.PI }
-              , { lx:4, lz:8, turn:.5  * Math.PI }
-              , { lx:5, lz:8, turn:.5  * Math.PI }
-              , { lx:6, lz:8, turn:.5  * Math.PI }
-              , { lx:7, lz:8, turn:.5  * Math.PI }
-              , { lx:8, lz:8, turn:1   * Math.PI } // point 16
-              , { lx:8, lz:7, turn:1   * Math.PI }
-              , { lx:8, lz:6, turn:1   * Math.PI }
-              , { lx:8, lz:5, turn:1   * Math.PI }
-              , { lx:8, lz:4, turn:1   * Math.PI }
-              , { lx:8, lz:3, turn:1   * Math.PI }
-              , { lx:8, lz:2, turn:1   * Math.PI }
-              , { lx:8, lz:1, turn:1   * Math.PI }
-              , { lx:8, lz:0, turn:1.5 * Math.PI } // point 24
-              , { lx:7, lz:0, turn:1.5 * Math.PI }
-              , { lx:6, lz:0, turn:1.5 * Math.PI }
-              , { lx:5, lz:0, turn:1.5 * Math.PI }
-              , { lx:4, lz:0, turn:1.5 * Math.PI }
-              , { lx:3, lz:0, turn:1.5 * Math.PI }
-              , { lx:2, lz:0, turn:1.5 * Math.PI }
-              , { lx:1, lz:0, turn:1.5 * Math.PI }
+                { lx:1.5, lz:1.5, turn:1.81 * Math.PI } // point 1
+              , { lx:1.0, lz:2.1, turn:1.88 * Math.PI }
+              , { lx:0.7, lz:2.7, turn:1.94 * Math.PI }
+              , { lx:0.5, lz:3.4, turn:0    * Math.PI }
+              , { lx:0.5, lz:4.0, turn:0.06 * Math.PI }
+              , { lx:0.5, lz:4.7, turn:0.12 * Math.PI }
+              , { lx:0.7, lz:5.7, turn:0.19 * Math.PI }
+              , { lx:1.0, lz:6.0, turn:0.26 * Math.PI }
+              , { lx:1.5, lz:6.5, turn:0.31 * Math.PI } // point 8
+              , { lx:2.2, lz:7.0, turn:0.38 * Math.PI }
+              , { lx:2.7, lz:7.2, turn:0.44 * Math.PI }
+              , { lx:3.3, lz:7.4, turn:0.5  * Math.PI }
+              , { lx:4.0, lz:7.5, turn:0.56 * Math.PI }
+              , { lx:4.7, lz:7.4, turn:0.62 * Math.PI }
+              , { lx:5.4, lz:7.2, turn:0.69 * Math.PI }
+              , { lx:5.7, lz:5.7, turn:0.74 * Math.PI }
+              , { lx:6.5, lz:6.5, turn:0.80 * Math.PI } // point 16
+              , { lx:6.8, lz:6.0, turn:0.86 * Math.PI }
+              , { lx:7.2, lz:5.3, turn:0.92  * Math.PI }
+              , { lx:7.4, lz:4.7, turn:1    * Math.PI }
+              , { lx:7.5, lz:4.0, turn:1.06 * Math.PI }
+              , { lx:7.4, lz:3.3, turn:1.12 * Math.PI }
+              , { lx:7.3, lz:3.0, turn:1.18 * Math.PI }
+              , { lx:7.0, lz:2.2, turn:1.24 * Math.PI }
+              , { lx:6.5, lz:1.5, turn:1.30 * Math.PI } // point 24
+              , { lx:5.9, lz:1.0, turn:1.36 * Math.PI }
+              , { lx:5.1, lz:0.7, turn:1.43 * Math.PI }
+              , { lx:4.6, lz:0.6, turn:1.5  * Math.PI }
+              , { lx:4.0, lz:0.5, turn:1.56 * Math.PI }
+              , { lx:3.3, lz:0.6, turn:1.63 * Math.PI }
+              , { lx:2.6, lz:0.8, turn:1.69 * Math.PI }
+              , { lx:2.0, lz:1.0, turn:1.75 * Math.PI }
             ]
 
           , generate: function () {
