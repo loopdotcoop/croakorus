@@ -66,9 +66,11 @@ Config.audio = {
 if (Meteor.isClient) {
 
     //// Schedule the playhead to step forward every 5400 samples. http://www.html5rocks.com/en/tutorials/audio/scheduling/
-    var nowTime, nowBeat
+    var nowTime, nowBeat, i, l
       , prevBeat = 0
       , prevTime = 0
+      , beatEls = []
+      , scale
 
         //// Find out where the playhead should be, given the total amount of time elapsed since `Config.audio.ctx` was created.
       , step = function () { // we don’t use the `stamp` argument
@@ -78,13 +80,34 @@ if (Meteor.isClient) {
             if ( (nowTime - prevTime) > 0.028125) { // `(nowTime - prevTime)` is time elapsed, and `0.028125` is 1350 samples (`0.1125` is less smooth)
                 nowBeat = ~~( (nowTime % 3.6) / 0.1125 ); // `nowBeat` is an integer between `0` and `31` inclusive http://jsperf.com/math-floor-vs-math-round-vs-parseint/33
                 if ( nowBeat !== prevBeat ) {
+
+                    //// Xx.
                     Session.set('playhead', Config.audio.playheadLut[nowBeat]);
                     prevBeat = nowBeat;
+
+                    //// Xx.
+                    for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1 1 1'); } // reset any previous X3D elements which have not been returned to their ‘at rest’ state
+                    beatEls = document.getElementsByClassName('point-' + nowBeat); // get an `HTMLCollection` reference to the set of X3D elements which react to the current beat
+                    for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1.2 1.1 1.2'); } // @todo animate?
+                    // scale = 1.2;
+                    // window.requestAnimationFrame(animBeatEls); // start running the localized animations
+
                 }
                 prevTime = nowTime;
             }
             window.requestAnimationFrame(step);
         }
+
+      //   //// Make one beat-based animation step, and if more steps are needed, schedule the next step.
+      // , animBeatEls = function () {
+      //       for (i=0, l=beatEls.length; i<l; i++) {
+      //           beatEls[i].setAttribute('scale', scale + ' ' + scale + ' ' + scale);
+      //       }
+      //       scale -= .02; // @todo refine animation, perhaps don’t reset after 10th second, but let the entire animation play out
+      //       if (scale > 1) {
+      //           window.requestAnimationFrame(animBeatEls);
+      //       }
+      //   }
     ;
 
     //// Initialize the audio context.

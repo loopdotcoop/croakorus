@@ -16,7 +16,8 @@ try { // @ needed?
                 lx:   drawPoint[pt].lx      // local x-position, relative to the (0,0) corner of the container Tile
               , lz:   drawPoint[pt].lz      // local z-position, relative to the (0,0) corner of the container Tile
               , turn: drawPoint[pt].turn    // for `rotation` attribute
-              , use:  this.type + '-' + dtl // for `<transform use="{{type}}-{{detail}}"></transform>`
+              , use:  this.type + '-' + dtl // for `<transform use="{{use}}" ... ></transform>`
+              , pt:   'point-' + pt         // for `<transform ... class="{{pt}}"></transform>`
             });
         }
         return out;

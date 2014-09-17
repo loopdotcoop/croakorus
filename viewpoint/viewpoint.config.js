@@ -15,6 +15,9 @@ Config.viewpoint = {
         'Beth Walker <info@loop.coop>'
     ]
 
+  , spawnX: 140
+  , spawnZ: 137
+
   , changelog: [
         '+ viewpoint@0.0.1-1   create ‘viewpoint’ as a feature of ‘desoot@0.1.1-1’;  \n' +
         '                      paste ‘viewpoint.js’ from 20140720-desoot-v0.1.9 ‘viewpoint.js’ and edit code;  \n' +

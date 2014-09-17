@@ -1,11 +1,14 @@
 if (Meteor.isClient) {
 
-    Session.set('looptopianPosition', [140,4,137]); // @todo user db
+    Session.set('looptopianPosition', [Config.viewpoint.spawnX, 4, Config.viewpoint.spawnZ]); // @todo user db
     Session.set('viewpointRotation', 'south'); // @todo user db
 
     UI.body.helpers({
         looptopianPosition: function () {
             return Session.get('looptopianPosition').join(' ');
+        }
+      , spotlightPosition: function () {
+            return Session.get('looptopianPosition')[0] + ' 15 ' + Session.get('looptopianPosition')[2];
         }
       , viewpointPosition: function () {
             var lp = Session.get('looptopianPosition');
@@ -34,19 +37,20 @@ if (Meteor.isClient) {
 
             if (dragged) { return; }
 
-            var currPos, newVp, xyz
+            var currPos, newVp, xyz, flora
               , vpRotation = Session.get('viewpointRotation')
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
-              , flora
+              , classes = (evt.target.getAttribute && evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '').split(' ')
             ;
 
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
 
                 //// Deal with a click on a lowland terrain tile or a hit-box.
-                if ( 'BOX' === evt.target.tagName || '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
+                // if ( -1 !== classes.indexOf('ldc-hitzone') || '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
+                if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
 
                     //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
                     if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
@@ -99,7 +103,7 @@ if (Meteor.isClient) {
                 }
 
                 //// For a click on a hit-box, center the viewpoint.
-                if ( 'BOX' === evt.target.tagName && evt.target.getAttribute('data-center') ) {
+                if (  -1 !== classes.indexOf('ldc-hitzone') && evt.target.getAttribute('data-center') ) {
                     xyz = evt.target.getAttribute('data-center').split(' ');
                     x = +xyz[0] + (Config.tiles.xTileSize / 2); // nb, the intial `+` converts from string to number
                     y = +xyz[1]
@@ -175,20 +179,20 @@ if (Meteor.isClient) {
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
-        var classes = (evt.target.getAttribute ? evt.target.getAttribute('class') : null);
-        if ('auto' === classes) {
+        var classes = (evt.target.getAttribute && evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '').split(' ');
+        if ( -1 !== classes.indexOf('auto') ) {
             $('body').css('cursor', 'auto');
-        } else if ('ldc-toggle-mute' === classes) {
+        } else if ( -1 !== classes.indexOf('ldc-toggle-mute') ) {
             $('body').css('cursor', 'pointer');
         } else if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
-        } else if ( 'BOX' === evt.target.tagName ) { // @todo better way of identifying clickable objects?
-            $('body').css('cursor', 'url(/viewpoint/default.png) 3 3, default');
+        } else if ( -1 !== classes.indexOf('ldc-hitzone') ) {
+            $('body').css('cursor', 'url(/viewpoint/pointer.png) 3 3, pointer');
         } else if ( 'mouseover-plane' === evt.target.className ) {
             // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
-        } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
-            // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
+        // } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
+        } else if ( -1 === classes.indexOf('ldc-navigation') ) {
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'url(/viewpoint/left.png) 3 20, w-resize');
