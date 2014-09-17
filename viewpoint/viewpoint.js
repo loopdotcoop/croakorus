@@ -42,7 +42,7 @@ if (Meteor.isClient) {
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
-              , classes = (evt.target.getAttribute && evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '').split(' ')
+              , classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ')
             ;
 
             if (1 === evt.button) {
@@ -179,7 +179,7 @@ if (Meteor.isClient) {
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
-        var classes = (evt.target.getAttribute && evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '').split(' ');
+        var classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ');
         if ( -1 !== classes.indexOf('auto') ) {
             $('body').css('cursor', 'auto');
         } else if ( -1 !== classes.indexOf('ldc-toggle-mute') ) {
