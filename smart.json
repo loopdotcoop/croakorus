@@ -4,6 +4,7 @@
     "iron-router": {},
     "x3dom": {},
     "autoform": {},
-    "jquery-datatables": {}
+    "jquery-datatables": {},
+    "zurb-foundation": {}
   }
 }

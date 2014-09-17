@@ -6,7 +6,8 @@
       "iron-router": {},
       "x3dom": {},
       "autoform": {},
-      "jquery-datatables": {}
+      "jquery-datatables": {},
+      "zurb-foundation": {}
     },
     "packages": {
       "handlebar-helpers": {
@@ -33,6 +34,11 @@
         "git": "https://github.com/lumapictures/meteor-jquery-datatables",
         "tag": "v1.0.5",
         "commit": "fe4fb3178386f88eeac9139b7680646b320e321d"
+      },
+      "zurb-foundation": {
+        "git": "https://github.com/MixinLabs/meteor-foundation.git",
+        "tag": "v5.3.3-0.1.0",
+        "commit": "f754d7758ae0a79e0573ddbf927382042f1a875c"
       },
       "iron-layout": {
         "git": "https://github.com/EventedMind/iron-layout.git",
