@@ -22,7 +22,7 @@ God.flora = {
             name:   'Cactus'
           , plural: 'Cacti'
           , slug:   'cactus'
-          , min: 0.04 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , min: 0.06 // minimum number of this type of flora, as a fraction of lowland Tiles
           , max: 0.16 // maximum number of this type of flora, as a fraction of lowland Tiles
 
           , drawPoint: [
