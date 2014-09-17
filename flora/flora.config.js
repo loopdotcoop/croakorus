@@ -59,7 +59,8 @@ Config.flora = {
       , '+ flora@0.0.3-2   solo a Flora when its distance is `0` (the user has clicked on it); '
       , '+ flora@0.0.3-3   render the remaining beats as sugarloafs; '
       , '+ flora@0.0.3-4   stones jump up when playing; '
-    ], version: '0.0.3-4'
+      , '+ flora@0.0.4     tighter hit-box for Flora; spotlight when soloing Flora; '
+    ], version: '0.0.4'
 };
 
 

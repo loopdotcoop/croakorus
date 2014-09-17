@@ -2,7 +2,7 @@ if (Meteor.isClient) {
 
     //// Allow any template to use `{{#each flora}}`.
     UI.registerHelper('flora', function() {
-        var flora, i, l, dx, dz, far, id, source, gainNode
+        var flora, i, l, dx, dz, far, id, source, gainNode, mainlight, spotlight
           , position = Session.get('looptopianPosition') // @todo user db
           , x = position[0]
           , z = position[2]
@@ -64,11 +64,19 @@ try { // @todo remove
             flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
         }
 
-        //// Sort Flora in order of distance from the viewpoint, and determine whether the user has solo’d a single Flora.
+        //// Sort Flora in order of distance from the viewpoint
         flora = _.sortBy(flora, function(o) { return o.far; });
+
+        //// Determine whether the user has solo’d a single Flora.
         if (flora.length && 0 === flora[0].far) {
             isSolo = true;
         }
+
+        //// Set the appropriate lighting.
+        mainlight = document.getElementById('ldc-mainlight');
+        if (mainlight) { mainlight.setAttribute('on', ! isSolo); }
+        spotlight = document.getElementById('ldc-spotlight');
+        if (spotlight) { spotlight.setAttribute('on', isSolo); }
 
         //// Xx.
         for (i=0, l=flora.length; i<l; i++) {
@@ -118,7 +126,7 @@ try { // @todo remove
 
                             source.start(nextTime, nextBeat * 0.1125); // @todo improve timing, sometimes sources sync quite well, sometimes not!
                         } else {
-                            console.log('no source for ' + id, God.flora.sourceLut);
+                            // console.log('no source for ' + id, God.flora.sourceLut); // @todo is it a problem if `God.flora.sourceLut[id]` does not exist? 
                         }
                     }
                 );

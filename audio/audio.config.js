@@ -86,10 +86,11 @@ if (Meteor.isClient) {
                     prevBeat = nowBeat;
 
                     //// Xx.
-                    for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1 1 1'); } // reset any previous X3D elements which have not yet been smoothly returned to their ‘at rest’ state
+                    for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1 1 1'); } // reset any previous X3D elements which have not been returned to their ‘at rest’ state
                     beatEls = document.getElementsByClassName('point-' + nowBeat); // get an `HTMLCollection` reference to the set of X3D elements which react to the current beat
-                    scale = 1.2;
-                    window.requestAnimationFrame(animBeatEls); // start running the localized animations
+                    for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1.2 1.1 1.2'); } // @todo animate?
+                    // scale = 1.2;
+                    // window.requestAnimationFrame(animBeatEls); // start running the localized animations
 
                 }
                 prevTime = nowTime;
@@ -97,16 +98,16 @@ if (Meteor.isClient) {
             window.requestAnimationFrame(step);
         }
 
-        //// Make one beat-based animation step, and if more steps are needed, schedule the next step.
-      , animBeatEls = function () {
-            for (i=0, l=beatEls.length; i<l; i++) {
-                beatEls[i].setAttribute('scale', scale + ' ' + scale + ' ' + scale);
-            }
-            scale -= .02; // @todo refine animation, perhaps don’t reset after 10th second, but let the entire animation play out
-            if (scale > 1) {
-                window.requestAnimationFrame(animBeatEls);
-            }
-        }
+      //   //// Make one beat-based animation step, and if more steps are needed, schedule the next step.
+      // , animBeatEls = function () {
+      //       for (i=0, l=beatEls.length; i<l; i++) {
+      //           beatEls[i].setAttribute('scale', scale + ' ' + scale + ' ' + scale);
+      //       }
+      //       scale -= .02; // @todo refine animation, perhaps don’t reset after 10th second, but let the entire animation play out
+      //       if (scale > 1) {
+      //           window.requestAnimationFrame(animBeatEls);
+      //       }
+      //   }
     ;
 
     //// Initialize the audio context.

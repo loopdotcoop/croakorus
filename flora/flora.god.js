@@ -22,8 +22,8 @@ God.flora = {
             name:   'Cactus'
           , plural: 'Cacti'
           , slug:   'cactus'
-          , min: 0.08 // minimum number of this type of flora, as a fraction of lowland Tiles
-          , max: 0.32 // maximum number of this type of flora, as a fraction of lowland Tiles
+          , min: 0.04 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , max: 0.16 // maximum number of this type of flora, as a fraction of lowland Tiles
 
           , drawPoint: [
                 { lx:1.5, lz:1.5, turn:1.81 * Math.PI } // point 1
@@ -41,7 +41,7 @@ God.flora = {
               , { lx:4.0, lz:7.5, turn:0.56 * Math.PI }
               , { lx:4.7, lz:7.4, turn:0.62 * Math.PI }
               , { lx:5.4, lz:7.2, turn:0.69 * Math.PI }
-              , { lx:5.7, lz:5.7, turn:0.74 * Math.PI }
+              , { lx:5.7, lz:6.7, turn:0.74 * Math.PI }
               , { lx:6.5, lz:6.5, turn:0.80 * Math.PI } // point 16
               , { lx:6.8, lz:6.0, turn:0.86 * Math.PI }
               , { lx:7.2, lz:5.3, turn:0.92  * Math.PI }
@@ -72,13 +72,13 @@ God.flora = {
                     x = rint(3, Config.tiles.xTerrainExtent - 3) * Config.tiles.xTileSize;
                     z = rint(3, Config.tiles.zTerrainExtent - 3) * Config.tiles.zTileSize;
 
-                    //// Make sure this Tile is out of earshot of the spawn position. @todo remove this restriction after synch fix.
-                    // if (
-                    //     (x < Config.viewpoint.spawnX + Config.flora.xFloraFar)
-                    //  && (x > Config.viewpoint.spawnX - Config.flora.xFloraFar)
-                    //  && (z < Config.viewpoint.spawnZ + Config.flora.zFloraFar)
-                    //  && (z > Config.viewpoint.spawnZ - Config.flora.zFloraFar)
-                    // ) { continue; }
+                    // Make sure this Tile is out of earshot of the spawn position. @todo remove this restriction after synch fix.
+                    if (
+                        (x < Config.viewpoint.spawnX + Config.flora.xFloraFar)
+                     && (x > Config.viewpoint.spawnX - Config.flora.xFloraFar)
+                     && (z < Config.viewpoint.spawnZ + Config.flora.zFloraFar)
+                     && (z > Config.viewpoint.spawnZ - Config.flora.zFloraFar)
+                    ) { continue; }
 
                     //// Make sure this is a lowland Tile
                     tile = Tiles.findOne({ x:x, z:z });
