@@ -55,7 +55,8 @@ Config = {
           , '+ desoot@0.1.14    choose either 44.1kHz or 48kHz to match users sound-card (fixes audio glitch);  \n' +
             '                   `Config.audio.gain` and `.ldc-toggle-mute`; '
           , '+ desoot@0.1.16    Flora look and sound more complete; can solo Flora; '
-        ] , version: '0.1.16'
+          , '+ desoot@0.1.18    Temporarily disable the deep kick drum, which has a glitchy-sounding spike; '
+        ] , version: '0.1.18'
     }
 };
 
@@ -64,6 +65,7 @@ if (Meteor.isServer && 'object' === typeof process && process.env) {
     Config.about.env = process.env.NODE_ENV; // @todo is this ever used?
 } else if (Meteor.isClient && window && window.location) {
     Config.about.env = '127.0.0.1' === window.location.hostname || 'localhost' === window.location.hostname ? 'development' : 'production'; // @todo make sure this agrees with serverside `Config.about.env` ... Meteor method?
+    if ('??' === window.location.search) { Config.about.env = 'development'; } // @todo only allow signed-in admins to override `Config.about.env` like this
 }
 
 

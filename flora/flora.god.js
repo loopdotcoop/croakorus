@@ -135,7 +135,8 @@ God.flora = {
                     for (i=0, l=rint(3, 12, 'mid', 2); i<l; i++) {
                         switch ( rint(3, 'low') ) {
                             case 0: // kick drum
-                                if ( rint() ) {
+                                // if ( rint() ) { // @todo fix deep kick drum, which has a glitchy-sounding spike
+                                if (1) {
                                     pattern.splice( rint() * 16    , 2, 'E', 'e'); // add a full kick hit at point `0` or `16`
                                 } else {
                                     pattern.splice( rint() * 16 + 8, 2, 'B', 'b'); // add a soft kick hit at point `8` or `24`
