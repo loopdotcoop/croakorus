@@ -1,6 +1,6 @@
 if (Meteor.isServer) {
     Meteor.startup(function () {
-        // Flora.remove({});
+        Flora.remove({});
 
         //// The first time the app starts, generate initial Flora and record them into the `Flora` collection.
         if ( 0 !== Flora.find().count() ) {

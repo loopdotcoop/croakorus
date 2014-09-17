@@ -2,8 +2,8 @@ if (Meteor.isClient) {
 
     //// Allow any template to use `{{#each flora}}`.
     UI.registerHelper('flora', function() {
-        var
-            position = Session.get('looptopianPosition') // @todo user db
+        var flora, i, l, dx, dz, far, id, source, gainNode, mainlight, spotlight
+          , position = Session.get('looptopianPosition') // @todo user db
           , x = position[0]
           , z = position[2]
           , xFar1 = Config.flora.xFloraFar
@@ -12,6 +12,11 @@ if (Meteor.isClient) {
           , zFar1 = Config.flora.zFloraFar
           , zFar2 = zFar1 * 2
           , zFar4 = zFar1 * 4
+          , isSolo = false
+          , ids = {}
+          , sources = []
+          , sourceLut = {}
+          , lowerFloraFar = Math.min(Config.flora.xFloraFar, Config.flora.zFloraFar)
 
             //// Restrict to nearby small flora, middle-distance medium flora, and all giant flora.
           , selector = { $or: [ // http://docs.mongodb.org/manual/reference/operator/query/or/
@@ -47,28 +52,38 @@ if (Meteor.isClient) {
 
 
 
-        var flora, i, l, dx, dz, far, id, source, gainNode
-          , ids = {}
-          , sources = []
-          , sourceLut = {}
-          , lowerFloraFar = Math.min(Config.flora.xFloraFar, Config.flora.zFloraFar)
-        ;
-
 try { // @todo remove
 
-        //// Xx.
+        //// Find all nearby Flora.
         flora = Flora.find(selector).fetch();
 
-        //// Add some useful data to the fetched `flora` array.
+        //// Record the distance between the viewpoint and the center of the Tile which each Flora is on.
         for (i=0, l=flora.length; i<l; i++) {
-
-            //// Get a handy reference to the Flora’s MongoDB ID.
-            id = flora[i]._id;
-
-            //// `far` is the distance between the viewpoint and the center of the Tile which the Flora is on.
             dx = flora[i].x - x + (Config.tiles.xTileSize / 2);
             dz = flora[i].z - z + (Config.tiles.zTileSize / 2);
-            far = flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
+            flora[i].far = Math.sqrt( (dx * dx) + (dz * dz) ); // yay Pythagorus!
+        }
+
+        //// Sort Flora in order of distance from the viewpoint
+        flora = _.sortBy(flora, function(o) { return o.far; });
+
+        //// Determine whether the user has solo’d a single Flora.
+        if (flora.length && 0 === flora[0].far) {
+            isSolo = true;
+        }
+
+        //// Set the appropriate lighting.
+        mainlight = document.getElementById('ldc-mainlight');
+        if (mainlight) { mainlight.setAttribute('on', ! isSolo); }
+        spotlight = document.getElementById('ldc-spotlight');
+        if (spotlight) { spotlight.setAttribute('on', isSolo); }
+
+        //// Xx.
+        for (i=0, l=flora.length; i<l; i++) {
+
+            //// Get a handy reference to the Flora’s MongoDB ID, and the distance between the viewpoint and the center of the Tile which each Flora is on.
+            id = flora[i]._id;
+            far = flora[i].far;
 
             //// Get a reference to the Flora’s `AudioBufferSourceNode` object.
             source = God.flora.sourceLut[id];
@@ -96,7 +111,7 @@ try { // @todo remove
                         ;
                         if (source) {
 // console.log('connecting loop to ctx for ', id, source.pattern);
-                            source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9 });
+                            source.buffer = makeLoop(decoded, source.pattern, { A:0, a:1, B:2, b:3, C:4, c:5, D:6, d:7, E:8, e:9, F:10, f:11, G:12, g:13, H:14, h:15, I:16, i:17, J:18, j:19, K:20, k:21, L:22, l:23, M:24, m:25, N:26, n:27, O:28, o:29, P:30, p:31, Q:32, q:33, R:34, r:35, S:36, s:37, T:38, t:39, U:40, u:41 });
 
                             //// Xx.
                             nowTime = Config.audio.ctx.currentTime;
@@ -111,7 +126,7 @@ try { // @todo remove
 
                             source.start(nextTime, nextBeat * 0.1125); // @todo improve timing, sometimes sources sync quite well, sometimes not!
                         } else {
-                            console.log('no source for ' + id, God.flora.sourceLut);
+                            // console.log('no source for ' + id, God.flora.sourceLut); // @todo is it a problem if `God.flora.sourceLut[id]` does not exist? 
                         }
                     }
                 );
@@ -123,11 +138,12 @@ try { // @todo remove
             //// Closer stone-circles are louder. @todo gradual transition of gain. @todo gradual transition of pan or spacialize.
             if (far > lowerFloraFar) {
                 source.gain.value = 0;
+            } else if (isSolo && 0 !== far) { // the user is soloing a Flora, and this is not the Flora they are soloing
+                source.gain.value = 0;
             } else {
                 source.gain.value = (lowerFloraFar - far) / lowerFloraFar; // eg `(50 - 49) / 50` = `0.02`, and `(50 - 1) / 50` = `0.98`
+                source.gain.value = source.gain.value * source.gain.value; // sharper dropoff, so `0.02` becomes `0.0004`, and `0.98` becomes `0.9604`
             }
-            
-
 
             //// Record the source to temporary objects.
             sources.push(source);
@@ -150,10 +166,6 @@ try { // @todo remove
         God.flora.sourceLut = sourceLut;
 
 // console.log('now ' + God.flora.sources.length, God.flora.sources, God.flora.sourceLut);
-
-
-        //// Place the nearest Flora at the top.
-        flora = _.sortBy(flora, function(o) { return o.far; });
 
         Session.set('audioSources', flora);
 
@@ -238,7 +250,7 @@ console.log('decoded ' + url);
               , l = pattern.length
               , numberOfChannels = decoded.numberOfChannels
               , sampleRate = decoded.sampleRate
-              , pitch = (44100 === sampleRate ? 1.08843537414966 : 1) // `1.08843537414966` is `48000 / 44100` @todo what if it’s not 44100 or 48000? @todo user pref?
+              , pitch = (44100 === sampleRate ? 1.08843537414966 : 1) // `1.08843537414966` is `48000 / 44100` @todo what if it’s not 44100 or 48000? @todo user pref
               , grid = 5400
               , dest = Config.audio.ctx.createBuffer(numberOfChannels, l * grid, sampleRate * pitch) // http://stackoverflow.com/a/14148125
             ;
