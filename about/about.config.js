@@ -54,7 +54,8 @@ Config = {
           , '+ desoot@0.1.12    stone-circle patterns are visual and audio; '
           , '+ desoot@0.1.14    choose either 44.1kHz or 48kHz to match users sound-card (fixes audio glitch);  \n' +
             '                   `Config.audio.gain` and `.ldc-toggle-mute`; '
-        ] , version: '0.1.14'
+          , '+ desoot@0.1.16    Flora look and sound more complete; can solo Flora; '
+        ] , version: '0.1.16'
     }
 };
 
