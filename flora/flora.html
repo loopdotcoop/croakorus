@@ -5,7 +5,7 @@
 <template name="flora">
   <transform translation="{{x}} .1 {{z}}">
     {{#each patternArray}}
-    <transform translation="{{lx}} 0 {{lz}}" rotation="0 1 0  {{turn}}">
+    <transform translation="{{lx}} 0 {{lz}}" rotation="0 1 0  {{turn}}" class="{{pt}}">
       <transform use="{{use}}"></transform>
     </transform>
     {{/each}}
