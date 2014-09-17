@@ -19,5 +19,6 @@ Config.track = {
   , changelog: [
         '+ track@0.0.1-1    create ‘tiles’ as a feature of ‘desoot@0.1.21-1’; '
       , '+ track@0.0.1-2    `$ mrt add zurb-foundation`; style the ‘Make a Track’ button; '
-    ], version: '0.0.1-2'
+      , '+ track@0.0.1-3    click ‘Make a Track’ to reveal ‘One Bar’, ‘Two Bars’, etc; '
+    ], version: '0.0.1-3'
 };

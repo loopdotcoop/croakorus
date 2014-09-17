@@ -22,6 +22,11 @@ if (Meteor.isClient) {
         return ('          ' + value).slice(-length);
     });
 
+    //// Get the current path.
+    UI.registerHelper('currentPath', function () {
+        return Router.current().path;
+    });
+
 }
 
 //// http://stackoverflow.com/a/19131165

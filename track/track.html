@@ -1,0 +1,29 @@
+<head>
+<!-- track.html -->
+</head>
+
+<template name="track">
+
+{{#if $eq currentPath '/'}}
+  <div id="ldc-track-buttons">
+    <a href="/track" class="radius button" title="Start making a new track"><span class="cbh-paw">Make a Track</span></a>
+  </div>
+{{/if}}
+{{#if $eq currentPath '/track'}}
+  <div id="ldc-track-buttons"
+    ><a href="/track" id="ldc-track-wait-1"  class="ldc-icon" title="Add a “Wait for one bar” marker here"><div class="cbh-dots-one"></div><h6><span>Wait 1&nbsp;Bar</span></h6></a
+    ><a href="/track" id="ldc-track-wait-2"  class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
+    ><a href="/track" id="ldc-track-wait-3"  class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
+    ><a href="/track" id="ldc-track-wait-4"  class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
+    ><a href="/"      id="ldc-track-abandon" class="ldc-icon" title="Abandon creating this track (it will NOT be saved)"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
+    ><a href="/"      id="ldc-track-release" class="ldc-icon" title="Finish working on this track (leave it for others to find)"><div class="cbh-ok-circled-2"></div><h6><span>Release</span></h6></a
+    ></div>
+{{/if}}
+
+</template>
+
+<template name="track.list">
+<!-- @todo -->
+Track List Here
+
+</template>

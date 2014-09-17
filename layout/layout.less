@@ -103,9 +103,33 @@ x3d {
     right: 0;
     bottom: 10px;
     text-align: center;
+    .ldc-icon {
+        display: inline-block;
+        vertical-align: top;
+        width: 50px; // responsive
+        div {
+            text-align: center;
+            font-size: 2rem; // responsive
+        }
+        h6 {
+            font-size: .7rem; // responsive
+            line-height: .8;
+        }
+    }
 }
-
-
+@media only screen and (min-width: 40.063em) {
+    #ldc-track-buttons {
+        .ldc-icon {
+            width: 70px; // responsive
+            div {
+                font-size: 3rem; // responsive
+            }
+            h6 {
+                font-size: 1rem; // responsive
+            }
+        }
+    }
+}
 
 
 
