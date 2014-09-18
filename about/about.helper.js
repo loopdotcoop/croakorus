@@ -24,7 +24,7 @@ if (Meteor.isClient) {
 
     //// Get the current path.
     UI.registerHelper('currentPath', function () {
-        return Router.current().path;
+        return Router.current() ? Router.current().path : null;
     });
 
 }

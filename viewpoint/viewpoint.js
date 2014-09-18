@@ -48,7 +48,7 @@ if (Meteor.isClient) {
             if (1 === evt.button) {
                 // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
 
-                //// Deal with a click on a lowland terrain tile or a hit-box.
+                //// Deal with a click on a lowland terrain tile or a hitzone.
                 // if ( -1 !== classes.indexOf('ldc-hitzone') || '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
                 if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
 
@@ -102,16 +102,22 @@ if (Meteor.isClient) {
 
                 }
 
-                //// For a click on a hit-box, center the viewpoint.
+                //// For a click on a hitzone, center the viewpoint.
                 if (  -1 !== classes.indexOf('ldc-hitzone') && evt.target.getAttribute('data-center') ) {
                     xyz = evt.target.getAttribute('data-center').split(' ');
-                    x = +xyz[0] + (Config.tiles.xTileSize / 2); // nb, the intial `+` converts from string to number
-                    y = +xyz[1]
-                    z = +xyz[2] + (Config.tiles.zTileSize / 2);
+                    x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
+                    if ( -1 === classes.indexOf('ldc-precise') ) {
+                        x += (Config.tiles.xTileSize / 2);
+                        z += (Config.tiles.zTileSize / 2);
+                    }
                 }
 
                 //// Update the Topian’s position. @todo draw topian.
                 Session.set('looptopianPosition', [x,y,z]);
+
+                //// Some hitzones force a direction-change, eg Track markers. @todo
+                // if ( evt.target.getAttribute('data-turn') ) {
+                // }
 
                 //// Prepare a new transformed viewpoint.
                 newVp =
@@ -189,9 +195,7 @@ if (Meteor.isClient) {
         } else if ( -1 !== classes.indexOf('ldc-hitzone') ) {
             $('body').css('cursor', 'url(/viewpoint/pointer.png) 3 3, pointer');
         } else if ( 'mouseover-plane' === evt.target.className ) {
-            // $('body').css('cursor', 'url(/viewpoint/default.png) 8 8, default');
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
-        // } else if ( '5' !== evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
         } else if ( -1 === classes.indexOf('ldc-navigation') ) {
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left

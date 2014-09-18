@@ -35,7 +35,7 @@ body {
 }
 pre {
     font-size: 12px;
-    line-height: .9;
+    line-height: .75;
 }
 h1, h2, h3, h4, h5, h6, button, .button, #ldc-header, #ldc-footer {
     font-family: 'Podkova', verdana, sans-serif;
@@ -95,8 +95,8 @@ x3d {
 }
 
 
-//// ‘track’ buttons.
-#ldc-track-buttons {
+//// ‘tracks’ buttons.
+#ldc-tracks-buttons {
     position: absolute;
     z-index: 12;
     left: 0;
@@ -107,6 +107,11 @@ x3d {
         display: inline-block;
         vertical-align: top;
         width: 50px; // responsive
+        // opacity: 0.7;
+        // transition: opacity .4s ease-out;
+        // &:hover {
+        //     opacity: 1;
+        // }
         div {
             text-align: center;
             font-size: 2rem; // responsive
@@ -118,7 +123,7 @@ x3d {
     }
 }
 @media only screen and (min-width: 40.063em) {
-    #ldc-track-buttons {
+    #ldc-tracks-buttons {
         .ldc-icon {
             width: 70px; // responsive
             div {

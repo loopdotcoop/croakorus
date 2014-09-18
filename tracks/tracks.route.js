@@ -3,8 +3,8 @@ Router.map(function() {
             path: '/track'
         }
     );
-    this.route('track.list', {
-            path: '/track/list'
+    this.route('tracks.list', {
+            path: '/tracks/list'
         }
     );
 });

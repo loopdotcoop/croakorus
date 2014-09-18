@@ -1,0 +1,108 @@
+<head>
+<!-- tracks.html -->
+</head>
+
+<template name="track">
+{{#if $eq currentPath '/'}}
+  <div id="ldc-tracks-buttons">
+    <a href="/track" class="radius button" title="Start making a new track"><span class="cbh-paw">Make a Track</span></a>
+  </div>
+{{/if}}
+{{#if $eq currentPath '/track'}}
+  <div id="ldc-tracks-buttons"
+    ><a href="/track" id="ldc-tracks-wait-1"  class="ldc-icon" title="Add a “Wait for one bar” marker here"><div class="cbh-dots-one"></div><h6><span>Wait 1&nbsp;Bar</span></h6></a
+    ><a href="/track" id="ldc-tracks-wait-2"  class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
+    ><a href="/track" id="ldc-tracks-wait-3"  class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
+    ><a href="/track" id="ldc-tracks-wait-4"  class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
+    ><a href="/"      id="ldc-tracks-abandon" class="ldc-icon" title="Abandon creating this track (it will NOT be saved)"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
+    ><a href="/"      id="ldc-tracks-release" class="ldc-icon" title="Finish working on this track (leave it for others to find)"><div class="cbh-ok-circled-2"></div><h6><span>Release</span></h6></a
+    ></div>
+{{/if}}
+</template>
+
+
+<template name="tracks">
+  {{#each markers}}
+  <transform translation="{{x}} 0 {{z}}" rotation="0 1 0  {{turn}}">
+    <transform use="{{use}}"></transform>
+    <shape use="dst-tracks-marker"></shape>
+    <shape>
+      <appearance>
+        <material transparency="1"></material>
+      </appearance>
+      <slopedcylinder id="{{mkrid}}" class="ldc-hitzone ldc-precise" data-center="{{x}} .1 {{z}}" height=".7" radius=".35" xbshear="0" xtshear=".15"></slopedcylinder>
+    </shape>
+  </transform>
+  {{/each}}
+</template>
+
+
+<template name="tracksdef">
+
+  <!-- primatives -->
+  <shape def="dst-tracks-dot">
+    <appearance>
+      <material diffuseColor="#2285a2"></material>
+    </appearance>
+    <sphere radius=".1"></sphere>
+  </shape>
+
+  <shape def="dst-tracks-marker">
+    <appearance>
+      <material diffuseColor="#2285a2"></material>
+    </appearance>
+    <slopedcylinder height=".5" radius=".3" xbshear="0" xtshear=".15"></slopedcylinder>
+  </shape>
+
+  <!-- wait-1 -->
+  <transform def="dst-tracks-wait-1" translation="0 .2 0">
+    <shape use="dst-tracks-dot"></shape>
+  </transform>
+
+  <!-- wait-2 -->
+  <transform def="dst-tracks-wait-2" translation="0 .2 0" rotation="0 0 1  .43" scale=".95 .95 .95">
+    <transform translation=".1 0 .1">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation="-.1 0 -.1">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+  </transform>
+
+  <!-- wait-3 -->
+  <transform def="dst-tracks-wait-3" translation="0 .2 0" rotation="0 0 1  .43" scale=".9 .9 .9">
+    <transform translation="0 0 .13">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation="-.16 0 -.13">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation=".16 0 -.13">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+  </transform>
+
+  <!-- wait-4 -->
+  <transform def="dst-tracks-wait-4" translation="0 .2 0" rotation="0 0 1  .43" scale=".8 .8 .8">
+    <transform translation="-.17 0 -.17">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation=".17 0 -.17">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation=".17 0 .17">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+    <transform translation="-.17 0 .17">
+      <shape use="dst-tracks-dot"></shape>
+    </transform>
+  </transform>
+
+</template>
+
+
+<template name="tracks.list">
+<!-- @todo -->
+Tracks List Here
+
+</template>
