@@ -21,7 +21,7 @@ if (Meteor.isClient) {
 
         //// Find all nearby Tracks.
         tracks = Tracks.find(selector).fetch();
-console.log(tracks);
+
         //// Convert each Track to a format which Handlebars can easily parse.
         for (i=0, l=tracks.length; i<l; i++) {
             track = tracks[i];
@@ -35,6 +35,8 @@ console.log(tracks);
                   , z:     marker[2]
                   , turn:  marker[3]
                   , mkrid: track._id + '-' + j
+                  , trkid: 'dst-tracks-' + track._id
+                  , order: j
                 }
             }
         }
@@ -42,5 +44,21 @@ console.log(tracks);
         return tracks;
 
     });
+
+
+    //// Hide or show Track markers.
+    UI.registerHelper('trackMarkerIsVisible', function() {
+        var routerCurrent = Router.current();
+               if ( routerCurrent && '/track/make' === routerCurrent.path ) {
+            return 'false';
+        } else if ( routerCurrent && '/track/play' === routerCurrent.path ) { // @todo playing THIS Track
+            return 'true';
+        } else if (0 === this.order) {
+            return 'true';
+        } else {
+            return 'false';
+        }
+    });
+
 
 }

@@ -51,7 +51,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-3    click ‘Make a Track’ to reveal ‘One Bar’, ‘Two Bars’, etc; '
       , '+ tracks@0.0.1-4    ‘tracks.collection.js’ based on ‘tiles.collection.js’;  \n' +
         '                    change singular ‘track’ to plural; render markers as `SlopedCylinder` nodes; '
-    ], version: '0.0.1-4'
+      , '+ tracks@0.0.1-5    hide all markers when in ‘/track’ mode; click first marker to show others; '
+    ], version:  '0.0.1-5'
 };
 
 

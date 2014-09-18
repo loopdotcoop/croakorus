@@ -37,7 +37,7 @@ if (Meteor.isClient) {
 
             if (dragged) { return; }
 
-            var currPos, newVp, xyz, flora
+            var currPos, newVp, xyz, flora, markerId, markers, marker, i, l, translation
               , vpRotation = Session.get('viewpointRotation')
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
@@ -109,6 +109,13 @@ if (Meteor.isClient) {
                     if ( -1 === classes.indexOf('ldc-precise') ) {
                         x += (Config.tiles.xTileSize / 2);
                         z += (Config.tiles.zTileSize / 2);
+                    } else { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
+                        markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-0" ... >` becomes `['Y8TTypXkugSS499YJ','0']`
+                        if ('0' === markerId[1]) {
+                            Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
+                            // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
+                            // for (i=0, l=markers.length; i<l; i++) { }
+                        }
                     }
                 }
 
