@@ -23,6 +23,10 @@ Config.tracks = {
             type: Number,
             label: "User"
         }
+      , start: {
+            type: String,
+            label: "Start"
+        }
       , xmin: {
             type: Number,
             label: "X Min Boundary"
@@ -52,7 +56,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-4    ‘tracks.collection.js’ based on ‘tiles.collection.js’;  \n' +
         '                    change singular ‘track’ to plural; render markers as `SlopedCylinder` nodes; '
       , '+ tracks@0.0.1-5    hide all markers when in ‘/track’ mode; click first marker to show others; '
-    ], version:  '0.0.1-5'
+      , '+ tracks@0.0.1-6    add `start` field to Tracks; '
+    ], version:  '0.0.1-6'
 };
 
 
