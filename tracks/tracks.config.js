@@ -20,7 +20,7 @@ Config.tracks = {
 
   , schema: new SimpleSchema({
         user: {
-            type: Number,
+            type: String,
             label: "User"
         }
       , markers: {
@@ -58,7 +58,10 @@ Config.tracks = {
       , '+ tracks@0.0.1-5    hide all markers when in ‘/track’ mode; click first marker to show others; '
       , '+ tracks@0.0.1-6    add `start` field to Tracks; '
       , '+ tracks@0.0.1-7    reordered Track fields; '
-    ], version:  '0.0.1-7'
+      , '+ tracks@0.0.1-8    respond to ‘/130e214’; update URL after drag-and-rotate; `Config.layout.x3dom`;  \n' +
+        '                    more succinct `Session` variables; top-level `API` object, eg ‘viewpoint.api.js’;  \n' +
+        '                    user friendly click-vs-drag detection, using `Config.viewpoint.dragTime`; '
+    ], version:  '0.0.1-8'
 };
 
 

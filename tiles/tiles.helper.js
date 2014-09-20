@@ -3,7 +3,7 @@ if (Meteor.isClient) {
     //// Allow any template to use `{{#each tiles}}`.
     UI.registerHelper('tiles', function() {
         var
-            position = Session.get('looptopianPosition') // @todo user db
+            position = Session.get('position') // @todo user db
           , xFar1 = Config.tiles.xTileFar
           , xFar2 = xFar1 * 2
           , xFar4 = xFar1 * 4

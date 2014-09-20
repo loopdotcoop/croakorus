@@ -3,7 +3,7 @@ if (Meteor.isClient) {
     //// Allow any template to use `{{#each flora}}`.
     UI.registerHelper('flora', function() {
         var flora, i, l, dx, dz, far, id, source, gainNode, mainlight, spotlight
-          , position = Session.get('looptopianPosition') // @todo user db
+          , position = Session.get('position') // @todo user db
           , x = position[0]
           , z = position[2]
           , xFar1 = Config.flora.xFloraFar

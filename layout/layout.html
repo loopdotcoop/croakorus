@@ -174,7 +174,7 @@
 
       {{#if $eq $.Config.about.env 'development'}}
       <pre id="audioSources" class="auto" style="position:absolute; padding:6px; z-index:99; bottom:100px; left:20px; background-color:rgba(0,0,0,.7); color: #0f6; "
->FAR    PATTERN                           ID        {{ pad viewpointRotation 5 }} <a class="ldc-toggle-mute">{{{ $.Session.get 'mute'}}}</a>
+>FAR    PATTERN                           ID        {{ pad rotation 5 }} <a class="ldc-toggle-mute">{{{ $.Session.get 'mute'}}}</a>
        {{ $.Session.get 'playhead'}}
 {{#each $.Session.get 'audioSources'}}
 {{ truncate far 5 }}  {{ pattern }}  {{ _id }}

@@ -149,30 +149,30 @@ if (Meteor.isClient) {
                 viewpoint.setView(this._flyMat.inverse());
 
 
-                //// Update the `viewpointRotation` session variable as the user looks around.
+                //// Update the `rotation` session variable as the user looks around.
                 if (0 < up.x && 0 < up.z) { // x and z are both positive
                     if (up.x < up.z) { // x is smaller than z
-                        Session.set('viewpointRotation', 'south'); // south-southeast
+                        Session.set('rotation', 's'); // south-southeast
                     } else { // z is smaller than x
-                        Session.set('viewpointRotation', 'east'); // east-southeast
+                        Session.set('rotation', 'e'); // east-southeast
                     }
                 } else if (0 < up.x) { // x is positive, z is negative
                     if (-up.x < up.z) { // x is smaller than z
-                        Session.set('viewpointRotation', 'east'); // east-northeast
+                        Session.set('rotation', 'e'); // east-northeast
                     } else { // z is smaller than x
-                        Session.set('viewpointRotation', 'north'); // north-northeast
+                        Session.set('rotation', 'n'); // north-northeast
                     }
                 } else if (0 < up.z) { // x is negative, z is positive
                     if (-up.x < up.z) { // x is smaller than z
-                        Session.set('viewpointRotation', 'south'); // south-southwest
+                        Session.set('rotation', 's'); // south-southwest
                     } else { // z is smaller than x
-                        Session.set('viewpointRotation', 'west'); // west-southwest
+                        Session.set('rotation', 'w'); // west-southwest
                     }
                 } else { // x and z are both negative
                     if (up.x < up.z) { // x is smaller than z
-                        Session.set('viewpointRotation', 'west'); // west-northwest
+                        Session.set('rotation', 'w'); // west-northwest
                     } else { // z is smaller than x
-                        Session.set('viewpointRotation', 'north'); // north-northwest
+                        Session.set('rotation', 'n'); // north-northwest
                     }
                 }
 
@@ -210,77 +210,6 @@ if (Meteor.isClient) {
     };
 
 }
-
-
-/* @todo delete these research notes
-
-
-south                     
-                          
-x:0.0011430677568517547   0
-y:0.9805806756909201      1
-z:0.196112803910509       0.2
-                          
-east                      
-                          
-x:0.19611280391050878     0.2
-y:0.9805806756909202      1
-z:0.001143067756852375    0
-                          
-north                     
-                          
-x:0.0011430677568518136   0
-y:0.9805806756909202      1
-z:-0.19611280391050878    -0.2
-                          
-west                      
-                          
-x:-0.196112803910509      -0.2
-y:0.9805806756909201      1
-z:-0.0011430677568518342  0
-
-
-
-south                     
-x:-0.0011430677568518     0
-y:0.9805806756909202      1
-z:0.19611280391050856     0.2
-
-0.005828623802520125
-
-
-south-south-east
-x:0.071481153005076       0.07
-y:0.9746946177378969      1
-z:0.21180379344534878     0.21
-
-0.21296272148594889
-
-
-south-east
-x:0.15941255915436117     0.16
-y:0.9606272210963793      1
-z:0.22755873543440414     0.23
-
-0.3713217679301287
-
-
-south-east-east
-x:0.23576386542825756     0.24
-y:0.96062722109638        1
-z:0.14700592453018094     0.15
-
-1.0265785922446375
-
-
-east                      
-x:0.19611280391050878     0.2
-y:0.9805806756909202      1
-z:0.001143067756852375    0
-
-*/
-
-
 
 
 

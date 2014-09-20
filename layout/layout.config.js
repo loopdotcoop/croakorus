@@ -65,6 +65,13 @@ if (Meteor.isClient) {
                         // Config.layout.x3dMain.runtime.statistics(       Config.layout.x3dShowStat       ); // @todo delete this line if <PARAM> does the job
                         Config.layout.x3dMain.runtime.processIndicator( Config.layout.x3dProcessIndicator );
                         if (Config.layout.x3dTogglePoints) { Config.layout.x3dMain.runtime.togglePoints(); }
+
+                        //// Let the system know that X3Dom is ready.
+                        Config.layout.x3dom = 'ready';
+
+                        //// If the window has loaded with position coords, X3Dom will not have been ready to update the <VIEWPOINT> when `Session.get('position')` was updated.
+                        API.viewpoint.update();
+
                     }
                 }
             ;

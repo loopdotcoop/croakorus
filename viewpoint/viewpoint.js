@@ -1,198 +1,175 @@
 if (Meteor.isClient) {
 
-    Session.set('looptopianPosition', [Config.viewpoint.spawnX, 4, Config.viewpoint.spawnZ]); // @todo user db
-    Session.set('viewpointRotation', 'south'); // @todo user db
+    //// Inital position and rotation, only used if the URL is ‘/’.
+    Session.set('position', [Config.viewpoint.spawnX, 4, Config.viewpoint.spawnZ]); // @todo user db
+    Session.set('rotation', 's'); // @todo user db
 
+    //// Update the viewpoint whenever `Session.get('position')` or `Session.get('rotation')` change.
+    Deps.autorun(API.viewpoint.update); // @todo `Deps` becomes `Tracker` in meteor@0.9.1
+
+    //// 
     UI.body.helpers({
-        looptopianPosition: function () {
-            return Session.get('looptopianPosition').join(' ');
+        position: function () {
+            return Session.get('position').join(' ');
         }
-      , spotlightPosition: function () {
-            return Session.get('looptopianPosition')[0] + ' 15 ' + Session.get('looptopianPosition')[2];
+      , rotation: function () {
+            return Session.get('rotation');
         }
       , viewpointPosition: function () {
-            var lp = Session.get('looptopianPosition');
+            var lp = Session.get('position');
             return lp[0] + ' ' + (lp[1] + 6) + ' ' + (lp[2] + 10);
         }
-      , viewpointRotation: function () {
-            return Session.get('viewpointRotation');
+      , spotlightPosition: function () {
+            return Session.get('position')[0] + ' 15 ' + Session.get('position')[2];
         }
     });
 
     var
-        vpTally = 0
-      , PI = Math.PI
-      , halfPI = PI / 2
-      , dragged
-    ;
+        dragged = false
+      , mousedownTime = Number.NaN // before the first mousedown event, `(evt.timeStamp - mousedownTime)` is `NaN`, which correctly prevents dragging from being detected
 
-    UI.body.events({
-        "mousedown x3d": function () {
-            dragged = false;
+        //// After a drag-to-look-around has finished, update the URL if necessary.
+      , dragMouseup = function (evt) {
+            var rotation
+              , xrzt = /^\/(\d+)([nesw])(\d+)(\/[-.\/a-z0-9]*)?/.exec( Router.current().path ) // eg '/123w456/foobar' becomes `['/123w456/foobar','123','w','456', '/foobar']`
+            ;
+            if (null === xrzt) { return; } // URL is not a recognized Iron Router route, and/or does not begin with a position/rotation string
+            rotation = Session.get('rotation');
+            if (xrzt[2] !== rotation) { // URL does not already have the correct rotation @todo can the position (x and z) ever change during drag-to-look-around?
+                Router.go( '/' + xrzt[1] + rotation + xrzt[3] + (xrzt[4] || '') ); // x and z are strings not numbers, and the trailing portion may be `undefined`
+            }
         }
-      , "mousemove x3d": function () {
-            dragged = true;
-        }
-      , "mouseup shape": function (evt) {
 
-            if (dragged) { return; }
-
+      , leftClick = function (evt) {
             var currPos, newVp, xyz, flora, markerId, markers, marker, i, l, translation
-              , vpRotation = Session.get('viewpointRotation')
+              , rotation = Session.get('rotation')
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
               , classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ')
             ;
 
-            if (1 === evt.button) {
-                // console.log('Left Click ', evt, x, y, z, evt.currentTarget.id, vpTally);
+            //// Deal with a click on a lowland terrain tile or a hitzone.
+            if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
 
-                //// Deal with a click on a lowland terrain tile or a hitzone.
-                // if ( -1 !== classes.indexOf('ldc-hitzone') || '5' === evt.target.getAttribute('data-bulk') ) { // @todo better way of identifying lowland tiles?
-                if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
-
-                    //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
-                    if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
-                        switch (vpRotation) {
-                            case 'north': vpRotation = 'west' ; break;
-                            case 'east' : vpRotation = 'north'; break;
-                            case 'south': vpRotation = 'east' ; break;
-                            case 'west' : vpRotation = 'south'; break;
-                        }
-                        Session.set('viewpointRotation', vpRotation);
-                    } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
-                        switch (vpRotation) {
-                            case 'north': vpRotation = 'east' ; break;
-                            case 'east' : vpRotation = 'south'; break;
-                            case 'south': vpRotation = 'west' ; break;
-                            case 'west' : vpRotation = 'north'; break;
-                        }
-                        Session.set('viewpointRotation', vpRotation);
+                //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
+                if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
+                    switch (rotation) {
+                        case 'n': rotation = 'w'; break;
+                        case 'e': rotation = 'n'; break;
+                        case 's': rotation = 'e'; break;
+                        case 'w': rotation = 's'; break;
                     }
-
-                //// Otherwise, deal with a click on high-ground (near the edge, or the central mountain), or the underground-plane, or the sky.
-                } else {
-                    currPos = Session.get('looptopianPosition');
-                    x = currPos[0]; y = currPos[1]; z = currPos[2];
-
-                    //// Move by the ‘far’ distance, but don’t enter the mountains on the edges. @todo don’t enter the mountains in the middle.
-                    switch (vpRotation) {
-                        case 'north':
-                            z -= Config.tiles.zTileFar;
-                            z = Math.max(z, Config.tiles.zTileSize * 3);
-                            break;
-                        case 'east':
-                            x += Config.tiles.xTileFar;
-                            x = Math.min( x, Config.tiles.xTerrainSize - (Config.tiles.xTileSize * 3) );
-                            break;
-                        case 'south':
-                            z += Config.tiles.zTileFar;
-                            z = Math.min( z, Config.tiles.zTerrainSize - (Config.tiles.zTileSize * 3) );
-                            break;
-                        case 'west':
-                            x -= Config.tiles.xTileFar;
-                            x = Math.max(x, Config.tiles.xTileSize * 3);
-                            break;
+                    Session.set('rotation', rotation);
+                } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
+                    switch (rotation) {
+                        case 'n': rotation = 'e'; break;
+                        case 'e': rotation = 's'; break;
+                        case 's': rotation = 'w'; break;
+                        case 'w': rotation = 'n'; break;
                     }
+                    Session.set('rotation', rotation);
+                }
 
-                    //// Get the ground-height at the new position.
-                    y = 1; // @todo get this info from the `tiles` db
+            //// Otherwise, deal with a click on high-ground (near the edge, or the central mountain), or the underground-plane, or the sky.
+            } else {
+                currPos = Session.get('position');
+                x = currPos[0]; y = currPos[1]; z = currPos[2];
+
+                //// Move by the three-querters of the ‘far’ distance, but don’t enter the mountains on the edges. @todo don’t enter the mountains in the middle.
+                switch (rotation) {
+                    case 'n':
+                        z -= Math.floor( Config.tiles.zTileFar * .75 );
+                        z = Math.max(z, Config.tiles.zTileSize * 3);
+                        break;
+                    case 'e':
+                        x += Math.floor( Config.tiles.xTileFar * .75 );
+                        x = Math.min( x, Config.tiles.xTerrainSize - (Config.tiles.xTileSize * 3) );
+                        break;
+                    case 's':
+                        z += Math.floor( Config.tiles.zTileFar * .75 );
+                        z = Math.min( z, Config.tiles.zTerrainSize - (Config.tiles.zTileSize * 3) );
+                        break;
+                    case 'w':
+                        x -= Math.floor( Config.tiles.xTileFar * .75 );
+                        x = Math.max(x, Config.tiles.xTileSize * 3);
+                        break;
+                }
+
+                //// Get the ground-height at the new position.
+                y = 1; // @todo get this info from the `tiles` db
 // console.log(x,y,z);
 
-                }
+            }
 
-                //// For a click on a hitzone, center the viewpoint.
-                if (  -1 !== classes.indexOf('ldc-hitzone') && evt.target.getAttribute('data-center') ) {
-                    xyz = evt.target.getAttribute('data-center').split(' ');
-                    x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
-                    if ( -1 === classes.indexOf('ldc-precise') ) {
-                        x += (Config.tiles.xTileSize / 2);
-                        z += (Config.tiles.zTileSize / 2);
-                    } else { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
-                        markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-0" ... >` becomes `['Y8TTypXkugSS499YJ','0']`
-                        if ('0' === markerId[1]) {
-                            Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
-                            // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
-                            // for (i=0, l=markers.length; i<l; i++) { }
-                        }
+            //// For a click on a hitzone, center the viewpoint.
+            if (  -1 !== classes.indexOf('ldc-hitzone') && evt.target.getAttribute('data-center') ) {
+                xyz = evt.target.getAttribute('data-center').split(' ');
+                x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
+                if ( -1 === classes.indexOf('ldc-precise') ) {
+                    x += (Config.tiles.xTileSize / 2);
+                    z += (Config.tiles.zTileSize / 2);
+                } else { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
+                    markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-0" ... >` becomes `['Y8TTypXkugSS499YJ','0']`
+                    if ('0' === markerId[1]) {
+                        Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
+                        // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
+                        // for (i=0, l=markers.length; i<l; i++) { }
                     }
                 }
-
-                //// Update the Topian’s position. @todo draw topian.
-                Session.set('looptopianPosition', [x,y,z]);
-
-                //// Some hitzones force a direction-change, eg Track markers. @todo
-                // if ( evt.target.getAttribute('data-turn') ) {
-                // }
-
-                //// Prepare a new transformed viewpoint.
-                newVp =
-                    '<transform '
-                  + 'id="'                 + 'vp' + (vpTally + 1)               + '" '
-                ;
-                switch (vpRotation) {
-                    case 'north':
-                        newVp +=
-                            'translation="'        + x + ' ' + (y + 2) + ' ' + (z + 10) + '" '
-                          + 'rotation="'           + '0 1 0  0'                         + '" '
-                          + '>'
-                        ;
-                        break;
-                    case 'east':
-                        newVp +=
-                            'translation="'        + (x - 10) + ' ' + (y + 2) + ' ' + z + '" '
-                          + 'rotation="'           + '0 1 0  -' + halfPI                + '" '
-                          + '>'
-                        ;
-                        break;
-                    case 'south':
-                        newVp +=
-                            'translation="'        + x + ' ' + (y + 2) + ' ' + (z - 10) + '" '
-                          + 'rotation="'           + '0 1 0  ' + PI                     + '" '
-                          + '>'
-                        ;
-                        break;
-                    case 'west':
-                        newVp +=
-                            'translation="'        + (x + 10) + ' ' + (y + 2) + ' ' + z + '" '
-                          + 'rotation="'           + '0 1 0  ' + halfPI                 + '" '
-                          + '>'
-                        ;
-                        break;
-                }
-                newVp +=
-                      '<viewpoint '
-                  +   'centerOfRotation="' + x + ' ' + y + ' ' + z              + '" '
-                  +   'position="'         + '0 0 0'                            + '" '
-                  +   'orientation="'      + '1 0 0  -.2'                       + '" '
-                  +   '>'
-                  +   '</viewpoint>'
-                  + '</transform>'
-                ;
-
-                //// Create the transformed viewpoint after the current one, and give it a unique ID.
-                Config.layout.$viewpoint = $('#vp' + vpTally).after(newVp); // @todo do we actually need to record `Config.layout.$viewpoint`?
-
-                //// Tell X3DOM to animate smoothly to the new <VIEWPOINT>.
-                Config.layout.x3dMain.runtime.nextView();
-
-                //// Delete the previous <VIEWPOINT>. @todo does this ever miss a deletion? if so, we could use a more aggressive deletion selector ... using the `:not` pseudo-class, for example https://developer.mozilla.org/en/docs/Web/CSS/:not
-                $('#vp' + vpTally).remove();
-
-                //// Prepare the viewpoint-tally for the next time the <VIEWPOINT> changes.
-                vpTally++;
-
-            } else if (2 === evt.button || 4 === evt.button) {
-//                console.log('Right Click ', x, y, z, evt.currentTarget.id);
             }
+
+            //// Update the Topian’s position. @todo draw topian.
+            Router.go( '/' + Math.floor(x-.5) + rotation + Math.floor(z-.5) );
+
+            //// Some hitzones force a direction-change, eg Track markers. @todo
+            // if ( evt.target.getAttribute('data-turn') ) {
+            // }
+
+        }
+
+      , rightClick = function (evt) {
+            console.log('rightClick!');
+        }
+    ;
+
+
+    UI.body.events({
+        "mousedown x3d": function (evt) {
+
+            //// Begin checking whether the user is going to drag or click. @todo use `Config.viewpoint.dragX/Y`, to check whether on `evt.clientX/Y` have moved enough to justify a drag?
+            if ('CANVAS' !== evt.target.tagName) { // the clicked object, eg 'ELEVATIONGRID', triggers a mousedown at the same time as the <CANVAS> element triggers a mousedown (the <CANVAS> element does not trigger mousemove events)
+                mousedownTime = evt.timeStamp;
+                dragged = false;
+            }
+        }
+      , "mousemove x3d": function (evt) {
+
+            //// Check whether the user is dragging or clicking. @todo use `Config.viewpoint.dragX/Y`, to check whether on `evt.clientX/Y` have moved enough to justify a drag?
+            if (! dragged && Config.viewpoint.dragTime < (evt.timeStamp - mousedownTime) ) {
+                dragged = true;
+            }
+        }
+      , "mouseup shape": function (evt) {
+            if (dragged) {
+                dragMouseup(evt);
+            } else if (1 === evt.button) {
+                leftClick(evt);
+            } else if (2 === evt.button || 4 === evt.button) {
+                rightClick(evt);
+            }
+            mousedownTime = Number.NaN;
+            dragged = false;
         }
     });
 
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
-        var classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ');
+        if (! evt.target.getAttribute) { return; }
+        var classes = evt.target.getAttribute('class');
+        if (! classes) { return; }
+        classes = classes.split(' ');
         if ( -1 !== classes.indexOf('auto') ) {
             $('body').css('cursor', 'auto');
         } else if ( -1 !== classes.indexOf('ldc-toggle-mute') ) {

@@ -4,7 +4,7 @@ if (Meteor.isClient) {
     UI.registerHelper('tracks', function() {
 
         var tracks, i, j, track, l, m, marker
-          , position = Session.get('looptopianPosition') // @todo user db
+          , position = Session.get('position') // @todo user db
           , x = position[0]
           , z = position[2]
           , xFar = Config.tracks.xFar
@@ -26,14 +26,14 @@ if (Meteor.isClient) {
         for (i=0, l=tracks.length; i<l; i++) {
             track = tracks[i];
 
-            //// Convert each marker from a string to an array.
+            //// Convert each marker from a string to an object.
             for (j=0, m=track.markers.length; j<m; j++) {
                 marker = track.markers[j].split(' '); // each part will be a string, not a number, but that’s fine for inserting into a DOM attribute
-                track.markers[j] = { // replace the string with an object
-                    use:   'dst-tracks-wait-' + marker[0] // marker type (`1|2|3|4`), becomes an X3D `use` attribute
-                  , x:     marker[1]
-                  , z:     marker[2]
-                  , turn:  marker[3]
+                track.markers[j] = {
+                    use: 'dst-tracks-wait-' + marker[0] // marker type (`1|2|3|4`), becomes an X3D `use` attribute
+                  , x: marker[1]
+                  , turn: { n:0, e: .5 * Math.PI, s: Math.PI, w: 1.5 * Math.PI }[ marker[2] ]
+                  , z: marker[3]
                   , mkrid: track._id + '-' + j
                   , trkid: 'dst-tracks-' + track._id
                   , order: j
@@ -59,6 +59,26 @@ if (Meteor.isClient) {
             return 'false';
         }
     });
+
+
+    //// Hide or show the ‘Make a Track’ button.
+    UI.registerHelper('canMakeATrack', function() {
+        var routerCurrent = Router.current();
+        if (! routerCurrent) { return false; }
+        if ( '/track' === routerCurrent.path.substr(0, 6) ) { return false; }
+        return true;
+    });
+
+
+    //// Return a string representing the user’s current coords and rotation.
+    UI.registerHelper('xrz', function() {
+        var
+            xz = Session.get('position')
+          , r = Session.get('rotation')
+        ;
+        return xz[0] + r + xz[2];
+    });
+
 
 
 }

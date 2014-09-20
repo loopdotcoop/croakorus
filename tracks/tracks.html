@@ -3,7 +3,7 @@
 </head>
 
 <template name="tracksbuttons">
-{{#if $eq currentPath '/'}}
+{{#if canMakeATrack}}
   <div id="ldc-tracks-buttons">
     <a href="/track/make" class="radius button" title="Start making a new track"><span class="cbh-paw">Make a Track</span></a>
   </div>
@@ -17,9 +17,17 @@
     ><a href="/track/make" id="ldc-tracks-wait-2"  class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
     ><a href="/track/make" id="ldc-tracks-wait-3"  class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
     ><a href="/track/make" id="ldc-tracks-wait-4"  class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
-    ><a href="/"           id="ldc-tracks-abandon" class="ldc-icon" title="Abandon creating this track (it will NOT be saved)"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
-    ><a href="/"           id="ldc-tracks-release" class="ldc-icon" title="Finish working on this track (leave it for others to find)"><div class="cbh-ok-circled-2"></div><h6><span>Release</span></h6></a
+    ><a href="/{{xrz}}"    id="ldc-tracks-abandon" class="ldc-icon" title="Abandon creating this track (it will NOT be saved)"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
+    ><a href="/{{xrz}}"    id="ldc-tracks-release" class="ldc-icon" title="Finish working on this track (leave it for others to find)"><div class="cbh-ok-circled-2"></div><h6><span>Release</span></h6></a
     ></div>
+</template>
+
+
+<template name="track.stop">
+  <div id="ldc-tracks-buttons">
+    <h3>stopped!</h3>
+    <a href="/" class="radius button" title="Start playing this track"><span class="cbh-play">Play</span></a>
+  </div>
 </template>
 
 
