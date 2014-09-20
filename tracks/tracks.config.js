@@ -23,6 +23,10 @@ Config.tracks = {
             type: Number,
             label: "User"
         }
+      , markers: {
+            type: [String],
+            label: "Markers"
+        }
       , start: {
             type: String,
             label: "Start"
@@ -43,10 +47,6 @@ Config.tracks = {
             type: Number,
             label: "Z Max Boundary"
         }
-      , markers: {
-            type: [String],
-            label: "Markers"
-        }
     })
 
   , changelog: [
@@ -57,7 +57,8 @@ Config.tracks = {
         '                    change singular ‘track’ to plural; render markers as `SlopedCylinder` nodes; '
       , '+ tracks@0.0.1-5    hide all markers when in ‘/track’ mode; click first marker to show others; '
       , '+ tracks@0.0.1-6    add `start` field to Tracks; '
-    ], version:  '0.0.1-6'
+      , '+ tracks@0.0.1-7    reordered Track fields; '
+    ], version:  '0.0.1-7'
 };
 
 
