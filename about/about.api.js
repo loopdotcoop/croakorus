@@ -1,6 +1,6 @@
-//// The global `API` object is defined here. Other features add to it, eg `API.foobar = { ... }`. 
+//// The global `Api` object is defined here. Other features add to it, eg `Api.foobar = { ... }`. 
 
-API = {
+Api = {
     about: {
     }
 };

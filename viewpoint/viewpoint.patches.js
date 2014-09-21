@@ -150,30 +150,35 @@ if (Meteor.isClient) {
 
 
                 //// Update the `rotation` session variable as the user looks around.
+                var currRotation = Session.get('rotation');
+                var newRotation = currRotation;
                 if (0 < up.x && 0 < up.z) { // x and z are both positive
                     if (up.x < up.z) { // x is smaller than z
-                        Session.set('rotation', 's'); // south-southeast
+                        newRotation = 's'; // south-southeast
                     } else { // z is smaller than x
-                        Session.set('rotation', 'e'); // east-southeast
+                        newRotation = 'e'; // east-southeast
                     }
                 } else if (0 < up.x) { // x is positive, z is negative
                     if (-up.x < up.z) { // x is smaller than z
-                        Session.set('rotation', 'e'); // east-northeast
+                        newRotation = 'e'; // east-northeast
                     } else { // z is smaller than x
-                        Session.set('rotation', 'n'); // north-northeast
+                        newRotation = 'n'; // east-northeast
                     }
                 } else if (0 < up.z) { // x is negative, z is positive
                     if (-up.x < up.z) { // x is smaller than z
-                        Session.set('rotation', 's'); // south-southwest
+                        newRotation = 's'; // south-southwest
                     } else { // z is smaller than x
-                        Session.set('rotation', 'w'); // west-southwest
+                        newRotation = 'w'; // west-southwest
                     }
                 } else { // x and z are both negative
                     if (up.x < up.z) { // x is smaller than z
-                        Session.set('rotation', 'w'); // west-northwest
+                        newRotation = 'w'; // west-northwest
                     } else { // z is smaller than x
-                        Session.set('rotation', 'n'); // north-northwest
+                        newRotation = 'n';
                     }
+                }
+                if (newRotation !== currRotation) {
+                    Session.set('rotation', newRotation);
                 }
 
             }

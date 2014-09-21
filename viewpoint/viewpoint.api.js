@@ -8,17 +8,25 @@ var
 
 
 //// 
-API = {
+Api = {
     viewpoint: {
-        update: function (computation) {
+
+        dragged: false // modified by viewpoint `UI.body.events(...)`
+
+      , update: function (computation) {
+
+            //// nb, these two `Session.get()` calls MUST be made before the `(Api.viewpoint.dragged)` and `('ready' !== Config.layout.x3dom)` conditionals, for reactivity to work.
             var newVp, x, y, z
               , newPosition = Session.get('position')
               , newRotation = Session.get('rotation')
             ;
 
-            //// Deal with a change in position or rotation.
+            //// Don’t update the viewpoint while the user is dragging to look around, or before X3Dom is ready.
+            if (Api.viewpoint.dragged) { return; }
+            if ('ready' !== Config.layout.x3dom) { return; }
+
+            //// Deal with a change in position or rotation (this shouldn’t be done while the user is dragging to look around).
             if ( currentRotation !== newRotation || currentPosition !== newPosition.join(' ') ) {
-                // console.log('position has changed!', currentPosition, newPosition, computation);
 
                 x = newPosition[0];
                 y = newPosition[1];
@@ -69,28 +77,22 @@ API = {
                   + '</transform>'
                 ;
 
-                //// 
-                if ('ready' === Config.layout.x3dom) {
-                // if (Config.layout.x3dMain && Config.layout.x3dMain.runtime) {
+                //// Create the transformed viewpoint after the current one, and give it a unique ID.
+                Config.layout.$viewpoint = $('#vp' + vpTally).after(newVp); // @todo do we actually need to record `Config.layout.$viewpoint`?
 
-                    //// Create the transformed viewpoint after the current one, and give it a unique ID.
-                    Config.layout.$viewpoint = $('#vp' + vpTally).after(newVp); // @todo do we actually need to record `Config.layout.$viewpoint`?
+                //// Tell X3Dom to animate smoothly to the new <VIEWPOINT>.
+                Config.layout.x3dMain.runtime.nextView();
 
-    // try {
-                    //// Tell X3DOM to animate smoothly to the new <VIEWPOINT>.
-                    Config.layout.x3dMain.runtime.nextView();
-    // } catch (e) { console.log('no!' + vpTally); }
-                    //// Delete the previous <VIEWPOINT>. @todo does this ever miss a deletion? if so, we could use a more aggressive deletion selector ... using the `:not` pseudo-class, for example https://developer.mozilla.org/en/docs/Web/CSS/:not
-                    $('#vp' + vpTally).remove();
+                //// Delete the previous <VIEWPOINT>. @todo does this ever miss a deletion? if so, we could use a more aggressive selector... the `:not` pseudo-class, for example https://developer.mozilla.org/en/docs/Web/CSS/:not
+                $('#vp' + vpTally).remove();
 
-                    //// Prepare the viewpoint-tally for the next time the <VIEWPOINT> changes.
-                    vpTally++;
+                //// Prepare the viewpoint-tally for the next time the <VIEWPOINT> changes.
+                vpTally++;
 
-                    //// Xx. 
-                    currentRotation = newRotation;
-                    currentPosition = newPosition.join(' ');
+                //// Xx. 
+                currentRotation = newRotation;
+                currentPosition = newPosition.join(' ');
 
-                }
             }
         }
     }

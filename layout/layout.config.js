@@ -70,7 +70,7 @@ if (Meteor.isClient) {
                         Config.layout.x3dom = 'ready';
 
                         //// If the window has loaded with position coords, X3Dom will not have been ready to update the <VIEWPOINT> when `Session.get('position')` was updated.
-                        API.viewpoint.update();
+                        Api.viewpoint.update();
 
                     }
                 }

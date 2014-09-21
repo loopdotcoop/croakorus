@@ -5,7 +5,7 @@ if (Meteor.isClient) {
     Session.set('rotation', 's'); // @todo user db
 
     //// Update the viewpoint whenever `Session.get('position')` or `Session.get('rotation')` change.
-    Deps.autorun(API.viewpoint.update); // @todo `Deps` becomes `Tracker` in meteor@0.9.1
+    Deps.autorun(Api.viewpoint.update); // @todo `Deps` becomes `Tracker` in meteor@0.9.1
 
     //// 
     UI.body.helpers({
@@ -24,9 +24,7 @@ if (Meteor.isClient) {
         }
     });
 
-    var
-        dragged = false
-      , mousedownTime = Number.NaN // before the first mousedown event, `(evt.timeStamp - mousedownTime)` is `NaN`, which correctly prevents dragging from being detected
+    var mousedownTime = Number.NaN // before the first mousedown event, `(evt.timeStamp - mousedownTime)` is `NaN`, which correctly prevents dragging from being detected
 
         //// After a drag-to-look-around has finished, update the URL if necessary.
       , dragMouseup = function (evt) {
@@ -60,7 +58,7 @@ if (Meteor.isClient) {
                         case 's': rotation = 'e'; break;
                         case 'w': rotation = 's'; break;
                     }
-                    Session.set('rotation', rotation);
+//                    Session.set('rotation', rotation);
                 } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right
                     switch (rotation) {
                         case 'n': rotation = 'e'; break;
@@ -68,7 +66,7 @@ if (Meteor.isClient) {
                         case 's': rotation = 'w'; break;
                         case 'w': rotation = 'n'; break;
                     }
-                    Session.set('rotation', rotation);
+//                    Session.set('rotation', rotation);
                 }
 
             //// Otherwise, deal with a click on high-ground (near the edge, or the central mountain), or the underground-plane, or the sky.
@@ -140,18 +138,18 @@ if (Meteor.isClient) {
             //// Begin checking whether the user is going to drag or click. @todo use `Config.viewpoint.dragX/Y`, to check whether on `evt.clientX/Y` have moved enough to justify a drag?
             if ('CANVAS' !== evt.target.tagName) { // the clicked object, eg 'ELEVATIONGRID', triggers a mousedown at the same time as the <CANVAS> element triggers a mousedown (the <CANVAS> element does not trigger mousemove events)
                 mousedownTime = evt.timeStamp;
-                dragged = false;
+                Api.viewpoint.dragged = false;
             }
         }
       , "mousemove x3d": function (evt) {
 
             //// Check whether the user is dragging or clicking. @todo use `Config.viewpoint.dragX/Y`, to check whether on `evt.clientX/Y` have moved enough to justify a drag?
-            if (! dragged && Config.viewpoint.dragTime < (evt.timeStamp - mousedownTime) ) {
-                dragged = true;
+            if (! Api.viewpoint.dragged && Config.viewpoint.dragTime < (evt.timeStamp - mousedownTime) ) {
+                Api.viewpoint.dragged = true;
             }
         }
       , "mouseup shape": function (evt) {
-            if (dragged) {
+            if (Api.viewpoint.dragged) {
                 dragMouseup(evt);
             } else if (1 === evt.button) {
                 leftClick(evt);
@@ -159,7 +157,7 @@ if (Meteor.isClient) {
                 rightClick(evt);
             }
             mousedownTime = Number.NaN;
-            dragged = false;
+            Api.viewpoint.dragged = false;
         }
     });
 

@@ -7,6 +7,10 @@ Router.map(function() {
               , r =  this.params[1]
               , z = +this.params[2]
             ;
+
+            //// Only allow lowland positions.
+            // @todo
+
             Session.set('position', [ x, 2, z ]); // @todo update user db
             Session.set('rotation', r); // @todo update user db
         }

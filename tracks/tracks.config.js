@@ -61,7 +61,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-8    respond to ‘/130e214’; update URL after drag-and-rotate; `Config.layout.x3dom`;  \n' +
         '                    more succinct `Session` variables; top-level `API` object, eg ‘viewpoint.api.js’;  \n' +
         '                    user friendly click-vs-drag detection, using `Config.viewpoint.dragTime`; '
-    ], version:  '0.0.1-8'
+      , '+ tracks@0.0.1-9    tidy code; '
+    ], version:  '0.0.1-9'
 };
 
 
