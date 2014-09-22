@@ -62,7 +62,8 @@ Config.tracks = {
         '                    more succinct `Session` variables; top-level `API` object, eg ‘viewpoint.api.js’;  \n' +
         '                    user friendly click-vs-drag detection, using `Config.viewpoint.dragTime`; '
       , '+ tracks@0.0.1-9    tidy code; '
-    ], version:  '0.0.1-9'
+      , '+ tracks@0.0.1-10   use `parseClasses()` to get data from X3Dom els; respond to click on Track marker; '
+    ], version:  '0.0.1-10'
 };
 
 

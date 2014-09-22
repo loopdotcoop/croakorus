@@ -26,6 +26,35 @@ if (Meteor.isClient) {
 
     var mousedownTime = Number.NaN // before the first mousedown event, `(evt.timeStamp - mousedownTime)` is `NaN`, which correctly prevents dragging from being detected
 
+        //// An element with `class="a b_123 c-bar_baz d-foo d-bar_456"` has a lookup-table `{ a:true, b:123, c:{ bar:'baz' }, d:{ foo:true, bar:456 } }`.
+      , parseClasses = function (classes) {
+            var i, l, keyval, key, val, upos, hpos, k1, k2 // underscore-position, hyphen-position
+                lut = {} // lookup-table
+            ;
+            classes = classes.split(' ');
+            for (i=0, l=classes.length; i<l; i++) {
+                keyval = classes[i];
+                upos = keyval.indexOf('_');
+                if (-1 === upos) { // does not contain an underscore, so value is `true`
+                    key = keyval;
+                    val = true;
+                } else { // contains an underscore, so parse the value
+                    key = keyval.substr(0, upos);
+                    val = keyval.substr(upos+1); // @todo convert string to number, where appropriate
+                }
+                hpos = key.indexOf('-'); // @todo test an underscore appearing before a hyphen ... should just put the hyphen into the value?
+                if (-1 === hpos) { // does not contain a hyphen, so simple top-level value
+                    lut[key] = val;
+                } else { // contains one or more hyphens, so use nested objects @todo deal with 2+ hyphens
+                    k1 = key.substr(0, hpos);
+                    k2 = key.substr(hpos+1);
+                    lut[k1] = lut[k1] || {}; // initialize the nested object, if missing
+                    lut[k1][k2] = val;
+                }
+            }
+            return lut;
+        }
+
         //// After a drag-to-look-around has finished, update the URL if necessary.
       , dragMouseup = function (evt) {
             var rotation
@@ -46,6 +75,7 @@ if (Meteor.isClient) {
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
               , classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ')
             ;
+console.log( 99, parseClasses(evt.target.getAttribute('class')) );
 
             //// Deal with a click on a lowland terrain tile or a hitzone.
             if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
@@ -100,29 +130,37 @@ if (Meteor.isClient) {
 
             }
 
-            //// For a click on a hitzone, center the viewpoint.
-            if (  -1 !== classes.indexOf('ldc-hitzone') && evt.target.getAttribute('data-center') ) {
-                xyz = evt.target.getAttribute('data-center').split(' ');
-                x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
+
+
+            //// Deal with a click on a hitzone.
+            if (  -1 !== classes.indexOf('ldc-hitzone') ) {
+console.log(1, classes);
+                if ( evt.target.getAttribute('data-center') ) {
+                    xyz = evt.target.getAttribute('data-center').split(' ');
+                    x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
+                }
+
                 if ( -1 === classes.indexOf('ldc-precise') ) {
+console.log(2);
                     x += (Config.tiles.xTileSize / 2);
                     z += (Config.tiles.zTileSize / 2);
-                } else { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
-                    markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-0" ... >` becomes `['Y8TTypXkugSS499YJ','0']`
-                    if ('0' === markerId[1]) {
+                } else if ( -1 !== classes.indexOf('dst-tracks-marker') ) { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
+                    markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-3" ... >` becomes `['Y8TTypXkugSS499YJ','3']`
+console.log(3, markerId);
+                    // if ('0' === markerId[1]) {
                         Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
                         // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
                         // for (i=0, l=markers.length; i<l; i++) { }
-                    }
+                    // }
                 }
             }
-
-            //// Update the Topian’s position. @todo draw topian.
-            Router.go( '/' + Math.floor(x-.5) + rotation + Math.floor(z-.5) );
 
             //// Some hitzones force a direction-change, eg Track markers. @todo
             // if ( evt.target.getAttribute('data-turn') ) {
             // }
+
+            //// Update the Topian’s position. @todo draw topian.
+            Router.go( '/' + Math.floor(x-.5) + rotation + Math.floor(z-.5) );
 
         }
 

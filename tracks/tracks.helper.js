@@ -34,7 +34,7 @@ if (Meteor.isClient) {
                   , x: marker[1]
                   , turn: { n:0, e: .5 * Math.PI, s: Math.PI, w: 1.5 * Math.PI }[ marker[2] ]
                   , z: marker[3]
-                  , mkrid: track._id + '-' + j
+                  , mkrid: track._id + '-' + (j + 1) // the first marker is `1`, not `0`
                   , trkid: 'dst-tracks-' + track._id
                   , order: j
                 }

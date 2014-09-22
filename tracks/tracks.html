@@ -41,14 +41,14 @@
 
 <template name="tracks">
   {{#each markers}}
-  <transform class="{{trkid}} dst-tracks-marker" translation="{{x}} 0 {{z}}" rotation="0 1 0  {{turn}}" data-order="{{order}}" render="{{ trackMarkerIsVisible }}">
+  <transform class="{{trkid}}" translation="{{x}} 0 {{z}}" rotation="0 1 0  {{turn}}" data-order="{{order}}" render="{{ trackMarkerIsVisible }}">
     <transform use="{{use}}"></transform>
     <shape use="dst-tracks-markerpost"></shape>
     <shape>
       <appearance>
         <material transparency="1"></material>
       </appearance>
-      <slopedcylinder id="{{mkrid}}" class="ldc-hitzone ldc-precise" data-center="{{x}} .1 {{z}}" height=".7" radius=".35" xbshear="0" xtshear=".15"></slopedcylinder>
+      <slopedcylinder id="{{mkrid}}" class="ldc-hitzone ldc-precise dst-trackmarker ldc-thing_123" data-center="{{x}} .1 {{z}}" height=".7" radius=".35" xbshear="0" xtshear=".15"></slopedcylinder>
     </shape>
   </transform>
   {{/each}}
