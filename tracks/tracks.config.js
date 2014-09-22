@@ -66,7 +66,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-11   router respond to click on Track marker; '
       , '+ tracks@0.0.1-12   proper route on Track marker click; proper position and rotation on Track marker click; '
       , '+ tracks@0.0.1-13   while playing, update route (and move) on each bar-start; '
-    ], version:  '0.0.1-13'
+      , '+ tracks@0.0.1-14   ‘Stop Playing Track’ button works; '
+    ], version:  '0.0.1-14'
 };
 
 
