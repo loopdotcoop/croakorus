@@ -59,7 +59,7 @@ try {
 // console.log(playResult);
                if ( routerCurrent && '/track/make' === routerCurrent.path ) {
             return 'false';
-        } else if (playResult[4] + playResult[5] + playResult[6] + playResult[7] === this.start) { // @todo playing THIS Track
+        } else if (playResult && playResult[4] + playResult[5] + playResult[6] + playResult[7] === this.start) { // @todo playing THIS Track
 // console.log(playResult[4] + playResult[5] + playResult[6] + playResult[7], this.start);
             return 'true';
         } else if (0 === this.order) {

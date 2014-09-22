@@ -15,7 +15,7 @@ Config.tracks = {
         'Beth Walker <info@loop.coop>'
     ]
 
-  , xFar: 40 // only subscribe to Tracks within 40 squares x-distance from teh viewpoint
+  , xFar: 40 // only subscribe to Tracks within 40 squares x-distance from the viewpoint
   , zFar: 40 // as above, for z-distance
 
   , schema: new SimpleSchema({
@@ -65,7 +65,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-10   use `parseClasses()` to get data from X3Dom els; respond to click on Track marker; '
       , '+ tracks@0.0.1-11   router respond to click on Track marker; '
       , '+ tracks@0.0.1-12   proper route on Track marker click; proper position and rotation on Track marker click; '
-    ], version:  '0.0.1-12'
+      , '+ tracks@0.0.1-13   while playing, update route (and move) on each bar-start; '
+    ], version:  '0.0.1-13'
 };
 
 
@@ -73,3 +74,6 @@ Config.tracks = {
 Tracks.attachSchema(Config.tracks.schema);
 
 
+if (Meteor.isClient) {
+    Session.set('trackplay', false); // set to xx?
+}

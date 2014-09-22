@@ -170,7 +170,7 @@ if (Meteor.isClient) {
             //// Update the Topian’s position. @todo draw topian.
             if (dst.trackmarker) { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
                 markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-3" ... >` becomes `['Y8TTypXkugSS499YJ','3']`
-console.log(3, markerId);
+// console.log(3, markerId);
                 // if ('0' === markerId[1]) {
                     Router.go('/' + dst.xrz + '/track/' + dst.start + '/' + dst.mkri); // eg `/55e147/track/47w188bq/7`
                     // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`

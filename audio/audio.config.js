@@ -66,11 +66,10 @@ Config.audio = {
 if (Meteor.isClient) {
 
     //// Schedule the playhead to step forward every 5400 samples. http://www.html5rocks.com/en/tutorials/audio/scheduling/
-    var nowTime, nowBeat, i, l
+    var nowTime, nowBeat, i, l, scale, trackplay
       , prevBeat = 0
       , prevTime = 0
       , beatEls = []
-      , scale
 
         //// Find out where the playhead should be, given the total amount of time elapsed since `Config.audio.ctx` was created.
       , step = function () { // we don’t use the `stamp` argument
@@ -91,6 +90,26 @@ if (Meteor.isClient) {
                     for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1.2 1.1 1.2'); } // @todo animate?
                     // scale = 1.2;
                     // window.requestAnimationFrame(animBeatEls); // start running the localized animations
+
+                    //// Get the current beat-number.
+                    nowFraction = nowTime % 3.6;
+                    prevZero = nowTime - nowFraction;   // timestamp of the previous beat-zero
+                    nowBeat = ~~(nowFraction / 0.1125); // `nowBeat` is an integer between `0` and `31` inclusive http://jsperf.com/math-floor-vs-math-round-vs-parseint/33
+
+                    //// Move the viewpoint if we are currently playing a Track.
+                    if (0 === nowBeat) {
+                        trackplay = Session.get('trackplay');
+                        if (trackplay) {
+// console.log(trackplay);
+                            if (trackplay.wait === trackplay.until) {
+                                Session.set('trackplay', false);
+                                Router.go(trackplay.next);
+                            } else {
+                                trackplay.wait++;
+                                Session.set('trackplay', trackplay);
+                            }
+                        }
+                    }
 
                 }
                 prevTime = nowTime;
