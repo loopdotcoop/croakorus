@@ -1,10 +1,18 @@
 Router.map(function() {
+    this.route('track.play', {
+        path: /^\/(\d+)([nesw])(\d+)\/track\/(\d+)([nesw])(\d+)([a-z]{0,4})\/(\d+)$/ // eg '/140s147/track/140s147bq/1'
+      , data: function () { // eg `this.params` is `[ '/140e147/track/140e147bq/1', '140', 'e', '147', '140', 'e', '147', 'bq', '1' ]`
+            var
+                x = +this.params[0]
+              , r =  this.params[1]
+              , z = +this.params[2]
+            ;
+            Session.set('position', [ x, 2, z ]); // @todo update user db
+            Session.set('rotation', r); // @todo update user db
+        }
+    });
     this.route('track.make', {
             path: '/track/make'
-        }
-    );
-    this.route('track.play', {
-            path: '/track/play'
         }
     );
     this.route('track.stop', {

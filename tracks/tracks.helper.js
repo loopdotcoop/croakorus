@@ -10,7 +10,7 @@ if (Meteor.isClient) {
           , xFar = Config.tracks.xFar
           , zFar = Config.tracks.zFar
 
-            //// Restrict to nearby tracks.
+            //// Restrict to nearby tracks. @todo enable selector
           , selector = {
               //   xmin: { $gte: x - xFar }
               // , xmax: { $lte: x + xFar }
@@ -32,9 +32,12 @@ if (Meteor.isClient) {
                 track.markers[j] = {
                     use: 'dst-tracks-wait-' + marker[0] // marker type (`1|2|3|4`), becomes an X3D `use` attribute
                   , x: marker[1]
-                  , turn: { n:0, e: .5 * Math.PI, s: Math.PI, w: 1.5 * Math.PI }[ marker[2] ]
+                  , r: marker[2]
                   , z: marker[3]
+                  , turn: { n: .5 * Math.PI, e: 0 , s: 1.5 * Math.PI, w: Math.PI }[ marker[2] ]
+                  , mkri:  j + 1 // the first marker is `1`, not `0`
                   , mkrid: track._id + '-' + (j + 1) // the first marker is `1`, not `0`
+                  , start: track.start
                   , trkid: 'dst-tracks-' + track._id
                   , order: j
                 }
@@ -48,16 +51,23 @@ if (Meteor.isClient) {
 
     //// Hide or show Track markers.
     UI.registerHelper('trackMarkerIsVisible', function() {
-        var routerCurrent = Router.current();
+try {
+        var
+            routerCurrent = Router.current() || { path:'' } // eg '/140e147/track/140e147bq/1'
+          , playResult = routerCurrent.path.match(/^\/(\d+)([nesw])(\d+)\/track\/(\d+)([nesw])(\d+)([a-z]{0,4})\/(\d+)$/) // eg `[ '/140e147/track/140e147bq/1', '140', 'e', '147', '140', 'e', '147', 'bq', '1' ]`
+        ;
+// console.log(playResult);
                if ( routerCurrent && '/track/make' === routerCurrent.path ) {
             return 'false';
-        } else if ( routerCurrent && '/track/play' === routerCurrent.path ) { // @todo playing THIS Track
+        } else if (playResult[4] + playResult[5] + playResult[6] + playResult[7] === this.start) { // @todo playing THIS Track
+// console.log(playResult[4] + playResult[5] + playResult[6] + playResult[7], this.start);
             return 'true';
         } else if (0 === this.order) {
             return 'true';
         } else {
             return 'false';
         }
+} catch(e){console.log(e)}
     });
 
 
@@ -78,7 +88,6 @@ if (Meteor.isClient) {
         ;
         return xz[0] + r + xz[2];
     });
-
 
 
 }

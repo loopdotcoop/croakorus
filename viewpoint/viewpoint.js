@@ -172,7 +172,7 @@ if (Meteor.isClient) {
                 markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-3" ... >` becomes `['Y8TTypXkugSS499YJ','3']`
 console.log(3, markerId);
                 // if ('0' === markerId[1]) {
-                    Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
+                    Router.go('/' + dst.xrz + '/track/' + dst.start + '/' + dst.mkri); // eg `/55e147/track/47w188bq/7`
                     // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
                     // for (i=0, l=markers.length; i<l; i++) { }
                 // }

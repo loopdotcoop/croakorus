@@ -64,7 +64,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-9    tidy code; '
       , '+ tracks@0.0.1-10   use `parseClasses()` to get data from X3Dom els; respond to click on Track marker; '
       , '+ tracks@0.0.1-11   router respond to click on Track marker; '
-    ], version:  '0.0.1-11'
+      , '+ tracks@0.0.1-12   proper route on Track marker click; proper position and rotation on Track marker click; '
+    ], version:  '0.0.1-12'
 };
 
 
