@@ -63,7 +63,8 @@ Config.tracks = {
         '                    user friendly click-vs-drag detection, using `Config.viewpoint.dragTime`; '
       , '+ tracks@0.0.1-9    tidy code; '
       , '+ tracks@0.0.1-10   use `parseClasses()` to get data from X3Dom els; respond to click on Track marker; '
-    ], version:  '0.0.1-10'
+      , '+ tracks@0.0.1-11   router respond to click on Track marker; '
+    ], version:  '0.0.1-11'
 };
 
 

@@ -85,6 +85,10 @@ try { // @todo remove
             id = flora[i]._id;
             far = flora[i].far;
 
+            //// Set the Flora’s center coords. The viewpoint will use them when the Flora is clicked.
+            flora[i].cx = flora[i].x + (Config.tiles.xTileSize / 2);
+            flora[i].cz = flora[i].z + (Config.tiles.zTileSize / 2);
+
             //// Get a reference to the Flora’s `AudioBufferSourceNode` object.
             source = God.flora.sourceLut[id];
 

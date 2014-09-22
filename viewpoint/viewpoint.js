@@ -26,14 +26,21 @@ if (Meteor.isClient) {
 
     var mousedownTime = Number.NaN // before the first mousedown event, `(evt.timeStamp - mousedownTime)` is `NaN`, which correctly prevents dragging from being detected
 
+      , parseClassesCache = { '-tally':0, '-limit':256 } // @todo benchtest values for `parseClassesCache['-limit']`
+
         //// An element with `class="a b_123 c-bar_baz d-foo d-bar_456"` has a lookup-table `{ a:true, b:123, c:{ bar:'baz' }, d:{ foo:true, bar:456 } }`.
-      , parseClasses = function (classes) {
-            var i, l, keyval, key, val, upos, hpos, k1, k2 // underscore-position, hyphen-position
-                lut = {} // lookup-table
+      , parseClasses = function (raw) {
+            var split, i, l, keyval, key, val, upos, hpos, k1, k2 // underscore-position, hyphen-position, key-level-1, key-level-2
+              , lut = {} // lookup-table
             ;
-            classes = classes.split(' ');
-            for (i=0, l=classes.length; i<l; i++) {
-                keyval = classes[i];
+
+            //// Parsing the class attribute is expensive, so we cache the result
+            if (parseClassesCache[raw]) { return parseClassesCache[raw]; }
+
+            //// Xx.
+            split = raw.split(' ');
+            for (i=0, l=split.length; i<l; i++) {
+                keyval = split[i];
                 upos = keyval.indexOf('_');
                 if (-1 === upos) { // does not contain an underscore, so value is `true`
                     key = keyval;
@@ -52,6 +59,15 @@ if (Meteor.isClient) {
                     lut[k1][k2] = val;
                 }
             }
+
+            //// Purge the cache if it has grown too large.
+            if (parseClassesCache['-tally'] > parseClassesCache['-limit']) {
+                parseClassesCache = { '-tally':0, '-limit':parseClassesCache['-limit'] }
+            }
+            parseClassesCache['-tally']++;
+
+            //// Cache and return the newly created lookup-table.
+            parseClassesCache[raw] = lut;
             return lut;
         }
 
@@ -73,12 +89,15 @@ if (Meteor.isClient) {
               , x = Math.floor(evt.worldX + evt.normalX / 2) + 0.5
               , y =            evt.worldY + evt.normalY / 2 // @todo height of center of square, from looking up terrain-data
               , z = Math.floor(evt.worldZ + evt.normalZ / 2) + 0.5
-              , classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ')
+              // , classes = (  evt.target.getAttribute && ( evt.target.getAttribute('class') ? evt.target.getAttribute('class') : '' )  ).split(' ')
+              , classes = parseClasses( evt.target.getAttribute ? evt.target.getAttribute('class') : '' )
+              , ldc = classes.ldc || {} // classes used for all Looptopian apps
+              , dst = classes.dst || {} // classes specific to the Desoot
             ;
-console.log( 99, parseClasses(evt.target.getAttribute('class')) );
+// console.log( 'viewpoint.js:leftClick() ', classes );
 
             //// Deal with a click on a lowland terrain tile or a hitzone.
-            if ( -1 !== classes.indexOf('ldc-hitzone') || -1 !== classes.indexOf('ldc-navigation') ) {
+            if (ldc.hitzone || ldc.navigation) {
 
                 //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
                 if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
@@ -130,29 +149,18 @@ console.log( 99, parseClasses(evt.target.getAttribute('class')) );
 
             }
 
-
-
             //// Deal with a click on a hitzone.
-            if (  -1 !== classes.indexOf('ldc-hitzone') ) {
-console.log(1, classes);
-                if ( evt.target.getAttribute('data-center') ) {
+            if (ldc.hitzone) {
+
+                //// Move to a custom position, if present.
+                if (ldc.center) {
                     xyz = evt.target.getAttribute('data-center').split(' ');
                     x = +xyz[0]; y = +xyz[1]; z = +xyz[2]; // nb, the intial `+` converts from string to number
                 }
 
-                if ( -1 === classes.indexOf('ldc-precise') ) {
-console.log(2);
-                    x += (Config.tiles.xTileSize / 2);
-                    z += (Config.tiles.zTileSize / 2);
-                } else if ( -1 !== classes.indexOf('dst-tracks-marker') ) { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
-                    markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-3" ... >` becomes `['Y8TTypXkugSS499YJ','3']`
-console.log(3, markerId);
-                    // if ('0' === markerId[1]) {
-                        Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
-                        // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
-                        // for (i=0, l=markers.length; i<l; i++) { }
-                    // }
-                }
+            } else {
+                x = Math.floor(x-.5);
+                z = Math.floor(z-.5);
             }
 
             //// Some hitzones force a direction-change, eg Track markers. @todo
@@ -160,7 +168,17 @@ console.log(3, markerId);
             // }
 
             //// Update the Topian’s position. @todo draw topian.
-            Router.go( '/' + Math.floor(x-.5) + rotation + Math.floor(z-.5) );
+            if (dst.trackmarker) { // @todo dealing with a Track marker click should be done by by code inside the ‘tracks/’ directory
+                markerId = evt.target.id.split('-'); // eg `<slopedcylinder id="Y8TTypXkugSS499YJ-3" ... >` becomes `['Y8TTypXkugSS499YJ','3']`
+console.log(3, markerId);
+                // if ('0' === markerId[1]) {
+                    Router.go('/track/play'); // @todo add dynamic part (the ID of the track to play)
+                    // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
+                    // for (i=0, l=markers.length; i<l; i++) { }
+                // }
+            } else {
+                Router.go( '/' + x + rotation + z );
+            }
 
         }
 
@@ -202,21 +220,23 @@ console.log(3, markerId);
 
     //// Cursor suggests left/right/forward move, and drag to look around.
     $(window).on('mousemove', function (evt) { // @todo disable for touchscreen devices
+
+        //// Parse the `class` attribute of the element under the cursor.
         if (! evt.target.getAttribute) { return; }
-        var classes = evt.target.getAttribute('class');
-        if (! classes) { return; }
-        classes = classes.split(' ');
-        if ( -1 !== classes.indexOf('auto') ) {
+        ldc = parseClasses( evt.target.getAttribute('class') || '' ).ldc; // `ldc` contains classes used for all Looptopian apps
+        if (! ldc) { return; }
+
+               if (ldc.auto) {
             $('body').css('cursor', 'auto');
-        } else if ( -1 !== classes.indexOf('ldc-toggle-mute') ) {
+        } else if (ldc.pointer) {
             $('body').css('cursor', 'pointer');
         } else if (1 === evt.button) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
-        } else if ( -1 !== classes.indexOf('ldc-hitzone') ) {
+        } else if (ldc.hitzone) {
             $('body').css('cursor', 'url(/viewpoint/pointer.png) 3 3, pointer');
-        } else if ( 'mouseover-plane' === evt.target.className ) {
-            $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
-        } else if ( -1 === classes.indexOf('ldc-navigation') ) {
+        // } else if ( 'mouseover-plane' === evt.target.className ) {
+        //     $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
+        } else if (! ldc.navigation) {
             $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'url(/viewpoint/left.png) 3 20, w-resize');
