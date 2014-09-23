@@ -58,7 +58,8 @@ Config = {
           , '+ desoot@0.1.18    Temporarily disable the deep kick drum, which has a glitchy-sounding spike; '
           , '+ desoot@0.1.20    fix drag-to-look-around by removing `speed` attribute from `<navigationinfo>`; '
           , '+ desoot@0.1.21-1  initial ‘track’ feature; '
-        ] , version: '0.1.21-1'
+          , '+ desoot@0.1.22    basic Tracks functionality; '
+        ] , version: '0.1.22'
     }
 };
 

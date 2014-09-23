@@ -68,7 +68,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-13   while playing, update route (and move) on each bar-start; '
       , '+ tracks@0.0.1-14   ‘Stop Playing Track’ button works; '
       , '+ tracks@0.0.1-15   records a user-generated Track; '
-    ], version:  '0.0.1-15'
+      , '+ tracks@0.0.2      basic Tracks functionality; '
+    ], version:  '0.0.2'
 };
 
 
