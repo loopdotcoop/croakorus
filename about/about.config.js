@@ -60,7 +60,8 @@ Config = {
           , '+ desoot@0.1.21-1  initial ‘track’ feature; '
           , '+ desoot@0.1.22    basic Tracks functionality; '
           , '+ desoot@0.1.24    hide Tracks functionality, for now; '
-        ] , version: '0.1.24'
+          , '+ croakorus@0.2.0    duplicate desoot@0.1.24 `https://help.github.com/articles/duplicating-a-repository`; '
+        ] , version:    '0.2.0'
     }
 };
 
