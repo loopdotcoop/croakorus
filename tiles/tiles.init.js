@@ -6,11 +6,9 @@ if (Meteor.isServer) {
         southEdges = {}
       , eastEdges  = {}
 
-        //// Used by `getTileType()` to quickly identify which Tile-type to return.
+        //// Used by `getTileType()` to quickly create a Tile-type.
       , xTerrainExtentMinus1 = Config.tiles.xTerrainExtent - 1
       , zTerrainExtentMinus1 = Config.tiles.zTerrainExtent - 1
-      , xTerrainExtentMinus2 = Config.tiles.xTerrainExtent - 2
-      , zTerrainExtentMinus2 = Config.tiles.zTerrainExtent - 2
       , xTerrainExtentMid = Math.floor( Config.tiles.xTerrainExtent / 2 )
       , zTerrainExtentMid = Math.floor( Config.tiles.zTerrainExtent / 2 )
 
@@ -18,74 +16,44 @@ if (Meteor.isServer) {
         //// Returns an object which can be used to generates a semi-random terrain Tile, which varies depending on its location.
       , getTileType = function (x, z) {
 
-            //// The extreme edges of the terrain are impassable tall mountains.
-            if (0 === x || 0 === z || xTerrainExtentMinus1 === x || zTerrainExtentMinus1 === z) {
-                return {
-                    height: (function () {
-                        var
-                            opts = [
-                                function () { return Math.floor( Math.random() *  60 ) +  70; }
-                              , function () { return Math.floor( Math.random() *  90 ) +  90; }
-                              , function () { return Math.floor( Math.random() * 150 ) + 100; }
-                              , function () { return Math.floor( Math.random() * 250 ) + 100; }
-                              , function () { return Math.floor( Math.random() * 400 ) + 150; }
-                            ]
-                          , rand = Math.floor( Math.random() * opts.length )
-                        ;
-                        return opts[rand];
-                    }())
-                  , colors: [ '#429','#329','#529','#419','#439','#428','#42a' ]
-                  , bulk: 1000 // a value of `1000` is always rendered, no matter how far away it is
-                }
-            }
+            var
+                xNearestEdge = Math.min(x, xTerrainExtentMinus1 - x)
+              , zNearestEdge = Math.min(z, zTerrainExtentMinus1 - z)
+              , xProportionIn = xNearestEdge / xTerrainExtentMid
+              , zProportionIn = zNearestEdge / zTerrainExtentMid
+              , xInvProportionIn = 1 - xProportionIn
+              , zInvProportionIn = 1 - zProportionIn
+              , maxInvProportionIn = Math.max(xInvProportionIn, zInvProportionIn)
+              , heightFactor = ( xProportionIn + zProportionIn ) / 2
+            ;
+// console.log(xNearestEdge, zNearestEdge, xProportionIn, zProportionIn);
 
-            //// Tiles next to the tall mountains are foothills.
-            if (1 === x || 1 === z || xTerrainExtentMinus2 === x || zTerrainExtentMinus2 === z) {
-                return {
-                    height: (function () {
-                        var
-                            opts = [
-                                function () { return Math.floor( Math.random() *  60 ) +  20; }
-                              , function () { return Math.floor( Math.random() *  90 ) +  30; }
-                              , function () { return Math.floor( Math.random() * 150 ) +  50; }
-                              , function () { return Math.floor( Math.random() * 250 ) + 100; }
-                            ]
-                          , rand = Math.floor( Math.random() * opts.length )
-                        ;
-                        return opts[rand];
-                    }())
-                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
-                  , bulk: 100 // a value of `100` is usually rendered, unless it is very far away
-                }
-            }
-            if (2 === x || 2 === z || xTerrainExtentMinus2 - 1 === x || zTerrainExtentMinus2 - 1 === z) {
-                return {
-                    height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
-                  , bulk: 10 // a value of `10` is rendered if at a medium distance from the viewpoint
-                }
-            }
 
-            //// The center of the terrain contains a lonely mountain.
-            if (xTerrainExtentMid === x && zTerrainExtentMid === z) {
-                return {
-                    height: function () { return Math.floor( Math.random() * 150 ) + 50; }
-                  , colors: [ '#62c','#82c','#71c','#73c','#72b','#72d' ]
-                  , bulk: 100 // a value of `100` is usually rendered, unless it is very far away
-                }
-            }
-            if (xTerrainExtentMid + 1 >= x && xTerrainExtentMid - 1 <= x && zTerrainExtentMid + 1 >= z && zTerrainExtentMid - 1 <= z) {
-                return {
-                    height: function () { return Math.floor( Math.random() * 60 ) + 20; }
-                  , colors: [ '#629','#829','#449','#469','#42a','#42d' ]
-                  , bulk: 10 // a value of `10` is rendered if at a medium distance from the viewpoint
-                }
-            }
+            // //// The extreme edges of the terrain are impassable tall mountains.
+            // if (0 === x || 0 === z || xTerrainExtentMinus1 === x || zTerrainExtentMinus1 === z) {
+            //     return {
+            //         height: (function () {
+            //             var
+            //                 opts = [
+            //                     function () { return Math.floor( Math.random() *  60 ) +  70; }
+            //                   , function () { return Math.floor( Math.random() *  90 ) +  90; }
+            //                   , function () { return Math.floor( Math.random() * 150 ) + 100; }
+            //                   , function () { return Math.floor( Math.random() * 250 ) + 100; }
+            //                   , function () { return Math.floor( Math.random() * 400 ) + 150; }
+            //                 ]
+            //               , rand = Math.floor( Math.random() * opts.length )
+            //             ;
+            //             return opts[rand];
+            //         }())
+            //       , colors: [ '#296','#563','#263','#561','#875','#641','#992' ]
+            //       , bulk: 1000 // a value of `1000` is always rendered, no matter how far away it is
+            //     }
+            // }
 
             //// Anywhere else represents flatlands.
             return {
-                height: function () { return Math.floor( Math.random() * 10 ); }
-              , colors: [ '#72c','#92c','#54c','#56c','#52d','#52f' ]
+                height: function () { return Math.floor( (Math.random() * zInvProportionIn) * 200 + (maxInvProportionIn * xInvProportionIn * 120) ) - 80; }
+              , colors: [ '#296','#332','#263','#561','#542','#641','#660' ]
               , bulk: 5 // a value of `5` is rendered if at a short distance from the viewpoint
             }
 

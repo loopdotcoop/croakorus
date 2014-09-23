@@ -18,10 +18,10 @@ Config.tiles = {
   //// Configs define the tiles and terrain. See also `config.xTileSizePlus1` and `config.yTileExtentPlus1`, below.
   , xTileSize:       8 // number of grid-squares (meters) from the Westmost to the Eastmost edge of a terrain Tile
   , zTileSize:       8 // number of grid-squares (meters) from the Northmost to the Southmost edge of a terrain Tile
-  , xTerrainExtent: 32 // number of Tiles from the Westmost to the Eastmost edges of the terrain
-  , zTerrainExtent: 32 // number of Tiles from the Northmost to the Southmost edges of the terrain
-  , xTileFar:       40 // only subscribe to Tiles within 40 squares x-distance from your Looptopian
-  , zTileFar:       40 // as above, for z-distance
+  , xTerrainExtent: 24 // number of Tiles from the Westmost to the Eastmost edges of the terrain
+  , zTerrainExtent: 24 // number of Tiles from the Northmost to the Southmost edges of the terrain
+  , xTileFar:       60 // only subscribe to Tiles within 60 squares x-distance from the viewpoint
+  , zTileFar:       60 // as above, for z-distance
 
   , schema: new SimpleSchema({
         x: {
@@ -72,8 +72,14 @@ Config.tiles.xHalfTerrainSize = Config.tiles.xTerrainSize / 2;
 Config.tiles.zHalfTerrainSize = Config.tiles.zTerrainSize / 2;
 Config.tiles.lowlandTileCount = ( (Config.tiles.xTerrainExtent - 6) * (Config.tiles.zTerrainExtent - 6) ) - 9; // @todo check this is a positive number!
 
+//// Precalculate the 32 `transform` attributes for the water level.
+var wsf = Math.PI * 2 / 32; // water surface factor, where `Math.PI * 2` is sine’s wavelength, and `32` is the number of beats in a cycle.
+Config.tiles.waterSurfaceLut = [];
+for (var i=0, l=32; i<l; i++) {
+    Config.tiles.waterSurfaceLut.push(  Config.tiles.xHalfTerrainSize + ' ' + ( Math.sin( i * wsf) / 40 ) + ' ' + Config.tiles.zHalfTerrainSize  );
+}
 
-// Attach the ‘Collection2’ schema defined above.
+//// Attach the ‘Collection2’ schema defined above.
 Tiles.attachSchema(Config.tiles.schema);
 
 
