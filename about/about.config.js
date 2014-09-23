@@ -4,10 +4,10 @@
 
 Config = {
     about: {
-        name:         'Desoot'
-      , slug:         'desoot' // equivalent to the `'name'` field in ‘package.json’ 
-      , initials:     'dst'
-      , description:  'A Looptopian desert, surrounded by impassable mountains.' // no more than 255 characters
+        name:         'Croakorus'
+      , slug:         'croakorus' // equivalent to the `'name'` field in ‘package.json’ 
+      , initials:     'cks'
+      , description:  'A Looptopian swamp, alive with musical amphibians.' // no more than 255 characters
       , keywords:     'Brighton, art, music, immersive, app, game, cooperative, party, festival'
       , scripts: {
             test:     'echo \'Error: no test specified\' && exit 1'
@@ -18,7 +18,7 @@ Config = {
       , year:         '2014'
       , license:      'GPL v2'
       , type:         'website' // http://ogp.me/#types
-      , url:          'http://looptopia.loop.coop/desoot'
+      , url:          'http://looptopia.loop.coop/croakorus'
       , contributors: [
             'Beth Walker <info@loop.coop>'
         ]
@@ -60,7 +60,8 @@ Config = {
           , '+ desoot@0.1.21-1  initial ‘track’ feature; '
           , '+ desoot@0.1.22    basic Tracks functionality; '
           , '+ desoot@0.1.24    hide Tracks functionality, for now; '
-          , '+ croakorus@0.2.0    duplicate desoot@0.1.24 `https://help.github.com/articles/duplicating-a-repository`; '
+          , '+ croakorus@0.2.0-rc1    copy desoot@0.1.24 `https://help.github.com/articles/duplicating-a-repository`; '
+          , '+ croakorus@0.2.0        new tile-creation system; animated water-level; click water to move; '
         ] , version:    '0.2.0'
     }
 };

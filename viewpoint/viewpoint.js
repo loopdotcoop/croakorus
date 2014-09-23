@@ -94,9 +94,11 @@ if (Meteor.isClient) {
               , ldc = classes.ldc || {} // classes used for all Looptopian apps
               , dst = classes.dst || {} // classes specific to the Desoot
             ;
-// console.log( 'viewpoint.js:leftClick() ', classes );
 
-            //// Deal with a click on a lowland terrain tile or a hitzone.
+            //// In croakorus, tiles are not clickable.
+            if (ldc.tile || ldc.bgplane) { return; }
+
+            //// Deal with a click on the water-surface or a hitzone.
             if (ldc.hitzone || ldc.navigation) {
 
                 //// Change the user’s orientation if they have clicked on the left or right 20% of the window. @todo try other ways of making the viewpoint rotation follow movement (nb, the <transform> element could be removed if we do some math on the <viewport> 'orientation' attribute)
@@ -117,36 +119,6 @@ if (Meteor.isClient) {
                     }
 //                    Session.set('rotation', rotation);
                 }
-
-            //// Otherwise, deal with a click on high-ground (near the edge, or the central mountain), or the underground-plane, or the sky.
-            } else {
-                currPos = Session.get('position');
-                x = currPos[0]; y = currPos[1]; z = currPos[2];
-
-                //// Move by the three-querters of the ‘far’ distance, but don’t enter the mountains on the edges. @todo don’t enter the mountains in the middle.
-                switch (rotation) {
-                    case 'n':
-                        z -= Math.floor( Config.tiles.zTileFar * .75 );
-                        z = Math.max(z, Config.tiles.zTileSize * 3);
-                        break;
-                    case 'e':
-                        x += Math.floor( Config.tiles.xTileFar * .75 );
-                        x = Math.min( x, Config.tiles.xTerrainSize - (Config.tiles.xTileSize * 3) );
-                        break;
-                    case 's':
-                        z += Math.floor( Config.tiles.zTileFar * .75 );
-                        z = Math.min( z, Config.tiles.zTerrainSize - (Config.tiles.zTileSize * 3) );
-                        break;
-                    case 'w':
-                        x -= Math.floor( Config.tiles.xTileFar * .75 );
-                        x = Math.max(x, Config.tiles.xTileSize * 3);
-                        break;
-                }
-
-                //// Get the ground-height at the new position.
-                y = 1; // @todo get this info from the `tiles` db
-// console.log(x,y,z);
-
             }
 
             //// Deal with a click on a hitzone.
@@ -240,10 +212,8 @@ if (Meteor.isClient) {
             $('body').css('cursor', 'url(/viewpoint/look.png) 24 24, move');
         } else if (ldc.hitzone) {
             $('body').css('cursor', 'url(/viewpoint/pointer.png) 3 3, pointer');
-        // } else if ( 'mouseover-plane' === evt.target.className ) {
-        //     $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
-        } else if (! ldc.navigation) {
-            $('body').css('cursor', 'url(/viewpoint/forward.png) 24 6, n-resize');
+        } else if (! ldc.navigation) { // in croakorus, tiles are not clickable
+            $('body').css('cursor', 'auto');
         } else if ( evt.layerX < (window.innerWidth * .2) ) { // turn left
             $('body').css('cursor', 'url(/viewpoint/left.png) 3 20, w-resize');
         } else if ( evt.layerX > (window.innerWidth * .8) ) { // turn right

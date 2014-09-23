@@ -10,44 +10,44 @@
   <meta name="format-detection"                content="telephone=no">
 
   <!-- Seo -->
-  <title>LDC: Desoot</title>
+  <title>CiCi: Croakorus</title>
   <meta name="description"                     content="A Looptopian desert, surrounded by impassable mountains.">
-  <meta name="keywords"                        content="Brighton, art, music, immersive, app, game, cooperative, party, festival">
+  <meta name="keywords"                        content="Brighton, art, music, immersive, app, game, cooperative, party, festival, frog, toad, amphibian">
   <meta name="author"                          content="Rich Plastow <infoATloop.coop>">
   <meta name="copyright"                       content="Copyright 2014 Loop.Coop">
 
   <!-- Facebook -->
-  <meta property="og:title"                    content="LDC: Desoot">
+  <meta property="og:title"                    content="CiCi: Croakorus">
   <meta property="og:type"                     content="website">
-  <meta property="og:url"                      content="http://looptopia.loop.coop/desoot/">
-  <meta property="og:site_name"                content="Desoot">
-  <meta property="og:image"                    content="/layout/icon/dst-310x310.png">
+  <meta property="og:url"                      content="http://looptopia.loop.coop/croakorus/">
+  <meta property="og:site_name"                content="Croakorus">
+  <meta property="og:image"                    content="/layout/icon/cks-310x310.png">
 
   <!-- Favicon -->
-  <link rel="shortcut icon"                       href="/layout/icon/dst-16x16.ico">
+  <link rel="shortcut icon"                       href="/layout/icon/cks-16x16.ico">
 
   <!-- iOS 1-6 -->
-  <link rel="apple-touch-icon"                    href="/layout/icon/dst-114x114.png"><!-- iPhone, 57x57 -->
-  <link rel="apple-touch-icon" sizes="114x114"    href="/layout/icon/dst-114x114.png"><!-- iPhone retina -->
-  <link rel="apple-touch-icon" sizes="72x72"      href="/layout/icon/dst-144x144.png"><!-- iPad -->
-  <link rel="apple-touch-icon" sizes="144x144"    href="/layout/icon/dst-144x144.png"><!-- iPad retina -->
+  <link rel="apple-touch-icon"                    href="/layout/icon/cks-114x114.png"><!-- iPhone, 57x57 -->
+  <link rel="apple-touch-icon" sizes="114x114"    href="/layout/icon/cks-114x114.png"><!-- iPhone retina -->
+  <link rel="apple-touch-icon" sizes="72x72"      href="/layout/icon/cks-144x144.png"><!-- iPad -->
+  <link rel="apple-touch-icon" sizes="144x144"    href="/layout/icon/cks-144x144.png"><!-- iPad retina -->
 
   <!-- iOS 7+ -->
-  <link rel="apple-touch-icon" sizes="60x60"      href="/layout/icon/dst-120x120.png"><!-- iPhone -->
-  <link rel="apple-touch-icon" sizes="120x120"    href="/layout/icon/dst-120x120.png"><!-- iPhone retina -->
-  <link rel="apple-touch-icon" sizes="76x76"      href="/layout/icon/dst-152x152.png"><!-- iPad -->
-  <link rel="apple-touch-icon" sizes="152x152"    href="/layout/icon/dst-152x152.png"><!-- iPad retina -->
+  <link rel="apple-touch-icon" sizes="60x60"      href="/layout/icon/cks-120x120.png"><!-- iPhone -->
+  <link rel="apple-touch-icon" sizes="120x120"    href="/layout/icon/cks-120x120.png"><!-- iPhone retina -->
+  <link rel="apple-touch-icon" sizes="76x76"      href="/layout/icon/cks-152x152.png"><!-- iPad -->
+  <link rel="apple-touch-icon" sizes="152x152"    href="/layout/icon/cks-152x152.png"><!-- iPad retina -->
 
   <!-- Win8 -->
-  <meta name="application-name"                content="Desoot">
+  <meta name="application-name"                content="Croakorus">
   <meta name="msapplication-TileColor"         content="#0b0d0c">
-  <meta name="msapplication-TileImage"         content="/layout/icon/dst-144x144.png">
+  <meta name="msapplication-TileImage"         content="/layout/icon/cks-144x144.png">
 
   <!-- IE11 -->
-  <meta name="msapplication-square70x70logo"   content="/layout/icon/dst-70x70.png">
-  <meta name="msapplication-square150x150logo" content="/layout/icon/dst-150x150.png">
-  <meta name="msapplication-wide310x150logo"   content="/layout/icon/dst-310x150.png">
-  <meta name="msapplication-square310x310logo" content="/layout/icon/dst-310x310.png">
+  <meta name="msapplication-square70x70logo"   content="/layout/icon/cks-70x70.png">
+  <meta name="msapplication-square150x150logo" content="/layout/icon/cks-150x150.png">
+  <meta name="msapplication-wide310x150logo"   content="/layout/icon/cks-310x150.png">
+  <meta name="msapplication-square310x310logo" content="/layout/icon/cks-310x310.png">
 
   <!-- Analytics -->
   <script>/*
@@ -90,11 +90,31 @@
           </transform>
 
           <!-- environment -->
-          <Fog color="#429" visibilityRange="60"></Fog>
-          <background groundColor="(.26666,.13333,.6)" skyColor="(.1,.1,.3)" isActive="true"></background>
+          <Fog color="#241" visibilityRange="60"></Fog>
+          <background groundColor="(.13333,.3,.066665)" skyColor="(.1,.3,.2)" isActive="true"></background>
           <directionallight id="ldc-mainlight" ambientIntensity='1' color='1,1,1' direction='1 -1 -1' global='true' intensity='1' on='true'></directionallight>
           <transform translation="{{ spotlightPosition }}">
             <SpotLight id="ldc-spotlight" ambientIntensity='0' color='1,1,1' direction='0 -1 0' global='false' intensity='1' on='false' radius="30" beamWidth=".3" cutOffAngle=".4"></SpotLight>
+          </transform>
+
+          <!-- water surface -->
+          <transform id="cks-water-surface" translation="{{ $.Config.tiles.xHalfTerrainSize }} 0 {{ $.Config.tiles.zHalfTerrainSize }}" rotation="1 0 0  4.712389">
+            <shape>
+              <appearance>
+                <material diffuseColor="#228866" transparency='.3'></material>
+              </appearance>
+              <plane class="ldc-navigation" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
+            </shape>
+          </transform>
+
+          <!-- mud layer -->
+          <transform translation="{{ $.Config.tiles.xHalfTerrainSize }} -1 {{ $.Config.tiles.zHalfTerrainSize }}" rotation="1 0 0  4.712389">
+            <shape>
+              <appearance>
+                <material diffuseColor="#886611" transparency='.15'></material>
+              </appearance>
+              <plane size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
+            </shape>
           </transform>
 
           <!-- underground-plane -->
@@ -103,7 +123,7 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
+              <plane class="ldc-bgplane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zTerrainSize }}"></plane>
             </shape>
           </transform>
 
@@ -113,7 +133,7 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+              <plane class="ldc-bgplane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
             </shape>
           </transform>
 
@@ -123,7 +143,7 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+              <plane class="ldc-bgplane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
             </shape>
           </transform>
 
@@ -133,7 +153,7 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+              <plane class="ldc-bgplane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
             </shape>
           </transform>
 
@@ -143,7 +163,7 @@
               <appearance>
                 <material transparency='1'></material>
               </appearance>
-              <plane class="mouseover-plane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
+              <plane class="ldc-bgplane" size="{{ $.Config.tiles.xTerrainSize }} {{ $.Config.tiles.zHalfTerrainSize }}"></plane>
             </shape>
           </transform>
 

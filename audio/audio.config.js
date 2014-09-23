@@ -70,6 +70,7 @@ if (Meteor.isClient) {
       , prevBeat = 0
       , prevTime = 0
       , beatEls = []
+      , cksWaterSurface
 
         //// Find out where the playhead should be, given the total amount of time elapsed since `Config.audio.ctx` was created.
       , step = function () { // we don’t use the `stamp` argument
@@ -83,6 +84,9 @@ if (Meteor.isClient) {
                     //// Xx.
                     Session.set('playhead', Config.audio.playheadLut[nowBeat]);
                     prevBeat = nowBeat;
+
+                    //// 
+                    cksWaterSurface.setAttribute('translation', Config.tiles.waterSurfaceLut[nowBeat]);
 
                     //// Xx.
                     for (i=0, l=beatEls.length; i<l; i++) { beatEls[i].setAttribute('scale', '1 1 1'); } // reset any previous X3D elements which have not been returned to their ‘at rest’ state
@@ -129,17 +133,23 @@ if (Meteor.isClient) {
       //   }
     ;
 
-    //// Initialize the audio context.
-    Config.audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData
+    $(function () {
 
-    //// Create a master `GainNode`, and connect it to the `AudioContext`.
-    Config.audio.gain = Config.audio.ctx.createGain(); // allows us to write `mySource.connect(Config.audio.gain);`
-    Config.audio.gain.connect(Config.audio.ctx.destination);
+        //// Get a reference to the water-surface <PLANE> in the DOM.
+        cksWaterSurface = document.getElementById('cks-water-surface');
 
-    //// Initialize the 'audioSources' and 'playhead' session-variables.
-    Session.set('audioSources', []);
-    Session.set('playhead', 0);
+        //// Initialize the audio context.
+        Config.audio.ctx = new (window.AudioContext || window.webkitAudioContext)(); // https://developer.mozilla.org/en-US/docs/Web/API/AudioContext.decodeAudioData
 
-    //// Start the `step()` counter, which will continue running for the whole session.
-    window.requestAnimationFrame(step);
+        //// Create a master `GainNode`, and connect it to the `AudioContext`.
+        Config.audio.gain = Config.audio.ctx.createGain(); // allows us to write `mySource.connect(Config.audio.gain);`
+        Config.audio.gain.connect(Config.audio.ctx.destination);
+
+        //// Initialize the 'audioSources' and 'playhead' session-variables.
+        Session.set('audioSources', []);
+        Session.set('playhead', 0);
+
+        //// Start the `step()` counter, which will continue running for the whole session.
+        window.requestAnimationFrame(step);
+    });
 }
