@@ -73,6 +73,7 @@ try {
 
     //// Hide or show the ‘Make a Track’ button.
     UI.registerHelper('canMakeATrack', function() {
+return false; // @todo enable again, with more intuitive gui
         var routerCurrent = Router.current();
         if (! routerCurrent) { return false; }
         if ( -1 === routerCurrent.path.indexOf('/track') ) { return true; }

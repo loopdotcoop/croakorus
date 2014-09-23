@@ -59,7 +59,8 @@ Config = {
           , '+ desoot@0.1.20    fix drag-to-look-around by removing `speed` attribute from `<navigationinfo>`; '
           , '+ desoot@0.1.21-1  initial ‘track’ feature; '
           , '+ desoot@0.1.22    basic Tracks functionality; '
-        ] , version: '0.1.22'
+          , '+ desoot@0.1.24    hide Tracks functionality, for now; '
+        ] , version: '0.1.24'
     }
 };
 
