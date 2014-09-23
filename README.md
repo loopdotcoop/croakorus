@@ -48,6 +48,12 @@ CSS, minified, bundled, and sent ot the client:
 Atmosphere Packages
 -------------------
 
+### `$ mrt add zurb-foundation`  
+
+__zurb-foundation:__ 5.3.3: The most advanced responsive front-end framework in the world.  
+_No dependencies._
+
+
 ### `$ mrt add iron-router`  
 
 __iron-router:__ Routing specifically designed for Meteor.  

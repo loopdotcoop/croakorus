@@ -3,7 +3,7 @@ if (Meteor.isClient) {
     //// Allow any template to use `{{#each flora}}`.
     UI.registerHelper('flora', function() {
         var flora, i, l, dx, dz, far, id, source, gainNode, mainlight, spotlight
-          , position = Session.get('looptopianPosition') // @todo user db
+          , position = Session.get('position') // @todo user db
           , x = position[0]
           , z = position[2]
           , xFar1 = Config.flora.xFloraFar
@@ -84,6 +84,10 @@ try { // @todo remove
             //// Get a handy reference to the Flora’s MongoDB ID, and the distance between the viewpoint and the center of the Tile which each Flora is on.
             id = flora[i]._id;
             far = flora[i].far;
+
+            //// Set the Flora’s center coords. The viewpoint will use them when the Flora is clicked.
+            flora[i].cx = flora[i].x + (Config.tiles.xTileSize / 2);
+            flora[i].cz = flora[i].z + (Config.tiles.zTileSize / 2);
 
             //// Get a reference to the Flora’s `AudioBufferSourceNode` object.
             source = God.flora.sourceLut[id];
