@@ -28,10 +28,54 @@ html, body {
 
 
 //// Typography.
+@import url(//fonts.googleapis.com/css?family=Podkova:400); // avoid “Blocked loading mixed active content "http://fonts.g...”
+
 body {
     font-family: verdana, sans-serif;
 }
-
+pre {
+    font-size: 12px;
+    line-height: .75;
+}
+h1, h2, h3, h4, h5, h6, button, .button, #ldc-header, #ldc-footer {
+    font-family: 'Podkova', verdana, sans-serif;
+    font-weight: 400;
+    line-height: 1.1;
+}
+h1, h2, h3, h4, h5, h6 {
+    color: #2285a2;
+    text-align: center;
+}
+p {
+    font-size: 1.1rem;
+    line-height: 1.4;
+    text-align: center;
+}
+a {
+    transition: color .4s ease-out; // 'ease-out' for sudden start and slow finish
+    h1, h2, h3, h4, h5, h6, p {
+        transition: color .4s ease-out; // 'ease-out' for sudden start and slow finish
+    }
+    &:hover {
+        color: #d0d;
+        h1, h2, h3, h4, h5, h6, p {
+            color: #d0d;
+        }
+    }
+}
+button, .button {
+    transition: background-color .4s ease-out; // 'ease-out' for sudden start and slow finish
+    &:hover {
+        background-color: #808;
+    }
+}
+a.active {
+    color: #d0d;
+    cursor: default;
+    h1, h2, h3, h4, h5, h6, p {
+        color: #d0d;
+    }
+}
 
 
 
@@ -49,6 +93,50 @@ x3d {
 }
 .x3dom-progress {
 }
+
+
+//// ‘tracks’ buttons.
+#ldc-tracks-buttons {
+    position: absolute;
+    z-index: 12;
+    left: 0;
+    right: 0;
+    height: 0;
+    bottom: 80px;
+    text-align: center;
+    .ldc-icon {
+        display: inline-block;
+        vertical-align: top;
+        width: 50px; // responsive
+        // opacity: 0.7;
+        // transition: opacity .4s ease-out;
+        // &:hover {
+        //     opacity: 1;
+        // }
+        div {
+            text-align: center;
+            font-size: 2rem; // responsive
+        }
+        h6 {
+            font-size: .7rem; // responsive
+            line-height: .8;
+        }
+    }
+}
+@media only screen and (min-width: 40.063em) {
+    #ldc-tracks-buttons {
+        .ldc-icon {
+            width: 70px; // responsive
+            div {
+                font-size: 3rem; // responsive
+            }
+            h6 {
+                font-size: 1rem; // responsive
+            }
+        }
+    }
+}
+
 
 
 

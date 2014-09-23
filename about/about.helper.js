@@ -2,6 +2,7 @@ if (Meteor.isClient) {
 
     //// Add some handy variables to Handlebars scope https://github.com/raix/Meteor-handlebar-helpers/tree/master#add-objects-to-the-cope
     Helpers.addScope('Config', Config);
+    Helpers.addScope('Api', Api);
     // Helpers.addScope('Router', Router);
 
 
@@ -20,6 +21,11 @@ if (Meteor.isClient) {
     //// Handy for formatting values in <PRE> tables.
     UI.registerHelper('pad', function (value, length) {
         return ('          ' + value).slice(-length);
+    });
+
+    //// Get the current path.
+    UI.registerHelper('currentPath', function () {
+        return Router.current() ? Router.current().path : null;
     });
 
 }

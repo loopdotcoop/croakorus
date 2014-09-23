@@ -18,6 +18,10 @@ Config.viewpoint = {
   , spawnX: 140
   , spawnZ: 137
 
+  , dragTime: 400 // time in milliseconds after which a mousedown followed by a mousemove is interpreted as a ‘look around’ dragging event
+  // , dragX: 5 // number of horizontal pixels travelled by a pointer (+ or -) after which a mousemove is interpreted as a dragging event
+  // , dragY: 5 // number of vertical pixels travelled by a pointer (+ or -) after which a mousemove is interpreted as a dragging event
+
   , changelog: [
         '+ viewpoint@0.0.1-1   create ‘viewpoint’ as a feature of ‘desoot@0.1.1-1’;  \n' +
         '                      paste ‘viewpoint.js’ from 20140720-desoot-v0.1.9 ‘viewpoint.js’ and edit code;  \n' +
