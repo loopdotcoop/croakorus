@@ -13,7 +13,7 @@ Router.map(function() {
 
             Session.set('position', [ x, 2, z ]); // @todo update user db
             Session.set('rotation', r); // @todo update user db
-            Session.set('trackplay', false); // reset, if set by the 'track.play' route in ‘tracks.route.js’
+            Api.tracks.trackplay = false; // reset, if set by the 'track.play' route in ‘tracks.route.js’
         }
     });
 });

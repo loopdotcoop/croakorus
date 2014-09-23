@@ -2,6 +2,7 @@ if (Meteor.isClient) {
 
     //// Add some handy variables to Handlebars scope https://github.com/raix/Meteor-handlebar-helpers/tree/master#add-objects-to-the-cope
     Helpers.addScope('Config', Config);
+    Helpers.addScope('Api', Api);
     // Helpers.addScope('Router', Router);
 
 

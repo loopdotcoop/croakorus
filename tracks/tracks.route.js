@@ -1,7 +1,8 @@
 Router.map(function() {
+
     this.route('track.play', {
-        path: /^\/(\d+)([nesw])(\d+)\/track\/(\d+)([nesw])(\d+)([a-z]{0,4})\/(\d+)$/ // eg '/140s147/track/140s147bq/1'
-      , data: function () { // eg `this.params` is `[ '140', 'e', '147', '140', 'e', '147', 'bq', '1' ]`
+        path: /^\/(\d+)([nesw])(\d+)\/track\/(\d+)([nesw])(\d+)([a-z]{0,4})\/(\d+)$/ // eg '/140s147/track/140s147bq/7'
+      , data: function () { // eg `this.params` is `[ '140', 'e', '147', '140', 'e', '147', 'bq', '7' ]`
             var curr, next
               , x = +this.params[0]
               , r =  this.params[1]
@@ -20,44 +21,55 @@ Router.map(function() {
                 if (track.markers[mkri]) {
 // console.log('yay!', track);
                     next = track.markers[mkri].split(' ');
-                    Session.set('trackplay', { next: '/' + next[1] + next[2] + next[3] + '/track/' + track.start + '/' + (mkri + 1), wait:1, until:+curr[0] });
+                    Api.tracks.trackplay = { next: '/' + next[1] + next[2] + next[3] + '/track/' + track.start + '/' + (mkri + 1), wait:1, until:+curr[0] };
                 } else { // at the last marker
 // console.log('nope');
-                    Session.set('trackplay', { next: '/' + curr[1] + curr[2] + curr[3], wait:1, until:+curr[0] });
+                    Api.tracks.trackplay = { next: '/' + curr[1] + curr[2] + curr[3], wait:1, until:+curr[0] };
                 }
             }
 
         }
     });
-    this.route('track.make', {
-            path: '/track/make'
+
+    this.route('track.new', {
+        path: /^\/(\d+)([nesw])(\d+)\/track\/new$/ // eg '/140s147/track/new'
+      , data: function () { // eg `this.params` is `[ '140', 'e', '147' ]`
+            var
+                x = +this.params[0]
+              , r =  this.params[1]
+              , z = +this.params[2]
+            ;
+            Session.set('position', [ x, 2, z ]); // @todo update user db
+            Session.set('rotation', r); // @todo update user db
+
+            Api.tracks.tracknew = this.params.join('') + 'a'; // @todo suffix to enforce unique `start` values
+            Api.tracks.trackadd = [];
+// console.log('new!', Api.tracks.tracknew);
         }
-    );
-    // this.route('track.stop', {
-    //         path: '/:xrz/track/stop/:username/:marker/:alt?'
-    //       , data: function () {
-    //             var xrz = /^(\d+)([nesw])(\d+)$/.exec(this.params.xrz);
-    //             // Session.set('position', [ start[0],2,start[1] ]); // @todo update user db
-    //             // Session.set('rotation' , 'n'); // @todo update user db
-    //             console.log(xrz, this.params.username, this.params.marker);
+    });
 
-    //             // var
-    //             //     x = +this.params[0]
-    //             //   , r =  this.params[1]
-    //             //   , z = +this.params[2]
-    //             // ;
+    this.route('track.add', {
+        path: /^\/(\d+)([nesw])(\d+)\/track\/add\/(\d+)([nesw])(\d+)([a-z]{0,4})\/(\d+)$/ // eg '/140s147/track/add/140s147bq/1'
+      , data: function () { // eg `this.params` is `[ '140', 'e', '147' ]`
+            var
+                x = +this.params[0]
+              , r =  this.params[1]
+              , z = +this.params[2]
+            ;
+            Session.set('position', [ x, 2, z ]); // @todo update user db
+            Session.set('rotation', r); // @todo update user db
 
-    //             // //// Only allow lowland positions.
-    //             // // @todo
+            //// We lose track-creation state after a refresh, but the URL (eg `/195e131/track/add/195e131a/5`) remains, so do a redirect.
+            if (! Api.tracks.tracknew || ! Api.tracks.trackadd) {
+// console.log('redirect');
+                Router.go('/' + x + r + z);
+            }
 
-    //             // Session.set('position', [ x, 2, z ]); // @todo update user db
-    //             // Session.set('rotation', r); // @todo update user db
+// console.log('move add!', Api.tracks.tracknew, Api.tracks.trackadd);
+        }
+    });
 
-    //         }
-    //     }
-    // );
     this.route('tracks.list', {
-            path: '/tracks/list'
-        }
-    );
+        path: '/tracks/list'
+    });
 });

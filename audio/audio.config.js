@@ -98,15 +98,15 @@ if (Meteor.isClient) {
 
                     //// Move the viewpoint if we are currently playing a Track.
                     if (0 === nowBeat) {
-                        trackplay = Session.get('trackplay');
+                        trackplay = Api.tracks.trackplay;
                         if (trackplay) {
 // console.log(trackplay);
                             if (trackplay.wait === trackplay.until) {
-                                Session.set('trackplay', false);
+                                Api.tracks.trackplay = false;
                                 Router.go(trackplay.next);
                             } else {
                                 trackplay.wait++;
-                                Session.set('trackplay', trackplay);
+                                Api.tracks.trackplay = trackplay;
                             }
                         }
                     }

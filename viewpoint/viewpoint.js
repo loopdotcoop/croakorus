@@ -176,6 +176,12 @@ if (Meteor.isClient) {
                     // markers = document.getElementsByClassName('dst-tracks-' + markerId[0]); // eg `<transform class="dst-tracks-Y8TTypXkugSS499YJ" ... >`
                     // for (i=0, l=markers.length; i<l; i++) { }
                 // }
+            } else if (Api.tracks.tracknew) {
+                if (0 === Api.tracks.trackadd.length) {
+                    Router.go( '/' + x + rotation + z + '/track/new' );
+                } else {
+                    Router.go(  '/' + x + rotation + z + '/track/add/' + Api.tracks.tracknew + '/' + ( Api.tracks.trackadd.length + 1 )  );
+                }
             } else {
                 Router.go( '/' + x + rotation + z );
             }

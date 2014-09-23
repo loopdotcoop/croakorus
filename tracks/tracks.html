@@ -5,18 +5,29 @@
 <template name="tracksbuttons">
 {{#if canMakeATrack}}
   <div id="ldc-tracks-buttons">
-    <a href="/track/make" class="radius button" title="Start making a new track"><span class="cbh-paw">Make a Track</span></a>
+    <a href="/{{xrz}}/track/new" class="radius button" title="Start making a new track"><span class="cbh-paw">Make a Track</span></a>
   </div>
 {{/if}}
 </template>
 
 
-<template name="track.make">
+<template name="track.new">
   <div id="ldc-tracks-buttons"
-    ><a href="/track/make" id="ldc-tracks-wait-1"  class="ldc-icon" title="Add a “Wait for one bar” marker here"><div class="cbh-dots-one"></div><h6><span>Wait 1&nbsp;Bar</span></h6></a
-    ><a href="/track/make" id="ldc-tracks-wait-2"  class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
-    ><a href="/track/make" id="ldc-tracks-wait-3"  class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
-    ><a href="/track/make" id="ldc-tracks-wait-4"  class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-1" class="ldc-icon" title="Add a “Wait for one bar” marker here"><div class="cbh-dots-one"></div><h6><span>Wait 1&nbsp;Bar</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-2" class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-3" class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-4" class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}"    id="ldc-tracks-abandon" class="ldc-icon" title="Abandon creating this track"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
+    ></div>
+</template>
+
+
+<template name="track.add">
+  <div id="ldc-tracks-buttons"
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-1" class="ldc-icon" title="Add a “Wait for one bar” marker here"><div class="cbh-dots-one"></div><h6><span>Wait 1&nbsp;Bar</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-2" class="ldc-icon" title="Add a “Wait for two bars” marker here"><div class="cbh-dots-two"></div><h6><span>Wait 2&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-3" class="ldc-icon" title="Add a “Wait for three bars” marker here"><div class="cbh-dots-three"></div><h6><span>Wait 3&nbsp;Bars</span></h6></a
+    ><a href="/{{xrz}}/track/add/{{ $.Api.tracks.tracknew }}/{{nextMkri}}" id="ldc-tracks-wait-4" class="ldc-icon" title="Add a “Wait for four bars” marker here"><div class="cbh-dots-four"></div><h6><span>Wait 4&nbsp;Bars</span></h6></a
     ><a href="/{{xrz}}"    id="ldc-tracks-abandon" class="ldc-icon" title="Abandon creating this track (it will NOT be saved)"><div class="cbh-cancel-circled-2"></div><h6><span>Abandon</span></h6></a
     ><a href="/{{xrz}}"    id="ldc-tracks-release" class="ldc-icon" title="Finish working on this track (leave it for others to find)"><div class="cbh-ok-circled-2"></div><h6><span>Release</span></h6></a
     ></div>
@@ -25,7 +36,7 @@
 
 <template name="track.play">
   <div id="ldc-tracks-buttons">
-    <a href="/{{xrz}}" class="radius button" title="Stop playing this track"><span class="cbh-stop"></span>Stop Playing Track</a>
+    <a href="/{{xrz}}" class="radius button" title="Stop playing the current track"><span class="cbh-stop"></span>Stop Playing Track</a>
   </div>
 </template>
 

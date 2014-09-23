@@ -67,7 +67,8 @@ Config.tracks = {
       , '+ tracks@0.0.1-12   proper route on Track marker click; proper position and rotation on Track marker click; '
       , '+ tracks@0.0.1-13   while playing, update route (and move) on each bar-start; '
       , '+ tracks@0.0.1-14   ‘Stop Playing Track’ button works; '
-    ], version:  '0.0.1-14'
+      , '+ tracks@0.0.1-15   records a user-generated Track; '
+    ], version:  '0.0.1-15'
 };
 
 
@@ -75,6 +76,5 @@ Config.tracks = {
 Tracks.attachSchema(Config.tracks.schema);
 
 
-if (Meteor.isClient) {
-    Session.set('trackplay', false); // set to xx?
-}
+
+
