@@ -53,7 +53,7 @@ if (Meteor.isServer) {
             //// Anywhere else represents flatlands.
             return {
                 height: function () { return Math.floor( (Math.random() * zInvProportionIn) * 200 + (maxInvProportionIn * xInvProportionIn * 120) ) - 80; }
-              , colors: [ '#296','#332','#263','#561','#542','#641','#660' ]
+              , colors: [ '#397','#264','#384','#4a5','#343','#463','#396' ]
               , bulk: 5 // a value of `5` is rendered if at a short distance from the viewpoint
             }
 

@@ -62,7 +62,8 @@ Config = {
           , '+ desoot@0.1.24    hide Tracks functionality, for now; '
           , '+ croakorus@0.2.0-rc1    copy desoot@0.1.24 `https://help.github.com/articles/duplicating-a-repository`; '
           , '+ croakorus@0.2.0        new tile-creation system; animated water-level; click water to move; '
-        ] , version:    '0.2.0'
+          , '+ croakorus@0.2.1-1      better spawn xrz; bluer tiles, greener water; '
+        ] , version:    '0.2.1-1'
     }
 };
 

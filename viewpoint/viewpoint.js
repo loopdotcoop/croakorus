@@ -1,8 +1,8 @@
 if (Meteor.isClient) {
 
     //// Inital position and rotation, only used if the URL is ‘/’.
-    Session.set('position', [Config.viewpoint.spawnX, 4, Config.viewpoint.spawnZ]); // @todo user db
-    Session.set('rotation', 's'); // @todo user db
+    Session.set('position', [Config.viewpoint.xSpawn, 4, Config.viewpoint.zSpawn]); // @todo user db
+    Session.set('rotation', Config.viewpoint.rSpawn); // @todo user db
 
     //// Update the viewpoint whenever `Session.get('position')` or `Session.get('rotation')` change.
     Deps.autorun(Api.viewpoint.update); // @todo `Deps` becomes `Tracker` in meteor@0.9.1

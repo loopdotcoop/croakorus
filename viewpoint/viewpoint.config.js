@@ -15,8 +15,9 @@ Config.viewpoint = {
         'Beth Walker <info@loop.coop>'
     ]
 
-  , spawnX: 140
-  , spawnZ: 137
+  , xSpawn: 130
+  , rSpawn: 'e'
+  , zSpawn: 115
 
   , dragTime: 400 // time in milliseconds after which a mousedown followed by a mousemove is interpreted as a ‘look around’ dragging event
   // , dragX: 5 // number of horizontal pixels travelled by a pointer (+ or -) after which a mousemove is interpreted as a dragging event
