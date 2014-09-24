@@ -1,21 +1,76 @@
 God.flora = {
     types: [
         {
-            name:   'Stone Circle'
-          , plural: 'Stone Circles'
-          , slug:   'stone-circle'
-          , min: 0.01 // minimum number of this type of flora, as a fraction of lowland Tiles
+            name:   'Lily'
+          , plural: 'Lilies'
+          , slug:   'lily'
+          // , min: 0.01 // minimum number of this type of flora, as a fraction of lowland Tiles
+          , min: 0.1 // minimum number of this type of flora, as a fraction of lowland Tiles
           , max: 0.1  // maximum, also as a fraction of lowland Tiles
-          , generate: function () {
-                if (Meteor.isClient) { return; }
-                // console.log('generate a ' + this.name);
-            }
+
           , init: function () {
                 if (Meteor.isClient) { return; }
-                // console.log('`God.flora.typeLut["' + this.slug + '"]()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
-                for (var i = Math.ceil(this.min * Config.tiles.lowlandTileCount); i>0; i--) {
+console.log('`God.flora.typeLut["' + this.slug + '"]()` will generate ' + Math.ceil(this.min * Config.tiles.centralTileCount) + ' ' + this.plural + ' in ' + Config.tiles.centralCoordCount + ' possible places');
+                for (var i = Math.ceil(this.min * Config.tiles.centralTileCount); i>0; i--) {
                     this.generate();
                 }
+            }
+
+          , generate: function () {
+                if (Meteor.isClient) { return; }
+                var 
+                    xz = this.findEmptyXZ()
+                  , x = xz[0]
+                  , z = xz[1]
+                  , born = new Date().valueOf()
+                ;
+
+                //// Record it in the the `Flora` collection.
+                Flora.insert({
+                    x:       x
+                  , z:       z
+                  , color:   'red'
+                  , type:    this.slug
+                  , bulk:    5
+                  , pattern: 'x'//pattern.join('')
+                  , born:    born
+                });
+
+console.log('generated a ' + this.name + ' at (' + x + ',0,' + z + '), born ' + born);
+            }
+
+          , findEmptyXZ: function () {
+                var i, x, z;
+
+                //// Find an empty coord in the water.
+                for (i=Config.tiles.centralCoordCount * 4; i>0; i--) { // try to find an empty XZ coord for four times the number of central tiles
+
+                    //// Get a random `x` and `z` coordinate. If `xTerrainExtent` is `32` and `xTileSize` is `8`, `x` becomes an integer between `24` and `232` inclusive.
+                    x = rint(3 * Config.tiles.xTileSize, (Config.tiles.xTerrainExtent - 3) * Config.tiles.xTileSize );
+                    z = rint(3 * Config.tiles.zTileSize, (Config.tiles.zTerrainExtent - 3) * Config.tiles.zTileSize );
+
+                    //// Make sure this coord is in the water.
+                    if (0) { // @todo
+console.log('found a land Coord at (' + x + ',0,' + z + ')');
+                        continue;
+                    }
+ 
+                    //// Make sure no other Flora exists at these coordinates, or in the adjacent coordinates. @todo test for race-condition
+                    if ( 0 === Flora.find({ x:{ $gte:x-1, $lte:x+1 }, z:{ $gte:z-1, $lte:z+1 } }).count() ) { // @todo test
+                        break;
+                    } else {
+console.log('already Flora at or adjacent to (' + x + ',0,' + z + ')');
+                        continue;
+                    }
+
+                }
+
+                //// Give up finding an empty coord.
+                if (0 === i) {
+                    throw new Meteor.Error('`God.flora.typeLut["' + this.slug + '"].findEmptyXZ()` gave up finding an empty space after ' + Config.tiles.centralCoordCount + ' attempts.', 500);
+                }
+
+                return [x, z];
             }
         }
       , {
@@ -66,7 +121,7 @@ God.flora = {
                 ;
 
                 //// Find an empty Tile.
-                for (i=Config.tiles.lowlandTileCount * 4; i>0; i--) { // try to find an emty tile for four times the number of lowland tiles
+                for (i=Config.tiles.centralTileCount * 4; i>0; i--) { // try to find an emty tile for four times the number of lowland tiles
 
                     //// Get a random `x` and `z` coordinate. If `xTerrainExtent` is `32` and `xTileSize` is `8`, `x` becomes an integer between `24` and `232` inclusive.
                     x = rint(3, Config.tiles.xTerrainExtent - 3) * Config.tiles.xTileSize;
@@ -100,7 +155,7 @@ God.flora = {
 
                 //// Give up finding an empty tile.
                 if (0 === i) {
-                    throw new Meteor.Error('`God.flora.typeLut["' + this.slug + '"].generate()` gave up finding an empty space after ' + Config.tiles.lowlandTileCount + ' attempts.', 500);
+                    throw new Meteor.Error('`God.flora.typeLut["' + this.slug + '"].generate()` gave up finding an empty space after ' + Config.tiles.centralTileCount + ' attempts.', 500);
                 }
 
                 //// Begin with 32 points of silence.
@@ -181,8 +236,9 @@ God.flora = {
             }
           , init: function () {
                 if (Meteor.isClient) { return; }
-                // console.log('`God.flora.typeLut["' + this.slug + '"].init()` will generate ' + Math.ceil(this.min * Config.tiles.lowlandTileCount) + ' ' + this.plural);
-                for (var i = Math.ceil(this.min * Config.tiles.lowlandTileCount); i>0; i--) {
+return;
+                // console.log('`God.flora.typeLut["' + this.slug + '"].init()` will generate ' + Math.ceil(this.min * Config.tiles.centralTileCount) + ' ' + this.plural);
+                for (var i = Math.ceil(this.min * Config.tiles.centralTileCount); i>0; i--) {
                     try { this.generate() } catch (error) { console.log(error.error); break; } // @todo does this appear on Modulus logs?
                 }
             }
@@ -263,45 +319,5 @@ var rint = function (a, b, c, d) {
     return Math.round( r * (to - from) ) + from;
 
 };
-
-if ( Meteor.isClient) {
-    Meteor.startup(function () {
-        // console.log('here');
-    });
-
-    // console.log( rint()            );
-    // console.log( rint(33)          );
-    // console.log( rint(200)         );
-    // console.log( rint('low')       );
-    // console.log( rint(6, 'mid')    );
-    // console.log( rint(6, 9)        );
-    // console.log( rint(-4, -9)      );
-    // console.log( rint('high', 2)   );
-
-    // console.log('high');
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-    // console.log( rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4), rint(0, 9, 'high', 4) );
-
-    // console.log('low');
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-    // console.log( rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4), rint(0, 9, 'low', 4) );
-
-    // console.log('mid');
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-    // console.log( rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4), rint(0, 9, 'mid', 4) );
-
-}
 
 

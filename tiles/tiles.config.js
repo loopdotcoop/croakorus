@@ -64,13 +64,14 @@ Config.tiles = {
 
 
 //// Autogenerate some configs to simplify rendering the terrain.
-Config.tiles.xTileSizePlus1   = Config.tiles.xTileSize + 1;
-Config.tiles.zTileSizePlus1   = Config.tiles.zTileSize + 1;
-Config.tiles.xTerrainSize     = Config.tiles.xTileSize * Config.tiles.xTerrainExtent;
-Config.tiles.zTerrainSize     = Config.tiles.zTileSize * Config.tiles.zTerrainExtent;
-Config.tiles.xHalfTerrainSize = Config.tiles.xTerrainSize / 2;
-Config.tiles.zHalfTerrainSize = Config.tiles.zTerrainSize / 2;
-Config.tiles.lowlandTileCount = ( (Config.tiles.xTerrainExtent - 6) * (Config.tiles.zTerrainExtent - 6) ) - 9; // @todo check this is a positive number!
+Config.tiles.xTileSizePlus1    = Config.tiles.xTileSize + 1;
+Config.tiles.zTileSizePlus1    = Config.tiles.zTileSize + 1;
+Config.tiles.xTerrainSize      = Config.tiles.xTileSize * Config.tiles.xTerrainExtent;
+Config.tiles.zTerrainSize      = Config.tiles.zTileSize * Config.tiles.zTerrainExtent;
+Config.tiles.xHalfTerrainSize  = Config.tiles.xTerrainSize / 2;
+Config.tiles.zHalfTerrainSize  = Config.tiles.zTerrainSize / 2;
+Config.tiles.centralTileCount  = ( (Config.tiles.xTerrainExtent - 6) * (Config.tiles.zTerrainExtent - 6) ) - 9; // @todo check this is a positive number! @todo accurate underwater count?
+Config.tiles.centralCoordCount = Config.tiles.centralTileCount * Config.tiles.xTileSize * Config.tiles.zTileSize; // @todo accurate underwater count?
 
 //// Precalculate the 32 `transform` attributes for the water level.
 var wsf = Math.PI * 2 / 32; // water surface factor, where `Math.PI * 2` is sine’s wavelength, and `32` is the number of beats in a cycle.

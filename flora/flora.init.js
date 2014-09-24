@@ -3,7 +3,7 @@ if (Meteor.isServer) {
         Flora.remove({});
 
         //// The first time the app starts, generate initial Flora and record them into the `Flora` collection.
-        if ( 999 !== Flora.find().count() ) {
+        if ( 0 !== Flora.find().count() ) {
             // console.log( Flora.find().count() );
         } else {
             console.log('The ‘Flora’ collection is empty...');

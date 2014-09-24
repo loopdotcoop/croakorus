@@ -45,6 +45,10 @@ Config.flora = {
             type: String
           , label: "Pattern"
         }
+      , born: {
+            type: String
+          , label: "Born"
+        }
     })
 
   , changelog: [
@@ -60,7 +64,8 @@ Config.flora = {
       , '+ flora@0.0.3-3   render the remaining beats as sugarloafs; '
       , '+ flora@0.0.3-4   stones jump up when playing; '
       , '+ flora@0.0.4     tighter hit-box for Flora; spotlight when soloing Flora; '
-    ], version: '0.0.4'
+      , '+ flora@0.0.5-1   lilies, for croakorus@0.2.1-1; '
+    ], version: '0.0.5-1'
 };
 
 
